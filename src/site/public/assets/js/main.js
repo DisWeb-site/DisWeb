@@ -3,7 +3,7 @@
  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
  * Author: BootstrapMade.com
  * License: https://bootstrapmade.com/license/
- * Modified by Baal Krshna
+ * Proudly Modified by DisList
  */
 (function () {
     "use strict";

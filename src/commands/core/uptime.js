@@ -15,7 +15,7 @@ module.exports = class CMD extends Command {
         );
     }
 
-    execute({ message }, t) {
+    execute({ message }) {
         const duration = moment
             .duration(message.client.uptime)
             .format(" D [days], H [hours], m [minutes], s [seconds]");
@@ -24,11 +24,11 @@ module.exports = class CMD extends Command {
         const embed = new MessageEmbed()
             .setTitle(`:hourglass_flowing_sand:`)
             .addField(
-                `${message.client.customEmojis.online} ${t("misc:uptime")}`,
+                `Uptime`,
                 `\`\`\`${duration}\`\`\``
             )
             .addField(
-                t("misc:datelaunched"),
+                "Date launched",
                 `\`\`\`${moment(timestamp).format("LLLL")}\`\`\``
             )
             .setColor("GREEN")

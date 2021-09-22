@@ -9,16 +9,39 @@ module.exports = {
         if (!client.application?.owner) await client.application?.fetch();
         if (message.channel?.partial) await message.channel.fetch();
         if (message?.partial) await message.fetch();
+        if (message.author.bot) return;
+        const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const prefixes = [
+            escapeRegex(client.config.prefix.toLowerCase()),
+        ];
+        const prefixRegex = new RegExp(
+            `^(<@!?${client.user.id}> |${prefixes.join("|")})\\s*`
+        );
+        let prefix = null;
         try {
-            message;
-        } catch (e) {
-            client.logger.log(e, "error");
+            [, prefix] = message.content.toLowerCase().match(prefixRegex);
+        } catch (e) {} //eslint-disable-line no-empty
+        if (prefix) {
+            const args = message.content.slice(prefix.length).trim().split(/ +/);
+            const commandName = args.shift().toLowerCase();
+            const command =
+                client.commands.enabled.get(commandName) ||
+                client.commands.enabled.find(
+                    (cmd) => cmd.aliases && cmd.aliases.includes(commandName)
+                );
+            if (!command || typeof command === "undefined") {
+                if (client.debug && client.debugLevel > 0)
+                client.logger.log(`Can't find command: ${commandName}`);
+                return;
+            }
+            if (command.disabled) return;
+            message.channel.sendTyping().catch(() => {});
+            command.execute({ prefix, message, args });
         }
         const mentionRegex = new RegExp(
             `^(<@!?${message.client.user.id}>)\\s*`
         );
         if (message.content.split(" ").length > 1) return;
-
         if (!mentionRegex.test(message.content)) return;
         let reply = `Hi there, ${
             message.author

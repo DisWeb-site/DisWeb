@@ -24,11 +24,11 @@ router.get("/login", (req, res) => {
 //GET /discord/callback
 router.get("/callback", async (req, res) => {
     if (!req.query.code) return res.redirect("/");
-    /*if (req.client.dashboard.states[req.query?.state] !== atob(decodeURIComponent(req.query?.state))) {
+    /*if (req.client.site.states[req.query?.state] !== atob(decodeURIComponent(req.query?.state))) {
         return res.send("You may have been clickjacked!");
     }*/
     const redirectUrl =
-        req.client.dashboard.states[req.query?.state] ?? "/dashboard";
+        req.client.site.states[req.query?.state] ?? "/";
     const params = new URLSearchParams();
     params.set("grant_type", "authorization_code");
     params.set("code", req.query.code);

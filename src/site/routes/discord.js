@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { MessageEmbed: Embed } = require("discord.js");
+//const { MessageEmbed } = require("discord.js");
 const btoa = require("btoa");
 const fetch = require("node-fetch");
+//GET /discord
+router.get("/", (req, res) => {
+    res.redirect(`${req.client.config.servers.main.invite}`);
+});
 //GET /discord/login
 router.get("/login", (req, res) => {
     if (req.user) res.redirect("/dashboard");

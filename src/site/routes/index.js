@@ -3,7 +3,9 @@ const express = require("express");
 const router = express.Router();
 //GET /
 router.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        req: req,
+    });
 });
 //GET /login
 router.get("/login", CheckAuth, (req, res) => {

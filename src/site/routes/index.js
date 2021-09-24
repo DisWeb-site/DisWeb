@@ -11,6 +11,12 @@ router.get("/", (req, res) => {
 router.get("/login", CheckAuth, (req, res) => {
     res.redirect("/discord/login");
 });
+//GET /logout
+router.get("/logout", async (req, res) => {
+    await req.session.destroy();
+    res.send("Logged out");
+    res.end();
+});
 //GET /team
 router.get("/team", (req, res) => {
     res.render("team", {

@@ -1,0 +1,37 @@
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "Updates: github action"
+      - "Updates: dependencies"
+    pull-request-branch-name:
+      separator: "/"
+    commit-message:
+      prefix: "Github Actions"
+      include: "scope"
+    reviewers:
+      - PuneetGopinath
+      - abhijoshi2k
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "i18next"
+    labels:
+      - "Updates: github action"
+      - "Updates: npm deps"
+    pull-request-branch-name:
+      separator: "/"
+    commit-message:
+      prefix: "npm"
+      include: "scope"
+    reviewers:
+      - PuneetGopinath
+      - abhijoshi2k

@@ -11,9 +11,7 @@ module.exports = {
         if (message?.partial) await message.fetch();
         if (message.author.bot) return;
         const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const prefixes = [
-            escapeRegex(client.config.prefix.toLowerCase()),
-        ];
+        const prefixes = [escapeRegex(client.config.prefix.toLowerCase())];
         const prefixRegex = new RegExp(
             `^(<@!?${client.user.id}> |${prefixes.join("|")})\\s*`
         );
@@ -22,7 +20,10 @@ module.exports = {
             [, prefix] = message.content.toLowerCase().match(prefixRegex);
         } catch (e) {} //eslint-disable-line no-empty
         if (prefix) {
-            const args = message.content.slice(prefix.length).trim().split(/ +/);
+            const args = message.content
+                .slice(prefix.length)
+                .trim()
+                .split(/ +/);
             const commandName = args.shift().toLowerCase();
             const command =
                 client.commands.enabled.get(commandName) ||
@@ -31,7 +32,7 @@ module.exports = {
                 );
             if (!command || typeof command === "undefined") {
                 if (client.debug && client.debugLevel > 0)
-                client.logger.log(`Can't find command: ${commandName}`);
+                    client.logger.log(`Can't find command: ${commandName}`);
                 return;
             }
             if (command.disabled) return;
@@ -43,9 +44,7 @@ module.exports = {
         );
         if (message.content.split(" ").length > 1) return;
         if (!mentionRegex.test(message.content)) return;
-        let reply = `Hi there, ${
-            message.author
-        }\nI am ${message.client.user.username}\nMy prefix is "${client.config.prefix}"\nSend \`${client.config.prefix}help\` to get help`;
+        const reply = `Hi there, ${message.author}\nI am ${message.client.user.username}\nMy prefix is "${client.config.prefix}"\nSend \`${client.config.prefix}help\` to get help`;
         if (!message.reference) {
             message.channel.sendTyping().catch(() => {});
             message.channel.send(reply);

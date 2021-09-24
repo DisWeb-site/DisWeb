@@ -27,8 +27,7 @@ router.get("/callback", async (req, res) => {
     /*if (req.client.site.states[req.query?.state] !== atob(decodeURIComponent(req.query?.state))) {
         return res.send("You may have been clickjacked!");
     }*/
-    const redirectUrl =
-        req.client.site.states[req.query?.state] ?? "/";
+    const redirectUrl = req.client.site.states[req.query?.state] ?? "/";
     const params = new URLSearchParams();
     params.set("grant_type", "authorization_code");
     params.set("code", req.query.code);

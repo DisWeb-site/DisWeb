@@ -59,7 +59,7 @@ const botSchema = new mongoose.Schema({
     },
     addedAt: {
         type: Number,
-        default: 0,
+        required: true,
     },
     apiToken: {
         type: String,

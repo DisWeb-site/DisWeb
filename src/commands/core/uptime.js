@@ -23,10 +23,7 @@ module.exports = class CMD extends Command {
         const timestamp = date.getTime() - Math.floor(message.client.uptime);
         const embed = new MessageEmbed()
             .setTitle(`:hourglass_flowing_sand:`)
-            .addField(
-                `Uptime`,
-                `\`\`\`${duration}\`\`\``
-            )
+            .addField(`Uptime`, `\`\`\`${duration}\`\`\``)
             .addField(
                 "Date launched",
                 `\`\`\`${moment(timestamp).format("LLLL")}\`\`\``

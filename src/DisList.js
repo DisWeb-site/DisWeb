@@ -7,10 +7,7 @@ const Util = require("./Util");
 class DisList extends Client {
     constructor(opts) {
         super({
-            intents: [
-                Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGES,
-            ],
+            intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
             partials: ["CHANNEL"],
         });
         this.config = config;
@@ -45,6 +42,10 @@ class DisList extends Client {
             this.commands.disabled.set(command.name, command);
         }
         return command;
+    }
+
+    get models() {
+        return this.db.models;
     }
 }
 module.exports = DisList;

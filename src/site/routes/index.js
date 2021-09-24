@@ -3,9 +3,7 @@ const express = require("express");
 const router = express.Router();
 //GET /
 router.get("/", (req, res) => {
-    res.render("index", {
-        req: req,
-    });
+    res.redirect("/bots");
 });
 //GET /login
 router.get("/login", CheckAuth, (req, res) => {
@@ -20,13 +18,19 @@ router.get("/logout", async (req, res) => {
 //GET /team
 router.get("/team", (req, res) => {
     res.render("team", {
-        req: req,
+        req,
+    });
+});
+//GET /about
+router.get("/about", (req, res) => {
+    res.render("about", {
+        req,
     });
 });
 //GET /team
 router.get("/terms", (req, res) => {
     res.render("terms", {
-        req: req,
+        req,
     });
 });
 //GET /privacy-policy

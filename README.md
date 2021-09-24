@@ -4,7 +4,6 @@ Website source of DisList
   <br>
   <a href=""><img src="https://cdn.discordapp.com/attachments/870662661388513340/890763993478729789/1-removebg-preview_3.png"></a>
   <br>
-  Calypso Discord Bot
   <br>
 </h1>
 

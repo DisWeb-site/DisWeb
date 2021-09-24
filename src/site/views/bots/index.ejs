@@ -38,9 +38,9 @@
                             <div class="content">
                                 <h3>Top voted bots</h3>
                                 <p>
-                                    <% bots.filter(b => b.approved).sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 1).map(botDB => { const bot = req.client.users.get(bot.botId); %>
+                                    <% bots.filter(b => b.approved).sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 1).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); %>
                                         <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: '256', format: 'png' }) %>" alt="Bot avatar">
+                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
                                             <div class="card-body">
                                                 <h5 class="card-title"></h5>
                                                 <p class="card-text"><%= bot.tag %></p>

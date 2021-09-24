@@ -1,11 +1,8 @@
 # DisList
-Website source of DisList
-<h1 align="center">
-  <br>
-  <a href=""><img src="https://cdn.discordapp.com/attachments/870662661388513340/890763993478729789/1-removebg-preview_3.png"></a>
-  <br>
-  <br>
-</h1>
+> Website source of DisList
 
+## FAQ
 
-# dont change the fotter
+### 1. I want to make another discord list using this one, does the license allow that?
+
+Yes, sure. You can, but never delete the LICENSE file, nor touch the copyright line in the footer

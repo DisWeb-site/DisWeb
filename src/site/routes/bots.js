@@ -4,14 +4,14 @@ const router = express.Router();
 //GET /bots
 router.get("/", (req, res) => {
     const bots = req.client.models.Bot.find({});
-    res.render("bots/index", {
+    res.render("bots/index.ejs", {
         req,
         bots,
     });
 });
 //GET /bots/add
 router.get("/add", CheckAuth, (req, res) => {
-    res.render("bots/add", {
+    res.render("bots/add.ejs", {
         req,
     });
 });
@@ -37,6 +37,9 @@ router.post("/add", CheckAuth, async (req, res) => {
         return res.redirect(`/bots/add?${params}`);
     } else if (!Object.keys(data).includes(reqFields)) {
         params.set("message", "Required fields are missing");
+        return res.redirect(`/bots/add?${params}`);
+    } else if (await req.client.models.Bot.findOne({ botId })) {
+        params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }
     const botData = {

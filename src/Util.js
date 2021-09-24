@@ -53,7 +53,10 @@ class Util {
                 if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
                     admin = true;
                 }
-                const djsGuild = (await client.guilds.fetch(guild.id)) ?? null;
+                let djsGuild = null;
+                try {
+                    djsGuild = await client.guilds.fetch(guild.id);
+                } catch(e) {}
                 if (djsGuild && djsGuild.id) {
                     guild = djsGuild;
                     guild.botInvited = true;

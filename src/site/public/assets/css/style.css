@@ -1584,41 +1584,41 @@ section {
 }
 
 /*--------------------------------------------------------------
-# Generate
+# Forms
 --------------------------------------------------------------*/
-.generate .info-box {
+.forms .info-box {
     color: #444444;
     background: #fafbff;
     padding: 30px;
 }
 
-.generate .info-box i {
+.forms .info-box i {
     font-size: 38px;
     line-height: 0;
     color: #4154f1;
 }
 
-.generate .info-box h3 {
+.forms .info-box h3 {
     font-size: 20px;
     color: #012970;
     font-weight: 700;
     margin: 20px 0 10px 0;
 }
 
-.generate .info-box p {
+.forms .info-box p {
     padding: 0;
     line-height: 24px;
     font-size: 14px;
     margin-bottom: 0;
 }
 
-.generate .form {
+.forms .form {
     background: #fafbff;
     padding: 30px;
     height: 100%;
 }
 
-.generate .form .error-message {
+.forms .form .error-message {
     display: none;
     color: #fff;
     background: #ed3c0d;
@@ -1628,7 +1628,7 @@ section {
     font-weight: 600;
 }
 
-.generate .form .sent-message {
+.forms .form .sent-message {
     display: none;
     color: #fff;
     background: #18d26e;
@@ -1638,7 +1638,7 @@ section {
     font-weight: 600;
 }
 
-.generate .form .loading {
+.forms .form .loading {
     display: none;
     background: #fff;
     text-align: center;
@@ -1646,7 +1646,7 @@ section {
     margin-bottom: 24px;
 }
 
-.generate .form .loading:before {
+.forms .form .loading:before {
     content: "";
     display: inline-block;
     border-radius: 50%;
@@ -1659,28 +1659,28 @@ section {
     animation: animate-loading 1s linear infinite;
 }
 
-.generate .form input,
-.generate .form textarea {
+.forms .form input,
+.forms .form textarea {
     border-radius: 0;
     box-shadow: none;
     font-size: 14px;
     border-radius: 0;
 }
 
-.generate .form input:focus,
-.generate .form textarea:focus {
+.forms .form input:focus,
+.forms .form textarea:focus {
     border-color: #4154f1;
 }
 
-.generate .form input {
+.forms .form input {
     padding: 10px 15px;
 }
 
-.generate .form textarea {
+.forms .form textarea {
     padding: 12px 15px;
 }
 
-.generate .form button[type="submit"] {
+.forms .form button[type="submit"] {
     background: #4154f1;
     border: 0;
     padding: 10px 30px;
@@ -1689,7 +1689,7 @@ section {
     border-radius: 4px;
 }
 
-.generate .form button[type="submit"]:hover {
+.forms .form button[type="submit"]:hover {
     background: #5969f3;
 }
 

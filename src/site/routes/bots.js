@@ -15,6 +15,12 @@ router.get("/add", CheckAuth, (req, res) => {
         req,
     });
 });
+//GET /bots/rules
+router.get("/rules", (req, res) => {
+    res.render("bots/rules", {
+        req,
+    });
+});
 //POST /bots/add
 router.post("/add", CheckAuth, async (req, res) => {
     const { client } = req;

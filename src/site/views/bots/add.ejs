@@ -17,25 +17,58 @@
   
         </section><!-- End Hero -->
         <main id="main">
-            <!-- ======= About Section ======= -->
-            <section id="about" class="about">
-                
+            <!-- ======= Forms Section ======= -->
+            <section id="forms" class="forms">
                 <div class="container" data-aos="fade-up">
-                    <div class="row gx-0">
+                    <header class="section-header">
+                        <h2>Add your bot</h2>
+                        <p>Please put your bot's details below</p>
+                    </header>
+                    <div class="col-lg-6">
+                        <form action="/bots/add" method="POST" id="form" class="form">
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <label for="botId">Bot / Client Id</label>
+                                    <input class="form-control" type="number" placeholder="ID" name="botId" id="botId" required>
+                                </div>
 
-                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-                            <div class="content">
-                                <h3>Title</h3>
-                                <p>
-                                    content
-                                </p>
+                                <div class="col-md-6">
+                                    <label for="prefix">Prefix</label>
+                                    <input class="form-control" type="text" placeholder="Enter your bot's prefix" name="prefix" id="prefix" required maxlength="20">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="shortDesc">Short Description</label>
+                                    <input class="form-control" type="text" placeholder="A cool bot with features like ..." name="shortDesc" id="shortDesc" required maxlength="20">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="longDesc">Long Description</label>
+                                    <textarea class="form-control" rows="6" placeholder="A brief description for your bot" name="longDesc" id="longDesc" required maxlength="300"></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="support">Support Server (optional)</label>
+                                    <input class="form-control" type="text" placeholder="A permanent invite link to your bot's support server" name="support" id="support">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="github">GitHub (Optional)</label>
+                                    <input class="form-control" type="text" placeholder="If your bot is open source, please share it here" name="github" id="github">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="website">WebSite (Optional)</label>
+                                    <input class="form-control" type="text" placeholder="If your bot has a site, link it here" name="website" id="website">
+                                </div>
+
+                                <p>Make sure you have read the <a href="/bots/rules">Bot rules</a>.</p>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                </div>
   
-          </div>
-        </div>
-  
-      </section><!-- End About Section -->
+      </section><!-- End Forms Section -->
         </main>
         <%- include('../includes/footer') %>
     </body>

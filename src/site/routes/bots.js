@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 //GET /bots
 router.get("/", (req, res) => {
-    const bots = req.client.models.Bot.find({});
+    const bots = req.client.models.Bot;
     res.render("bots/index", {
         req,
         bots,

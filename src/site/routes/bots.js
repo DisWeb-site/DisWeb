@@ -4,14 +4,14 @@ const router = express.Router();
 //GET /bots
 router.get("/", (req, res) => {
     const bots = req.client.models.Bot.find({});
-    res.render("bots/index.ejs", {
+    res.render("bots/index", {
         req,
         bots,
     });
 });
 //GET /bots/add
 router.get("/add", CheckAuth, (req, res) => {
-    res.render("bots/add.ejs", {
+    res.render("bots/add", {
         req,
     });
 });

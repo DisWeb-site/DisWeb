@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 });
 //GET /bots/add
 router.get("/add", CheckAuth, (req, res) => {
-    const { client } = this;
+    const { client } = req;
     if (!client.guilds.cache.get(client.config.servers.main.id).members.cache.get(req.user.id)) return res.redirect("/bots?error=true&message=" + encodeURIComponent("To do this, you have to join our discord server."));
     res.render("bots/add", {
         req,
@@ -74,5 +74,28 @@ router.post("/add", CheckAuth, async (req, res) => {
     await botDB.save();
     params.delete("error");
     params.set("sucess", "true");
+    params.set("message", "Your bot is added!");
+    res.redirect(`/bots/${bot.id}?${params}`);
+});
+router.get("/:botId", (req, res) => {
+    const id = parseInt(req.params.botId);
+    if (isNaN(id)) return res.redirect("/bots?error=true&message=" + encodeURIComponent("Invalid bot ID"));
+    let bot = null;
+    try {
+        bot = await req.client.users.fetch(id);
+    } catch(e) {
+        return res.redirect("/bots?error=true&message=" + encodeURIComponent("Invalid bot ID"));
+    }
+    let botDB = null;
+    try {
+        botDB = await client.db.findBot(bot.id);
+    } catch(e) {
+        return res.redirect("/bots?error=true&message=" + encodeURIComponent("Bot not found in DB"));
+    }
+    res.render("bots/view", {
+        req,
+        bot,
+        botDB,
+    })
 });
 module.exports = router;

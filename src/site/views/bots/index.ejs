@@ -38,13 +38,13 @@
                             <div class="content">
                                 <h3>Top voted bots</h3>
                                 <p>
-                                    <% bots.filter(b => b.approved).sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 1).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); %>
+                                    <% bots.filter(b => b.approved).sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 1).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
                                         <div class="card" style="width: 18rem;">
                                             <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
                                             <div class="card-body">
                                                 <h5 class="card-title"></h5>
                                                 <p class="card-text"><%= bot.tag %></p>
-                                                <a href="/bots/view/<%= bot.id %>" class="btn btn-primary">View bot</a>
+                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                             </div>
                                         </div>
                                     <% }); %>

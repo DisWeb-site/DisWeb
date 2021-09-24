@@ -33,6 +33,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     } catch (e) {
         if (client.debug) console.log(e);
     }
+    if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
     params.set("error", "true");
     if (isNaN(botId)) {

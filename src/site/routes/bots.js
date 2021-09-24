@@ -77,7 +77,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     params.set("message", "Your bot is added!");
     res.redirect(`/bots/${bot.id}?${params}`);
 });
-router.get("/:botId", (req, res) => {
+router.get("/view/:botId", (req, res) => {
     const id = parseInt(req.params.botId);
     if (isNaN(id)) return res.redirect("/bots?error=true&message=" + encodeURIComponent("Invalid bot ID"));
     let bot = null;

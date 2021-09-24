@@ -43,8 +43,8 @@ class Util {
         };
     }
 
-    async fetchUser(userData) {
-        const { client } = this;
+    async fetchUser(userData, client) {
+        //const { client } = this;
         if (userData.guilds) {
             for (let i = 0; i < userData.guilds.length; i++) {
                 let guild = userData.guilds[i];

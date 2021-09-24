@@ -67,6 +67,7 @@ module.exports.load = (client) => {
                     user: req.user,
                     userData: req.userData,
                     currentURL: req.currentURL,
+                    req: req,
                 });
             } else if (req.accepts("json")) {
                 res.json({ error: "404", message: "Page Not Found" });
@@ -85,6 +86,7 @@ module.exports.load = (client) => {
                     user: req.user,
                     userData: req.userData,
                     currentURL: req.currentURL,
+                    req: req,
                 });
             } else if (req.accepts("json")) {
                 res.json({ error: "500", message: "Internal Server Error" });

@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 //GET /bots
 router.get("/", (req, res) => {
+    return res.send("not ready");
     const bots = req.client.models.Bot.find({});
     res.render("bots/index", {
         req,
@@ -43,7 +44,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }
-    for (const i = 0; i < reqFields.length; i++) {
+    for (let i = 0; i < reqFields.length; i++) {
         const field = reqFields[i];
         if (!(Object.keys(data).includes(field))) {
             params.set("message", "Required fields are missing");

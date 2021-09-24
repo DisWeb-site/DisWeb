@@ -1,7 +1,7 @@
 module.exports = {
     site: {
         port: process.env.PORT ?? 3000,
-        secret: "rkoerasevfevfd",
+        secret: process.env.CLIENT_SECRET ?? "",
     },
     channels: {
         loginLogs: "890244366189350953",

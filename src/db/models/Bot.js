@@ -63,9 +63,12 @@ const botSchema = new mongoose.Schema({
     },
     apiToken: {
         type: String,
-        required: true,
         default: "No token generated",
     },
+    approved: {
+        type: Boolen,
+        default: false,
+    }
 });
 
 botSchema.method("genApiToken", async () => {

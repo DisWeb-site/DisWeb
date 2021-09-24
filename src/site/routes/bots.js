@@ -39,13 +39,17 @@ router.post("/add", CheckAuth, async (req, res) => {
     if (isNaN(botId)) {
         params.set("message", "Bot ID is not a number");
         return res.redirect(`/bots/add?${params}`);
-    } else if (!(Object.keys(data).includes(reqFields))) {
-        params.set("message", "Required fields are missing");
-        return res.redirect(`/bots/add?${params}`);
     } else if (await req.client.models.Bot.findOne({ botId })) {
         params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }
+    for (const i = 0; i < reqFields.length; i++) {
+        const field = reqFields[i];
+        if (!(Object.keys(data).includes(field))) {
+            params.set("message", "Required fields are missing");
+            return res.redirect(`/bots/add?${params}`);
+        }
+    };
     const botData = {
         botId: bot.id,
         prefix: data.prefix,

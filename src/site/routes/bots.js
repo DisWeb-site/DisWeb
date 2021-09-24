@@ -2,8 +2,8 @@ const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
 //GET /bots
-router.get("/", (req, res) => {
-    const bots = req.client.models.Bot;
+router.get("/", async (req, res) => {
+    const bots = await req.client.models.Bot.find({});
     res.render("bots/index", {
         req,
         bots,
@@ -11,6 +11,8 @@ router.get("/", (req, res) => {
 });
 //GET /bots/add
 router.get("/add", CheckAuth, (req, res) => {
+    const { client } = this;
+    if (!client.guilds.cache.get(client.config.servers.main.id).members.cache.get(req.user.id)) return res.redirect("/bots?error=true&message=" + encodeURIComponent("To do this, you have to join our discord server."));
     res.render("bots/add", {
         req,
     });

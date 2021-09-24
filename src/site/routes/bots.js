@@ -38,9 +38,6 @@ router.post("/add", CheckAuth, async (req, res) => {
     if (isNaN(botId)) {
         params.set("message", "Bot ID is not a number");
         return res.redirect(`/bots/add?${params}`);
-    } else if (!bot) {
-        params.set("message", "Invalid bot");
-        return res.redirect(`/bots/add?${params}`);
     } else if (!Object.keys(data).includes(reqFields)) {
         params.set("message", "Required fields are missing");
         return res.redirect(`/bots/add?${params}`);
@@ -49,7 +46,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         return res.redirect(`/bots/add?${params}`);
     }
     const botData = {
-        botId: botId,
+        botId: bot.id,
         prefix: data.prefix,
         descriptions: {
             short: data.shortDesc,

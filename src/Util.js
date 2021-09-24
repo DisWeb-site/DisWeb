@@ -53,7 +53,7 @@ class Util {
                 if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
                     admin = true;
                 }
-                let djsGuild = null;
+                /*let djsGuild = null;
                 try {
                     djsGuild = await client.guilds.fetch(guild.id);
                 } catch(e) {}
@@ -62,7 +62,7 @@ class Util {
                     guild.botInvited = true;
                 } else {
                     guild.botInvited = false;
-                }
+                }*/
                 guild.admin = admin;
                 guild.manageUrl = `/manage/${guild.id}`;
                 guild.iconURL = guild.icon
@@ -82,7 +82,7 @@ class Util {
         if (!req.user || !req.session.user) {
             const redirectUrl =
                 req.originalUrl.includes("login") || req.originalUrl === "/"
-                    ? "/dashboard"
+                    ? "/"
                     : req.originalUrl;
             const state = Math.random().toString(36).substring(5);
             req.client.site.states[state] = redirectUrl;

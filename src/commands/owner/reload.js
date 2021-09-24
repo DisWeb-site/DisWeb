@@ -6,13 +6,10 @@ module.exports = class CMD extends Command {
         super(
             {
                 name: "reload",
-                memberPerms: [],
-                botPerms: [],
                 requirements: {
                     args: true,
                     ownerOnly: true,
                 },
-                usage: "[command]",
                 disabled: false,
                 cooldown: 30,
                 category: "Owner Only",

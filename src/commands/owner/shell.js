@@ -9,13 +9,10 @@ module.exports = class CMD extends Command {
             {
                 name: "shell",
                 aliases: ["exec", "terminal"],
-                memberPerms: [],
-                botPerms: [],
                 requirements: {
                     args: true,
                     ownerOnly: true,
                 },
-                usage: "[shell command]",
                 disabled: false,
                 cooldown: 10,
                 category: "Owner Only",

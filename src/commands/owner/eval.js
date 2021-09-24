@@ -6,13 +6,10 @@ module.exports = class CMD extends Command {
         super(
             {
                 name: "eval",
-                memberPerms: [],
-                botPerms: [],
                 requirements: {
                     args: true,
                     ownerOnly: true,
                 },
-                usage: "[statement]",
                 disabled: false,
                 cooldown: 10,
                 category: "Owner Only",

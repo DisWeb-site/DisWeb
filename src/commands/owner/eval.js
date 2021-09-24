@@ -1,5 +1,6 @@
 /*eslint-disable no-unused-vars*/
 const { Command } = require("../../structures");
+const { MessageEmbed } = require("discord.js");
 module.exports = class CMD extends Command {
     constructor(client) {
         super(
@@ -20,14 +21,11 @@ module.exports = class CMD extends Command {
         );
     }
 
-    execute({ message, args, guildDB, userDB }, t) {
-        const versionSender = require("../../functions/versionSender.js");
-        const presence = require("../../functions/presence.js");
-        const serverCount = require("../../functions/serverCount.js");
+    execute({ message, args }) {
         const { inspect } = require("util");
         const { client } = this;
         const content = args.join(" ");
-        const embed = new Embed({ color: "success" }).addField(
+        const embed = new MessageEmbed().addField(
             "**Input**",
             "```js\n" + content + "\n```"
         );
@@ -40,12 +38,12 @@ module.exports = class CMD extends Command {
                     text = text.replace(message.client.token, "T0K3N");
                 }
                 if (
-                    message.client.config.dashboard.secret &&
-                    text.includes(message.client.config.dashboard.secret)
+                    message.client.config.site.secret &&
+                    text.includes(message.client.config.site.secret)
                 ) {
                     //Client secret
                     text = text.replace(
-                        message.client.config.dashboard.secret,
+                        message.client.config.site.secret,
                         "SECR3T"
                     );
                 }
@@ -67,7 +65,7 @@ module.exports = class CMD extends Command {
                 message.reply({
                     embeds: [
                         embed
-                            .setDesc("```js\n" + clean(output) + "\n```")
+                            .setDescription("```js\n" + clean(output) + "\n```")
                             .addField("**Type**", type),
                     ],
                 });
@@ -79,7 +77,7 @@ module.exports = class CMD extends Command {
 
                 message.reply({
                     embeds: [
-                        embed.setDesc("ERROR:\n```js\n" + clean(err) + "\n```"),
+                        embed.setDescription("ERROR:\n```js\n" + clean(err) + "\n```"),
                     ],
                 });
             });

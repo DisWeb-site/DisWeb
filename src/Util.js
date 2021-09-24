@@ -92,5 +92,32 @@ class Util {
         }
         return next();
     }
+
+    async presence() {
+        const { client } = this;
+        const bots = await client.models.Bot.countDocuments({});
+        const users = await client.models.User.countDocuments({});
+        const presences = [
+            {
+                name: `${bots} | ${
+                    client.config.prefix
+                }help`,
+                type: "WATCHING",
+            },
+            {
+                name: `${users} user${users > 1 ? "s" : ""} | ${
+                    client.config.prefix
+                }help`,
+                type: "WATCHING",
+            },
+            {
+                name: `${client.user.username} | ${client.config.prefix}help`,
+                type: "PLAYING",
+            },
+        ];
+        client.user.setPresence({
+            activities: [presences[Math.floor(Math.random() * presences.length)]],
+        });
+    }
 }
 module.exports = Util;

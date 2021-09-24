@@ -1,5 +1,6 @@
 /*eslint-disable no-unused-vars*/
 const { Command } = require("../../structures");
+const { MessageEmbed } = require("discord.js");
 const { inspect } = require("util");
 const child = require("child_process");
 module.exports = class CMD extends Command {
@@ -24,9 +25,9 @@ module.exports = class CMD extends Command {
     }
 
     //eslint-disable-next-line no-unused-vars
-    execute({ message, args, guildDB, userDB }, t) {
+    execute({ message, args }) {
         const command = args.join(" ");
-        const embed = new Embed({ color: "success" }).addField(
+        const embed = new MessageEmbed().addField(
             "**Input**",
             "```js\n" + command + "\n```"
         );
@@ -36,10 +37,10 @@ module.exports = class CMD extends Command {
                     //Client token
                     text = text.replace(message.client.token, "T0K3N");
                 }
-                if (text.includes(message.client.config.dashboard.secret)) {
+                if (text.includes(message.client.config.site.secret)) {
                     //Client secret
                     text = text.replace(
-                        message.client.config.dashboard.secret,
+                        message.client.config.site.secret,
                         "SECR3T"
                     );
                 }
@@ -57,7 +58,7 @@ module.exports = class CMD extends Command {
                 }
                 return message.reply({
                     embeds: [
-                        embed.setDesc("ERROR:\n```js\n" + clean(err) + "\n```"),
+                        embed.setDescription("ERROR:\n```js\n" + clean(err) + "\n```"),
                     ],
                 });
             }
@@ -69,7 +70,7 @@ module.exports = class CMD extends Command {
             message.reply({
                 embeds: [
                     embed
-                        .setDesc("```js\n" + clean(res) + "\n```")
+                        .setDescription("```js\n" + clean(res) + "\n```")
                         .addField("**Type**", type),
                 ],
             });

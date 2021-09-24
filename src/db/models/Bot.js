@@ -66,7 +66,7 @@ const botSchema = new mongoose.Schema({
         default: "No token generated",
     },
     approved: {
-        type: Boolen,
+        type: Boolean,
         default: false,
     }
 });

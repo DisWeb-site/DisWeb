@@ -1,7 +1,7 @@
 const { Permissions } = require("discord.js");
 class Util {
     constructor(client) {
-        this.client = client;
+        this.client = client ?? null;
     }
 
     genToken() {

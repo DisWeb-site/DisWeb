@@ -14,7 +14,7 @@
             title: "Succesfull...",
             closeOnConfirm: false,
             text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy BaalKrshna - All rights reserved.",
+            footer: "Copyright 2021 &copy DisList - All rights reserved.",
         });
     }
     if (urlParams.has("error")) {
@@ -22,7 +22,7 @@
             icon: "error",
             title: "Ooops...",
             text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy BaalKrshna - All rights reserved.",
+            footer: "Copyright 2021 &copy DisList - All rights reserved.",
         });
     }
 

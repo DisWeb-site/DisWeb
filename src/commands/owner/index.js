@@ -8,6 +8,6 @@ module.exports = {
     metadata: {
         name: "Owner Only",
         key: "owner",
-        emoji: "",
+        emoji: ":crown:",
     },
 };

@@ -5,6 +5,7 @@ module.exports = class CMD extends Command {
         super(
             {
                 name: "ping",
+                description: "Get the ping of the bot",
                 aliases: ["latency", "pong"],
                 disabled: false,
                 category: "Core",

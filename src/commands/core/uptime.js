@@ -7,6 +7,7 @@ module.exports = class CMD extends Command {
         super(
             {
                 name: "uptime",
+                description: "Get uptime of the bot",
                 aliases: ["bot-uptime"],
                 disabled: false,
                 category: "Core",

@@ -110,7 +110,9 @@ class Util {
             },
         ];
         client.user.setPresence({
-            activities: [presences[Math.floor(Math.random() * presences.length)]],
+            activities: [
+                presences[Math.floor(Math.random() * presences.length)],
+            ],
         });
     }
 }

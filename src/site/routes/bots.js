@@ -15,7 +15,17 @@ router.get("/", async (req, res) => {
 //GET /bots/add
 router.get("/add", CheckAuth, (req, res) => {
     const { client } = req;
-    if (!client.guilds.cache.get(client.config.servers.main.id).members.cache.get(req.user.id)) return res.redirect("/bots?error=true&message=" + encodeURIComponent("To do this, you have to join our discord server."));
+    if (
+        !client.guilds.cache
+            .get(client.config.servers.main.id)
+            .members.cache.get(req.user.id)
+    )
+        return res.redirect(
+            "/bots?error=true&message=" +
+                encodeURIComponent(
+                    "To do this, you have to join our discord server."
+                )
+        );
     res.render("bots/add", {
         req,
     });
@@ -50,11 +60,11 @@ router.post("/add", CheckAuth, async (req, res) => {
     }
     for (let i = 0; i < reqFields.length; i++) {
         const field = reqFields[i];
-        if (!(Object.keys(data).includes(field))) {
+        if (!Object.keys(data).includes(field)) {
             params.set("message", "Required fields are missing");
             return res.redirect(`/bots/add?${params}`);
         }
-    };
+    }
     const botData = {
         botId: bot.id,
         prefix: data.prefix,

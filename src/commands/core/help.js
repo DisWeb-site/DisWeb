@@ -71,9 +71,7 @@ module.exports = class CMD extends Command {
             return message.reply({
                 embeds: [
                     pages[0].setDescription(
-                        `All categories\n\`\`\`\n• ${cats.join(
-                            "\n• "
-                        )}\n\`\`\``
+                        `All categories\n\`\`\`\n• ${cats.join("\n• ")}\n\`\`\``
                     ),
                 ],
             });
@@ -113,9 +111,7 @@ module.exports = class CMD extends Command {
             const commandsInCat = [];
             commands.each((cmd) => {
                 if (cmd.category.toLowerCase() === category.name.toLowerCase())
-                    commandsInCat.push(
-                        `${cmd.name} - ${cmd.description}`
-                    );
+                    commandsInCat.push(`${cmd.name} - ${cmd.description}`);
             });
             pages[0].addField(
                 "Commands in this category",

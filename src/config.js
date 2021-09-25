@@ -13,10 +13,7 @@ module.exports = {
             invite: "https://discord.com/invite/eJaF88zwcM",
         },
     },
-    owners: [
-        "815204465937481749",
-        "797266146000633888"
-    ],
+    owners: ["815204465937481749", "797266146000633888"],
     prefix: "d/",
     dbCacheRefreshInterval: 1 * 60 * 60 * 1000, //refresh db cache every hour
 };

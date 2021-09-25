@@ -36,7 +36,11 @@ module.exports = {
                 return;
             }
             if (command.disabled) return;
-            if (command.requirements.ownerOnly && !client.config.owners.includes(message.author.id)) return;
+            if (
+                command.requirements.ownerOnly &&
+                !client.config.owners.includes(message.author.id)
+            )
+                return;
             message.channel.sendTyping().catch(() => {});
             command.execute({ prefix, message, args });
         }

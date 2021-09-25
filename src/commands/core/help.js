@@ -100,7 +100,7 @@ module.exports = class CMD extends Command {
                 pages[0].addField(
                     "Usage",
                     `\`\`\`\n${client.config.prefix}${command.name} ${command.usage}\n\`\`\`` +
-                        `\n${t("misc:usageKey")}`
+                        `\n**Usage Key!**\nThe [ and ] around the argument mean it’s required.\nThe ( and ) around the argument mean it’s optional.`
                 );
 
             /*pages[0].addField(

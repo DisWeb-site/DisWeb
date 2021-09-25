@@ -8,7 +8,7 @@ module.exports = class CMD extends Command {
                 description: "Approve a bot",
                 aliases: ["accept"],
                 disabled: false,
-                category: "Core",
+                category: "Reviewer",
             },
             client
         );
@@ -17,13 +17,18 @@ module.exports = class CMD extends Command {
     async execute({ message, args }) {
         const { config, models } = this.client;
         if (!message.member.roles.cache.has(config.roles.reviewer))
-            return message.channel.send("You don't have the bot reviewer role, or you are in wrong server, approving bots should be done in main server");
+            return message.channel.send(
+                "You don't have the bot reviewer role, or you are in wrong server, this should be done in main server"
+            );
         const botModel = models.Bot;
         const bot = this.client.util.userFromMentionOrId(args[0]);
         if (!bot) return message.reply(`Please mention a bot to approve!`);
         if (!bot.bot) return message.reply(`That is not a real bot!`);
         const data = await botModel.findOne({ botId: bot.id });
-        if (!data) return message.channel.send(`That bot is not added!`);
+        if (!data)
+            return message.channel.send(
+                `That bot is not added or is rejected!`
+            );
         if (data.approved)
             return message.channel.send(
                 `That bot is already approved by someone!`

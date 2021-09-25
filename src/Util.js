@@ -47,7 +47,8 @@ class Util {
         //const { client } = this;
         if (userData.guilds) {
             for (let i = 0; i < userData.guilds.length; i++) {
-                let guild = userData.guilds[i];
+                //let guild = userData.guilds[i];
+                const guild = userData.guilds[i];
                 const perms = new Permissions(BigInt(guild.permissions));
                 let admin = false;
                 if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
@@ -96,7 +97,7 @@ class Util {
     async presence() {
         const { client } = this;
         const bots = await client.models.Bot.countDocuments({});
-        const users = await client.models.User.countDocuments({});
+        //const users = await client.models.User.countDocuments({});
         const presences = [
             {
                 name: `${bots} bot${bots > 1 ? "s" : ""} | ${

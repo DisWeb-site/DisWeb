@@ -1,62 +1,61 @@
 const { Command } = require("../../structures");
+const { MessageEmbed } = require("discord.js");
 module.exports = class CMD extends Command {
     constructor(client) {
         super(
             {
                 name: "reject",
                 description: "Reject a bot",
-                aliases: ["decline"],
+                aliases: ["decline", "deny"],
                 disabled: false,
-                category: "Core",
+                category: "Reviewer",
             },
             client
         );
     }
 
     async execute({ message, args }) {
-        const botModel = this.client.models.Bot;
-        const mentionedBot = message.mentions.users.first();
-        if (!mentionedBot)
+        const { config, models } = this.client;
+        if (!message.member.roles.cache.has(config.roles.reviewer))
+            return message.channel.send(
+                "You don't have the bot reviewer role, or you are in wrong server, this should be done in main server"
+            );
+        const botModel = models.Bot;
+        const bot = this.client.util.userFromMentionOrId(args[0]);
+        if (!bot)
             return message.channel.send(`Please mention a bot to reject!`);
-        if (!mentionedBot.bot)
-            return message.channel.send("That is not a real bot!");
+        if (!bot.bot) return message.channel.send("That is not a real bot!");
         const reason = args.slice(1).join(" ");
         if (!reason)
             return message.channel.send(
                 `Please provide a reason to reject this bot!`
             );
-        await botModel.findOne(
-            { botId: mentionedBot.id },
-            async (err, data) => {
-                if (!data)
-                    return message.channel.send(
-                        `That bot does not exist in DisList!`
-                    );
-                if (data.approved === true)
-                    return message.channel.send(
-                        `This bot is already approved!`
-                    );
+        const data = await botModel.findOne({ botId: bot.id });
+        if (!data)
+            return message.channel.send(
+                `That bot is not added or is rejected!`
+            );
+        if (data.approved === true)
+            return message.channel.send(`This bot is already approved!`);
 
-                const rejecting = await message.channel.send(
-                    `Please wait, rejecting bot...`
-                );
+        const rejecting = await message.channel.send(
+            `Please wait, rejecting bot...`
+        );
+        await botModel.findOneAndDelete({ botId: bot.id });
+        const botLogs = await this.client.channels.fetch(
+            config.channels.botLogs
+        );
+        const embed = new MessageEmbed()
+            .setTitle(`Bot Rejected ${config.emojis.approved}`)
+            .setDescription(`${bot} is rejected! :tada:`)
+            .addField("Reviewer", `${message.author} (${message.author.id})`);
+        botLogs.send({
+            content: `<@${data.owner}>`,
+            embeds: [embed],
+        });
 
-                if (data) {
-                    await botModel.findOneAndDelete({ botId: mentionedBot.id });
-                }
-
-                const disListGuild =
-                    client.guilds.cache.get("887493135649894440");
-                const disListBotLogs = disListGuild.channels.cache.get(
-                    "put bot log channel id here"
-                );
-                disListBotLogs.send(`**${mentionedBot.tag}** was declined by ${message.author}
-Reason: ${reason}`);
-
-                approving.edit(
-                    `:white_check_mark: Success! ${mentionedBot.tag} has been rejected!`
-                );
-            }
+        rejecting.edit(
+            `:white_check_mark: Success! ${bot.tag} has been rejected!`
         );
     }
 };

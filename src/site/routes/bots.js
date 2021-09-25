@@ -13,13 +13,12 @@ router.get("/", async (req, res) => {
     });
 });
 //GET /bots/add
-router.get("/add", CheckAuth, (req, res) => {
+router.get("/add", CheckAuth, async (req, res) => {
     const { client } = req;
-    if (
-        !client.guilds.cache
-            .get(client.config.servers.main.id)
-            .members.cache.get(req.user.id)
-    )
+    const member = await client.guilds.cache
+        .get(client.config.servers.main.id)
+        .members.fetch(req.user.id);
+    if (!member)
         return res.redirect(
             "/bots?error=true&message=" +
                 encodeURIComponent(

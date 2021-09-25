@@ -8,16 +8,21 @@ router.get("/:botId", async (req, res) => {
     let bot = null;
     try {
         bot = await client.users.fetch(id);
-    } catch(e) {
+    } catch (e) {
         if (client.debug) console.log(e);
-        return res.redirect("/bots?error=true&message=" + encodeURIComponent("Invalid bot ID"));
+        return res.redirect(
+            "/bots?error=true&message=" + encodeURIComponent("Invalid bot ID")
+        );
     }
     let botDB = null;
     try {
         botDB = await client.db.findBot(bot.id);
-    } catch(e) {
+    } catch (e) {
         if (client.debug) console.log(e);
-        return res.redirect("/bots?error=true&message=" + encodeURIComponent("Bot not found in DB"));
+        return res.redirect(
+            "/bots?error=true&message=" +
+                encodeURIComponent("Bot not found in DB")
+        );
     }
     res.render("bot", {
         req,

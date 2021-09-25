@@ -68,7 +68,7 @@ const botSchema = new mongoose.Schema({
     approved: {
         type: Boolean,
         default: false,
-    }
+    },
 });
 
 botSchema.method("genApiToken", async () => {

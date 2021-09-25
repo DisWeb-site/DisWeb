@@ -20,8 +20,11 @@ module.exports = {
             id: "887493135649894440",
             invite: "https://discord.com/invite/eJaF88zwcM",
         },
+        test: {
+            id: "890560485991276565"
+        },
     },
-    owners: ["815204465937481749", "797266146000633888"],
-    prefix: "d/",
+    owners: ["815204465937481749", "797266146000633888", "693754859014324295"],
+    prefix: process.env.BOT_PREFIX ?? "d/",
     dbCacheRefreshInterval: 1 * 60 * 60 * 1000, //refresh db cache every hour
 };

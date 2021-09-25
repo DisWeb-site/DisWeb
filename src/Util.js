@@ -99,13 +99,7 @@ class Util {
         const users = await client.models.User.countDocuments({});
         const presences = [
             {
-                name: `${bots} | ${
-                    client.config.prefix
-                }help`,
-                type: "WATCHING",
-            },
-            {
-                name: `${users} user${users > 1 ? "s" : ""} | ${
+                name: `${bots} bot${bots > 1 ? "s" : ""} | ${
                     client.config.prefix
                 }help`,
                 type: "WATCHING",

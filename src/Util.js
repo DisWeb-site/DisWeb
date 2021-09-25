@@ -47,7 +47,8 @@ class Util {
         //const { client } = this;
         if (userData.guilds) {
             for (let i = 0; i < userData.guilds.length; i++) {
-                let guild = userData.guilds[i];
+                //let guild = userData.guilds[i];
+                const guild = userData.guilds[i];
                 const perms = new Permissions(BigInt(guild.permissions));
                 let admin = false;
                 if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
@@ -96,7 +97,7 @@ class Util {
     async presence() {
         const { client } = this;
         const bots = await client.models.Bot.countDocuments({});
-        const users = await client.models.User.countDocuments({});
+        //const users = await client.models.User.countDocuments({});
         const presences = [
             {
                 name: `${bots} bot${bots > 1 ? "s" : ""} | ${
@@ -114,6 +115,58 @@ class Util {
                 presences[Math.floor(Math.random() * presences.length)],
             ],
         });
+    }
+
+    async userFromMentionOrId(idOrMention) {
+        let user;
+        if (idOrMention) {
+            if (idOrMention.startsWith("<@")) {
+                user = this.userFromMention(idOrMention) ?? null;
+            }
+            if (!isNaN(parseInt(idOrMention))) {
+                user = (await this.client.users.fetch(idOrMention)) ?? null;
+            }
+        }
+        return user;
+    }
+
+    userFromMention(mention) {
+        const { client } = this;
+        // The id is the first and only match found by the RegEx.
+        const matches = mention.match(/^<@!?(\d+)>$/);
+
+        // If supplied variable was not a mention, matches will be null instead of an array.
+        if (!matches) return null;
+
+        // However, the first element in the matches array will be the entire mention, not just the ID,
+        // so use index 1.
+        const id = matches[1];
+
+        return client.users.cache.get(id);
+    }
+
+    channelIdFromMention(mention) {
+        // The id is the first and only match found by the RegEx.
+        const matches = mention.match(/^<#!?(\d+)>$/);
+
+        // If supplied variable was not a mention, matches will be null instead of an array.
+        if (!matches) return null;
+
+        // However, the first element in the matches array will be the entire mention, not just the ID,
+        // so use index 1.
+        return matches[1];
+    }
+
+    roleIdFromMention(mention) {
+        // The id is the first and only match found by the RegEx.
+        const matches = mention.match(/^<@&?(\d+)>$/);
+
+        // If supplied variable was not a mention, matches will be null instead of an array.
+        if (!matches) return null;
+
+        // However, the first element in the matches array will be the entire mention, not just the ID,
+        // so use index 1.
+        return matches[1];
     }
 }
 module.exports = Util;

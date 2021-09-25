@@ -42,12 +42,6 @@ router.post("/add", CheckAuth, async (req, res) => {
     const params = new URLSearchParams();
     const data = req.body;
     const botId = parseInt(data.botId);
-    let bot;
-    try {
-        bot = await client.users.fetch(botId);
-    } catch (e) {
-        if (client.debug) console.log(e);
-    }
     if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
     params.set("error", "true");
@@ -66,7 +60,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         }
     }
     const botData = {
-        botId: bot.id,
+        botId: botId,
         prefix: data.prefix,
         descriptions: {
             short: data.shortDesc,
@@ -85,6 +79,6 @@ router.post("/add", CheckAuth, async (req, res) => {
     params.delete("error");
     params.set("sucess", "true");
     params.set("message", "Your bot is added!");
-    res.redirect(`/bots/${bot.id}?${params}`);
+    res.redirect(`/bots/${botId}?${params}`);
 });
 module.exports = router;

@@ -27,7 +27,7 @@ module.exports = class CMD extends Command {
           "That bot is not added or is rejected!"
       );
         const embed = new MessageEmbed()
-            .setColor("BLUE")
+            .setColor("#7289da")
             .addField("Name", bot.username, true)
             .addField("ID", bot.id, true)
             .addField("Status", botDB.approved ? "Approved" : "Not approved", true)

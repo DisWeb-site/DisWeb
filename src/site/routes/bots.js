@@ -82,7 +82,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     };
     for (const i in data) {
         if (!["website", "support", "github"].includes(i)) return;
-        let url = null;
+        /*let url = null;
         try {
             url = new URL(data[i]);
         } catch (e) {
@@ -109,7 +109,7 @@ router.post("/add", CheckAuth, async (req, res) => {
                     // the invite is valid, nvm
                 }
                 break;
-        }
+        }*/
         botData[i] = data[i];
     }
     if (client.debug) client.logger.debug("Adding bot to DB");

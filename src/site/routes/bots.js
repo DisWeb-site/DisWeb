@@ -3,6 +3,7 @@
  * Copyright (c) 2021 The DisList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
+const { MessageEmbed } = require("discord.js");
 const axios = require("axios");
 const { CheckAuth } = global;
 const express = require("express");
@@ -120,6 +121,15 @@ router.post("/add", CheckAuth, async (req, res) => {
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);
     await botDB.save();
+    const botLogs = await client.channels.fetch(
+        client.config.channels.botLogs
+    );
+    const embed = new MessageEmbed()
+        .setTitle(`New Bot Added`)
+        .setDescription(`${bot} (${bot.id}) is added by <@${botDB.owner}>`);
+    botLogs.send({
+        embeds: [embed],
+    });
     params.delete("error");
     params.set("sucess", "true");
     params.set("message", "Your bot is added!");

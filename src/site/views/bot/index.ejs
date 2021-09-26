@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 d-flex flex-column justify-content-center">
-                        <h1 data-aos="fade-up"><%= bot.tag %></h1>
+                        <h1 data-aos="fade-up"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></h1>
                         <h2 data-aos="fade-up" data-aos-delay="400"><%= botDB.descriptions.short %></h2>
                     </div>
                 </div>
@@ -31,13 +31,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="container" data-aos="fade-up">
                     <div class="row gx-0">
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                             <div class="content">
                                 <h3>Information</h3>
                                 <p>
                                     Owner: <%= owner.tag %><br>
+                                    <a class="btn btn-success" href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.id %>&scope=bot+applications.commands&permissions=0">Invite</a>
                                     <% if (botDB.support) { %>
                                     <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a><br>
                                     <% } %>

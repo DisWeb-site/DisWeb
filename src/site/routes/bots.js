@@ -63,6 +63,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }
+    if (client.debug) client.logger.debug("Checking required fields");
     for (let i = 0; i < reqFields.length; i++) {
         const field = reqFields[i];
         if (!Object.keys(data).includes(field)) {

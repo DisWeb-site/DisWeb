@@ -50,7 +50,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     let bot = null;
     try {
         bot = await client.users.fetch(botId);
-    } catch(e) {
+    } catch (e) {
         if (client.debug) console.log(e);
         params.set("message", "Invalid bot ID");
         return res.redirect(`/bots/add?${params}`);
@@ -89,36 +89,33 @@ router.post("/add", CheckAuth, async (req, res) => {
         addedAt: Date.now(),
         apiToken: client.util.genToken(),
     };
-    for (const i in data) {
-        if (!["website", "support", "github"].includes(i)) return;
-        let url = null;
-        switch (i) {
-            case "support":
-                url = new URL(data[i]);
-                if (!url) {
-                    params.set("message", "Invalid support server link");
-                    return res.redirect(`/bots/add?${params}`);
-                }
-                const code = url.pathname.replace("invite/", "");
-                const json = await axios.get(
-                    `https://discordapp.com/api/invite/${code}`
-                );
-                if (json.message === "Unknown Invite") {
-                    params.set(
-                        "message",
-                        "Invalid support server invite code or you used a url shortner"
-                    );
-                    res.redirect(`/bots/add?${params}`);
-                    return res.end();
-                } else {
-                    // the invite is valid, nvm
-                }
-                break;
-            default:
-                //do nothing
-                break;
+    if (data["website"]) {
+        botData["website"] = data["website"];
+    }
+    if (data["github"]) {
+        botData["github"] = data["github"];
+    }
+    if (data["support"]) {
+        const url = new URL(data[i]);
+        if (!url) {
+            params.set("message", "Invalid support server link");
+            return res.redirect(`/bots/add?${params}`);
         }
-        botData[i] = data[i];
+        const code = url.pathname.replace("invite/", "");
+        const json = await axios.get(
+            `https://discordapp.com/api/invite/${code}`
+        );
+        if (json.message === "Unknown Invite") {
+            params.set(
+                "message",
+                "Invalid support server invite code or you used a url shortner"
+            );
+            res.redirect(`/bots/add?${params}`);
+            return res.end();
+        } else {
+            // the invite is valid, nvm
+        }
+        botData["support"] = data["support"];
     }
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);

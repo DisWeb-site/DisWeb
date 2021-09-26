@@ -49,11 +49,17 @@ router.post("/add", CheckAuth, async (req, res) => {
     const botId = parseInt(data.botId);
     if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
+    let check = null;
+    try {
+        check = await client.models.Bot.findOne({ botId });
+    } catch (e) {
+        if (client.debug) console.log(e);
+    }
     params.set("error", "true");
     if (isNaN(botId)) {
         params.set("message", "Bot ID is not a number");
         return res.redirect(`/bots/add?${params}`);
-    } else if (await req.client.models.Bot.findOne({ botId })) {
+    } else if (check) {
         params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }

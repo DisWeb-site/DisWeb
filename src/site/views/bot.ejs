@@ -31,6 +31,24 @@
                                 </p>
                             </div>
                         </div>
+
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3>Information</h3>
+                                <p>
+                                    Owner: <%= owner.tag %><br>
+                                    <% if (botDB.support) { %>
+                                    <a href="<%= botDB.support %>">Support server</a>
+                                    <% } %>
+                                    <% if (botDB.github) { %>
+                                    <a href="<%= botDB.github %>">GitHub</a>
+                                    <% } %>
+                                    <% if (botDB.website) { %>
+                                    <a href="<%= botDB.website %>">Website</a>
+                                    <% } %>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
   

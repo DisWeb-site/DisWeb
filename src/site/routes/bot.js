@@ -29,10 +29,17 @@ router.get("/:botId", async (req, res) => {
                 encodeURIComponent("Bot not found in DB")
         );
     }
+    let owner = null;
+    try {
+        owner = await client.users.fetch(botDB.owner);
+    } catch (e) {
+        if (client.debug) console.log(e);
+    }
     res.render("bot", {
         req,
         bot,
         botDB,
+        owner,
     });
 });
 module.exports = router;

@@ -19,7 +19,7 @@ module.exports = {
     },
     emojis: {
         approved: "<:YesMark:891123032725282877>",
-        rejected: "<:NoMark:891122870938378260>"
+        rejected: "<:NoMark:891122870938378260>",
     },
     servers: {
         main: {

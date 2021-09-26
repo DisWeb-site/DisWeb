@@ -31,11 +31,11 @@
                                     Votes: <%= botDB.analytics.votes %><br>
                                     <table>
                                         <tr>
-                                            <td>Country</td>
+                                            <th>Country</th>
                                         </tr>
                                         <tr>
-                                            <% botDB.analytics.countries.forEach((code) => { %>
-                                            <td><%= code %></td>
+                                            <% botDB.analytics.countries.forEach((name) => { %>
+                                            <td><%= name %></td>
                                             <% }) %>
                                         </tr>
                                     </table>

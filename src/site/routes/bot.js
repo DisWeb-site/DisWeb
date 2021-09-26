@@ -26,10 +26,11 @@ router.get("/:botId", async (req, res) => {
         if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
         botDB.analytics.views++;
         if (process.env.GEOLOC_KEY) {
-            const { country_name } = await axios.get(
+            const res = await axios.get(
                 `https://geolocation-db.com/json/${process.env.GEOLOC_KEY}${req.ip}`
             );
-            botDB.analytics.countries.push(country_name);
+            if (res.data.country_name) botDB.analytics.countries.push(res.data.country_name);
+            else if (client.debug) console.log(res);
         }
         await botDB.save();
     }

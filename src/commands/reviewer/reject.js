@@ -52,7 +52,7 @@ module.exports = class CMD extends Command {
             config.channels.botLogs
         );
         const embed = new MessageEmbed()
-            .setTitle(`Bot Rejected ${config.emojis.approved}`)
+            .setTitle(`Bot Rejected ${config.emojis.rejected}`)
             .setDescription(`${bot} is rejected! :x:`)
             .addField("Reviewer", `${message.author} (${message.author.id})`)
             .addField("Reason", `${reason}`);

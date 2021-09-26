@@ -81,16 +81,12 @@ router.post("/add", CheckAuth, async (req, res) => {
         addedAt: Date.now(),
         apiToken: client.util.genToken(),
     };
-    /*for (const i in data) {
+    for (const i in data) {
         if (!["website", "support", "github"].includes(i)) return;
         let url = null;
-        try {
-            url = new URL(data[i]);
-        } catch (e) {
-            if (client.debug) console.log(e);
-        }
         switch (i) {
             case "support":
+                url = new URL(data[i]);
                 if (!url) {
                     params.set("message", "Invalid support server link");
                     return res.redirect(`/bots/add?${params}`);
@@ -110,15 +106,18 @@ router.post("/add", CheckAuth, async (req, res) => {
                     // the invite is valid, nvm
                 }
                 break;
+            default:
+                //do nothing
+                break;
         }
         botData[i] = data[i];
-    }*/
+    }
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);
     await botDB.save();
     params.delete("error");
     params.set("sucess", "true");
     params.set("message", "Your bot is added!");
-    res.redirect(`/bots/${botId}?${params}`);
+    res.redirect(`/bot/${botId}?${params}`);
 });
 module.exports = router;

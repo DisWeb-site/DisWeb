@@ -14,7 +14,7 @@ router.get("/:botId", async (req, res) => {
     try {
         bot = await client.users.fetch(id);
     } catch (e) {
-        if (client.debug) console.log(e);
+        if (client.debug) console.log(e, id);
         return res.redirect(
             "/bots?error=true&message=" + encodeURIComponent("Invalid bot ID")
         );

@@ -12,7 +12,11 @@ const Util = require("./Util");
 class DisList extends Client {
     constructor(opts) {
         super({
-            intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+            intents: [
+                Intents.FLAGS.GUILDS,
+                Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_PRESENCES,
+            ],
             partials: ["CHANNEL"],
         });
         this.config = config;

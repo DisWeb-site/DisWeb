@@ -121,9 +121,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);
     await botDB.save();
-    const botLogs = await client.channels.fetch(
-        client.config.channels.botLogs
-    );
+    const botLogs = await client.channels.fetch(client.config.channels.botLogs);
     const embed = new MessageEmbed()
         .setTitle(`New Bot Added`)
         .setDescription(`${bot} (${bot.id}) is added by <@${botDB.owner}>`);

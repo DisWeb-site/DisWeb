@@ -89,20 +89,19 @@ router.post("/add", CheckAuth, async (req, res) => {
                     return res.redirect(`/bots/add?${params}`);
                 }
                 const code = url.pathname.replace("invite/", "");
-                axios
-                    .get(`https://discordapp.com/api/invite/${code}`)
-                    .then((json) => {
-                        if (json.message === "Unknown Invite") {
-                            params.set(
-                                "message",
-                                "Invalid support server invite code or you used a url shortner"
-                            );
-                            res.redirect(`/bots/add?${params}`);
-                            return res.end();
-                        } else {
-                            // the invite is valid, nvm
-                        }
-                    });
+                const json = await axios.get(
+                    `https://discordapp.com/api/invite/${code}`
+                );
+                if (json.message === "Unknown Invite") {
+                    params.set(
+                        "message",
+                        "Invalid support server invite code or you used a url shortner"
+                    );
+                    res.redirect(`/bots/add?${params}`);
+                    return res.end();
+                } else {
+                    // the invite is valid, nvm
+                }
                 break;
         }
         botData[i] = data[i];

@@ -38,13 +38,13 @@
                                 <p>
                                     Owner: <%= owner.tag %><br>
                                     <% if (botDB.support) { %>
-                                    <a href="<%= botDB.support %>">Support server</a>
+                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a>
                                     <% } %>
                                     <% if (botDB.github) { %>
-                                    <a href="<%= botDB.github %>">GitHub</a>
+                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a>
                                     <% } %>
                                     <% if (botDB.website) { %>
-                                    <a href="<%= botDB.website %>">Website</a>
+                                    <a class="btn btn-light" href="<%= botDB.website %>">Website</a>
                                     <% } %>
                                 </p>
                             </div>

@@ -173,5 +173,30 @@ class Util {
         // so use index 1.
         return matches[1];
     }
+
+    async fetchBot(id) {
+        const { client } = this;
+        let bot = null;
+        try {
+            bot = await client.users.fetch(id);
+        } catch (e) {
+            if (client.debug) console.log(e);
+            return (
+                "/bots?error=true&message=" +
+                encodeURIComponent("Invalid bot ID")
+            );
+        }
+        let botDB = null;
+        try {
+            botDB = await client.db.findBot(bot.id);
+        } catch (e) {
+            if (client.debug) console.log(e);
+            return (
+                "/bots?error=true&message=" +
+                encodeURIComponent("Bot not found in DB")
+            );
+        }
+        return { bot, botDB };
+    }
 }
 module.exports = Util;

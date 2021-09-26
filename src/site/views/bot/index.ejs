@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <%- include('includes/head') %>
+    <%- include('../includes/head') %>
     <body>
-        <%- include('includes/header') %>
+        <%- include('../includes/header') %>
           <!-- ======= Hero Section ======= -->
           <section id="hero" class="hero d-flex align-items-center">
               
@@ -38,13 +38,13 @@
                                 <p>
                                     Owner: <%= owner.tag %><br>
                                     <% if (botDB.support) { %>
-                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a>
+                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a><br>
                                     <% } %>
                                     <% if (botDB.github) { %>
-                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a>
+                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a><br>
                                     <% } %>
                                     <% if (botDB.website) { %>
-                                    <a class="btn btn-light" href="<%= botDB.website %>">Website</a>
+                                    <a class="btn btn-light" href="<%= botDB.website %>">Website</a><br>
                                     <% } %>
                                 </p>
                             </div>
@@ -54,6 +54,6 @@
   
       </section><!-- End About Section -->
         </main>
-        <%- include('includes/footer') %>
+        <%- include('../includes/footer') %>
     </body>
 </html>

@@ -22,6 +22,8 @@ module.exports.load = (client) => {
         .set("view engine", "ejs")
         // Set the ejs templates to ./views
         .set("views", path.join(__dirname, "/views"))
+        // Get real IPs even if behind proxy
+        .set("trust proxy", true)
         //Set express session
         .use(
             session({

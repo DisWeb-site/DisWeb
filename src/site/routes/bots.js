@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 //GET /bots
 router.get("/", async (req, res) => {
-    const bots = await req.client.models.Bot.find({});
+    const bots = await req.client.models.Bot.find({}).filter((b) => b.approved);
     bots.forEach(async ({ botId }) => {
         await req.client.users.fetch(botId);
     });

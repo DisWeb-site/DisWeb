@@ -3,6 +3,7 @@
  * Copyright (c) 2021 The DisList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
+const geoip = require("geoip-country");
 const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
@@ -14,9 +15,11 @@ router.get("/:botId", async (req, res) => {
     if (typeof botData === "string") {
         return res.redirect(botData);
     }
+    const { country } = geoip.lookup(req.ip);
     const { bot, botDB } = botData;
     if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
     botDB.analytics.views++;
+    botDB.analytics.countries.push(country);
     await botDB.save();
     let owner = null;
     try {
@@ -24,7 +27,7 @@ router.get("/:botId", async (req, res) => {
     } catch (e) {
         if (client.debug) console.log(e);
     }
-    res.render("bot", {
+    res.render("bot/index", {
         req,
         bot,
         botDB,
@@ -46,7 +49,7 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
                 encodeURIComponent("You are not this bot's owner!!")
         );
     }
-    res.render("bot", {
+    res.render("bot/edit", {
         req,
         bot,
         botDB,
@@ -68,5 +71,26 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
         );
     }
     //edit bot backend, not done yet
+});
+//GET /bot/:botId/analytics
+router.get("/:botId/analytics", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    if (botDB.owner !== req.user.id) {
+        return res.redirect(
+            "/bots?error=true&message=" +
+                encodeURIComponent("You are not this bot's owner!!")
+        );
+    }
+    res.render("bot/analytics", {
+        req,
+        bot,
+        botDB,
+    });
 });
 module.exports = router;

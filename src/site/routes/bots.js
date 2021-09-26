@@ -113,7 +113,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         botData[i] = data[i];
     }*/
     if (client.debug) client.logger.debug("Adding bot to DB");
-    const botDB = new client.client.models.Bot(botData);
+    const botDB = new client.models.Bot(botData);
     await botDB.genApiToken();
     await botDB.save();
     params.delete("error");

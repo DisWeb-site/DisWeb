@@ -3,7 +3,7 @@
  * Copyright (c) 2021 The DisList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
-const geoip = require("geoip-country");
+const geoip = require("geoip-lite");
 const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
@@ -15,12 +15,14 @@ router.get("/:botId", async (req, res) => {
     if (typeof botData === "string") {
         return res.redirect(botData);
     }
-    const { country } = geoip.lookup(req.ip);
     const { bot, botDB } = botData;
-    if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
-    botDB.analytics.views++;
-    botDB.analytics.countries.push(country);
-    await botDB.save();
+    const { country } = geoip.lookup(req.ip);
+    if (req.user.id !== botDB.owner) {
+        if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
+        botDB.analytics.views++;
+        botDB.analytics.countries.push(country);
+        await botDB.save();
+    }
     let owner = null;
     try {
         owner = await client.users.fetch(botDB.owner);

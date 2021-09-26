@@ -46,7 +46,15 @@ router.post("/add", CheckAuth, async (req, res) => {
     const { client } = req;
     const params = new URLSearchParams();
     const data = req.body;
-    const botId = parseInt(data.botId);
+    const botId = data.botId;
+    let bot = null;
+    try {
+        bot = await client.users.fetch(botId);
+    } catch(e) {
+        if (client.debug) console.log(e);
+        params.set("message", "Invalid bot ID");
+        return res.redirect(`/bots/add?${params}`);
+    }
     if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
     let check = null;

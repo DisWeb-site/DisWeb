@@ -22,7 +22,7 @@ router.get("/:botId", async (req, res) => {
                 "Bot is not approved so you can't view it.<br>\nIf you are this bot's owner then please login and try again"
             )}`
         );
-    if (req.user.id !== botDB.owner) {
+    if (!req.user || req.user.id !== botDB.owner) {
         if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
         botDB.analytics.views++;
         if (process.env.GEOLOC_KEY) {

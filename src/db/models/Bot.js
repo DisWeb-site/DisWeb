@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { genToken } = new (require("../../Util"))();
 
 const botSchema = new mongoose.Schema({
     botId: {
@@ -67,18 +66,12 @@ const botSchema = new mongoose.Schema({
     },
     apiToken: {
         type: String,
-        default: "No token generated",
+        required: true,
     },
     approved: {
         type: Boolean,
         default: false,
     },
-});
-
-botSchema.method("genApiToken", async () => {
-    this.apiToken = genToken();
-    await this.save();
-    return this.apiToken;
 });
 
 const Bot = new mongoose.model("Bot", botSchema);

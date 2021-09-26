@@ -79,6 +79,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         },
         owner: req.user.id,
         addedAt: Date.now(),
+        apiToken: client.util.genToken(),
     };
     /*for (const i in data) {
         if (!["website", "support", "github"].includes(i)) return;

@@ -1,45 +1,51 @@
 const { Command } = require("../../structures");
-const botModel = require('../../db/models/Bot');
-const { MessageEmbed } = require('discord.js');
+const botModel = require("../../db/models/Bot");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = class CMD extends Command {
-  constructor(client) {
-    super(
-      {
-        name: "botinfo",
-        description: "See information of a specific bot.",
-        aliases: ["bi"],
-        disabled: false,
-        category: "Core"
-      },
-      client
-    );
-  }
-
-  async execute({ message }) {
-      const prefix = "=";
-      const args = message.content.slice(prefix.length).trim().split(/ +/g);
-      const Bot = message.mentions.users.first() || client.users.fetch(args[0]);
-      if (!Bot) return message.channel.send(`Please mention a bot or the bot's ID to view information of it.`);
-      const bot = await botModel.findOne({ botId: Bot.id });
-      const botinfo = new MessageEmbed();
-      botinfo.setColor(`BLUE`);
-      botinfo.addField(`Name`, Bot.username, true);
-      botinfo.addField(`ID`, Bot.id, true);
-      botinfo.addField(`Approved`, bot.approved ? "True" : "False", true);
-      botinfo.addField(`Prefix`, bot.prefix, true);
-      botinfo.addField(`About`, bot.descriptions.short, true)
-      botinfo.addField(`Statistics`, `
-**Server count**: ${bot.stats.serverCount} servers`, true);
-      botinfo.addField(`Analytics`, `
-**Views**: ${bot.analytics.views}
-**Votes**: ${bot.analytics.votes}
-**Invites**: ${bot.analytics.invites}`, true);
-      botinfo.addField(`Links`, `
-**Website**: ${bot.website || "None"}
-**Support Server**: ${bot.support || "None"}
-**GitHub**: ${bot.github || "None"}`, true)
-      botinfo.addField(`Owner`, `<@${bot.owner}>`, true);
-      message.channel.send(botinfo);
+    constructor(client) {
+        super(
+            {
+                name: "botinfo",
+                description: "See information of a specific bot.",
+                usage: "[@mention / bot id]",
+                aliases: ["bi"],
+                disabled: false,
+                category: "Bot reviewer",
+            },
+            client
+        );
     }
-} 
+
+    async execute({ message, args }) {
+        const bot = await this.client.util.userFromMentionOrId(args[0]);
+        if (!bot)
+            return message.reply("Please mention a bot to get it's info!");
+        if (!bot.bot) return message.reply("That is not a real bot!");
+        const botDB = await botModel.findOne({ botId: bot.id });
+        if (!botDB) return message.channel.send(
+          "That bot is not added or is rejected!"
+      );
+        const embed = new MessageEmbed()
+            .setColor("BLUE")
+            .addField("Name", bot.username, true)
+            .addField("ID", bot.id, true)
+            .addField("Status", botDB.approved ? "Approved" : "Not approved", true)
+            .addField("Prefix", botDB.prefix, true)
+            .addField("About", botDB.descriptions.short, true)
+            .addField(
+                "Statistics",
+                `**${botDB.stats?.shardCount ? "Shard" : "Server"} count:** ${
+                    botDB.stats?.shardCount ?? botDB.stats.serverCount
+                }\n**Votes:** ${botDB.analytics.votes}`,
+                true
+            )
+            .addField(
+                "Links",
+                `[Invite](https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=8) ${botDB.website ? `| [Website](${botDB.website})` : ""} ${botDB.support ? `| [Support](${botDB.support})` : ""} ${botDB.github ? `| [GitHub](${botDB.github})` : ""}`,
+                true
+            )
+            .addField("Owner", `<@${botDB.owner}>`, true);
+        message.channel.send({ embeds: [embed] });
+    }
+};

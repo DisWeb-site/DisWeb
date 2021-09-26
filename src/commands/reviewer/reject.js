@@ -6,9 +6,13 @@ module.exports = class CMD extends Command {
             {
                 name: "reject",
                 description: "Reject a bot",
+                requirements: {
+                    guildOnly: true,
+                    reviewerOnly: true,
+                },
                 aliases: ["decline", "deny"],
                 disabled: false,
-                category: "Reviewer",
+                category: "Bot Reviewer",
             },
             client
         );
@@ -16,10 +20,6 @@ module.exports = class CMD extends Command {
 
     async execute({ message, args }) {
         const { config, models } = this.client;
-        if (!message.member.roles.cache.has(config.roles.reviewer))
-            return message.channel.send(
-                "You don't have the bot reviewer role, or you are in wrong server, this should be done in main server"
-            );
         const botModel = models.Bot;
         const bot = this.client.util.userFromMentionOrId(args[0]);
         if (!bot)

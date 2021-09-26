@@ -11,6 +11,7 @@ module.exports = class Command {
             subcommand: false,
             guildOnly: false,
             ownerOnly: false,
+            reviewerOnly: false,
         });
         this.usage = options.optional("usage", null);
         this.disabled = options.optional("disabled", false);

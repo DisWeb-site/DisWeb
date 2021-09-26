@@ -37,10 +37,21 @@ module.exports = {
             }
             if (command.disabled) return;
             if (
-                command.requirements.ownerOnly &&
+                command.requirements?.ownerOnly &&
                 !client.config.owners.includes(message.author.id)
             )
                 return;
+            if (command.requirements?.guildOnly && !message.guild)
+                return message.channel.send(
+                    "Uhhhhhhhhhhh, this command can be used in servers only"
+                );
+            if (
+                command.requirements?.reviewerOnly &&
+                !message.member.roles.cache.has(client.config.roles.reviewer)
+            )
+                return message.channel.send(
+                    "You don't have the bot reviewer role, or you are in wrong server, this should be done in main server"
+                );
             message.channel.sendTyping().catch(() => {});
             command.execute({ prefix, message, args });
         }

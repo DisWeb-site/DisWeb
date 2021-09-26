@@ -59,6 +59,10 @@ const botSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
+        shardCount: {
+            type: Number,
+            required: false,
+        },
     },
     addedAt: {
         type: Number,

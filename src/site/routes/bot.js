@@ -29,7 +29,8 @@ router.get("/:botId", async (req, res) => {
             const res = await axios.get(
                 `https://geolocation-db.com/json/${process.env.GEOLOC_KEY}${req.ip}`
             );
-            if (res.data.country_name) botDB.analytics.countries.push(res.data.country_name);
+            if (res.data.country_name)
+                botDB.analytics.countries.push(res.data.country_name);
             else if (client.debug) console.log(res);
         }
         await botDB.save();

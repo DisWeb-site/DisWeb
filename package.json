@@ -33,7 +33,8 @@
     "start": "node src/index.js",
     "dev": "npx nodemon src/index.js --watch src",
     "format": "npx prettier --write src",
-    "lint": "npx eslint src"
+    "lint": "npx eslint src",
+    "lint:fix": "npx eslint src --fix"
   },
   "keywords": [
     "discord"

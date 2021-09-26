@@ -47,7 +47,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     const { client } = req;
     const params = new URLSearchParams();
     const data = req.body;
-    const botId = data.botId;
+    const { botId } = data;
     let bot = null;
     try {
         bot = await client.users.fetch(botId);
@@ -97,7 +97,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         botData["github"] = data["github"];
     }
     if (data["support"]) {
-        const url = new URL(data[i]);
+        const url = new URL(data["support"]);
         if (!url) {
             params.set("message", "Invalid support server link");
             return res.redirect(`/bots/add?${params}`);

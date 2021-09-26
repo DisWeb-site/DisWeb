@@ -57,7 +57,7 @@ module.exports = class CMD extends Command {
         );
         const embed = new MessageEmbed()
             .setTitle(`Bot Approved ${config.emojis.approved}`)
-            .setDescription(`${bot} is aprroved! :tada:`)
+            .setDescription(`${bot} is approved! :tada:`)
             .addField("Reviewer", `${message.author} (${message.author.id})`);
         botLogs.send({
             content: `<@${data.owner}>`,

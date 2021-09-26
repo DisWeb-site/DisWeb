@@ -16,12 +16,21 @@ router.get("/:botId", async (req, res) => {
         return res.redirect(botData);
     }
     const { bot, botDB } = botData;
-    if (!botDB.approved && (!req.user || req.user.id !== botDB.owner)) return res.redirect(`/bots/add?error=true&message=${encodeURIComponent("Bot is not approved so you can't view it.<br>\nIf you are this bot's owner then please login and try again")}`);
-    const { country } = axios.get(`https://ipinfo/${req.ip}`);
+    if (!botDB.approved && (!req.user || req.user.id !== botDB.owner))
+        return res.redirect(
+            `/bots/add?error=true&message=${encodeURIComponent(
+                "Bot is not approved so you can't view it.<br>\nIf you are this bot's owner then please login and try again"
+            )}`
+        );
     if (req.user.id !== botDB.owner) {
         if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
         botDB.analytics.views++;
-        botDB.analytics.countries.push(country);
+        if (process.env.GEOLOC_KEY) {
+            const { country } = await axios.get(
+                `https://geolocation-db.com/json/${process.env.GEOLOC_KEY}${req.ip}`
+            );
+            botDB.analytics.countries.push(country);
+        }
         await botDB.save();
     }
     let owner = null;

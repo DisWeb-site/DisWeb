@@ -80,9 +80,9 @@ router.post("/add", CheckAuth, async (req, res) => {
         owner: req.user.id,
         addedAt: Date.now(),
     };
-    for (const i in data) {
+    /*for (const i in data) {
         if (!["website", "support", "github"].includes(i)) return;
-        /*let url = null;
+        let url = null;
         try {
             url = new URL(data[i]);
         } catch (e) {
@@ -109,9 +109,9 @@ router.post("/add", CheckAuth, async (req, res) => {
                     // the invite is valid, nvm
                 }
                 break;
-        }*/
+        }
         botData[i] = data[i];
-    }
+    }*/
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.client.models.Bot(botData);
     await botDB.genApiToken();

@@ -9,13 +9,13 @@ const express = require("express");
 const router = express.Router();
 //GET /bots
 router.get("/", async (req, res) => {
-    const bots = await req.client.models.Bot.find({}).filter((b) => b.approved);
+    const bots = await req.client.models.Bot.find({});
     bots.forEach(async ({ botId }) => {
         await req.client.users.fetch(botId);
     });
     res.render("bots/index", {
         req,
-        bots,
+        bots: bots.filter((b) => b.approved),
     });
 });
 //GET /bots/add

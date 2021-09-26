@@ -18,7 +18,7 @@ module.exports = class CMD extends Command {
                 usage: "[@mention/bot id] (comment)",
                 aliases: ["accept"],
                 disabled: false,
-                category: "Bot Reviewer",
+                category: "Bot reviewer",
             },
             client
         );

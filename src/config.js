@@ -1,3 +1,8 @@
+/**
+ * DisList
+ * Copyright (c) 2021 The DisList Team and Contributors
+ * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
+ */
 module.exports = {
     site: {
         port: process.env.PORT ?? 3000,
@@ -10,10 +15,11 @@ module.exports = {
         botLogs: "891338310339919892",
     },
     roles: {
-        reviewer: "890204725448962080",
+        reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string
     },
     emojis: {
         approved: "<:YesMark:891123032725282877>",
+        rejected: "<:NoMark:891122870938378260>",
     },
     servers: {
         main: {

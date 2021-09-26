@@ -1,3 +1,8 @@
+/**
+ * DisList
+ * Copyright (c) 2021 The DisList Team and Contributors
+ * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
+ */
 module.exports = {
     name: "messageCreate",
     once: false,
@@ -37,10 +42,37 @@ module.exports = {
             }
             if (command.disabled) return;
             if (
-                command.requirements.ownerOnly &&
+                command.requirements?.ownerOnly &&
                 !client.config.owners.includes(message.author.id)
             )
                 return;
+            if (command.requirements?.guildOnly && !message.guild)
+                return message.channel.send(
+                    "Uhhhhhhhhhhh, this command can be used in servers only"
+                );
+            if (
+                command.requirements?.reviewerOnly &&
+                client.config.roles.reviewer
+            ) {
+                const reply =
+                    "You don't have the bot reviewer role to use this command";
+                if (
+                    typeof client.config.roles.reviewer === "string" &&
+                    !message.member.roles.cache.has(
+                        client.config.roles.reviewer
+                    )
+                ) {
+                    return message.channel.send(reply);
+                } else if (typeof client.config.roles.reviewer === "array") {
+                    const has = [];
+                    message.member.roles.cache.forEach((r) => {
+                        if (client.config.roles.reviewer.includes(r.id))
+                            has.push(r.id);
+                    });
+                    if (!has || !has.length || !has[0])
+                        return message.channel.send(reply);
+                }
+            }
             message.channel.sendTyping().catch(() => {});
             command.execute({ prefix, message, args });
         }

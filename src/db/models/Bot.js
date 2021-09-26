@@ -48,6 +48,10 @@ const botSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
+        views: {
+            type: Number,
+            default: 0,
+        },
         lastVotedUsers: [String],
         countries: [String],
     },

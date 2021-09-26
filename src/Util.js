@@ -1,3 +1,8 @@
+/**
+ * DisList
+ * Copyright (c) 2021 The DisList Team and Contributors
+ * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
+ */
 const { Permissions } = require("discord.js");
 class Util {
     constructor(client) {
@@ -118,7 +123,7 @@ class Util {
     }
 
     async userFromMentionOrId(idOrMention) {
-        let user;
+        let user = null;
         if (idOrMention) {
             if (idOrMention.startsWith("<@")) {
                 user = this.userFromMention(idOrMention) ?? null;
@@ -167,6 +172,31 @@ class Util {
         // However, the first element in the matches array will be the entire mention, not just the ID,
         // so use index 1.
         return matches[1];
+    }
+
+    async fetchBot(id) {
+        const { client } = this;
+        let bot = null;
+        try {
+            bot = await client.users.fetch(id);
+        } catch (e) {
+            if (client.debug) console.log(e);
+            return (
+                "/bots?error=true&message=" +
+                encodeURIComponent("Invalid bot ID")
+            );
+        }
+        let botDB = null;
+        try {
+            botDB = await client.db.findBot(bot.id);
+        } catch (e) {
+            if (client.debug) console.log(e);
+            return (
+                "/bots?error=true&message=" +
+                encodeURIComponent("Bot not found in DB")
+            );
+        }
+        return { bot, botDB };
     }
 }
 module.exports = Util;

@@ -15,7 +15,8 @@
     "geoip-country": "^4.0.85",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-    "mongoose": "^6.0.7"
+    "mongoose": "^6.0.7",
+    "axios": "^0.21.1"
   },
   "name": "dlist",
   "version": "1.0.0",

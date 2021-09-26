@@ -1,3 +1,9 @@
+/**
+ * DisList
+ * Copyright (c) 2021 The DisList Team and Contributors
+ * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
+ */
+const axios = require("axios");
 const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
@@ -13,13 +19,12 @@ router.get("/", async (req, res) => {
     });
 });
 //GET /bots/add
-router.get("/add", CheckAuth, (req, res) => {
+router.get("/add", CheckAuth, async (req, res) => {
     const { client } = req;
-    if (
-        !client.guilds.cache
-            .get(client.config.servers.main.id)
-            .members.cache.get(req.user.id)
-    )
+    const member = await client.guilds.cache
+        .get(client.config.servers.main.id)
+        .members.fetch(req.user.id);
+    if (!member)
         return res.redirect(
             "/bots?error=true&message=" +
                 encodeURIComponent(
@@ -71,6 +76,35 @@ router.post("/add", CheckAuth, async (req, res) => {
     };
     for (const i in data) {
         if (!["website", "support", "github"].includes(i)) return;
+        let url = null;
+        try {
+            url = new URL(data[i]);
+        } catch (e) {
+            if (client.debug) console.log(e);
+        }
+        switch (i) {
+            case "support":
+                if (!url) {
+                    params.set("message", "Invalid support server link");
+                    return res.redirect(`/bots/add?${params}`);
+                }
+                const code = url.pathname.replace("invite/", "");
+                axios
+                    .get(`https://discordapp.com/api/invite/${code}`)
+                    .then((json) => {
+                        if (json.message === "Unknown Invite") {
+                            params.set(
+                                "message",
+                                "Invalid support server invite code or you used a url shortner"
+                            );
+                            res.redirect(`/bots/add?${params}`);
+                            return res.end();
+                        } else {
+                            // the invite is valid, nvm
+                        }
+                    });
+                break;
+        }
         botData[i] = data[i];
     }
     const botDB = new client.client.models.Bot(botData);

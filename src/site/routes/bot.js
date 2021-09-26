@@ -9,12 +9,12 @@ const router = express.Router();
 //GET /bot/:botId
 router.get("/:botId", async (req, res) => {
     const { client } = req;
-    const id = parseInt(req.params.botId);
+    const id = req.params.botId;
     let bot = null;
     try {
         bot = await client.users.fetch(id);
     } catch (e) {
-        if (client.debug) console.log(e, id);
+        if (client.debug) console.log(e);
         return res.redirect(
             "/bots?error=true&message=" + encodeURIComponent("Invalid bot ID")
         );

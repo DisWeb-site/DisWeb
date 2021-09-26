@@ -16,7 +16,8 @@ router.get("/:botId", async (req, res) => {
         return res.redirect(botData);
     }
     const { bot, botDB } = botData;
-    const { country } = geoip.lookup(req.ip);
+    if (!botDB.approved && (!req.user || req.user.id !== botDB.owner)) return res.redirect(`/bots/add?error=true&message=${encodeURIComponent("Bot is not approved so you can't view it.<br>\nIf you are this bot's owner then please login and try again")}`);
+    const { country } = axios.get(`https://ipinfo/${req.ip}`);
     if (req.user.id !== botDB.owner) {
         if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
         botDB.analytics.views++;

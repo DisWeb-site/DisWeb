@@ -28,7 +28,17 @@
                                 <h3>Analytics</h3>
                                 <p>
                                     Views: <%= botDB.analytics.views %><br>
-                                    Votes: <%= botDB.analytics.votes %>
+                                    Votes: <%= botDB.analytics.votes %><br>
+                                    <table>
+                                        <tr>
+                                            <td>Country</td>
+                                        </tr>
+                                        <tr>
+                                            <% botDB.analytics.countries.forEach((code) => { %>
+                                            <td><%= code %></td>
+                                            <% }) %>
+                                        </tr>
+                                    </table>
                                 </p>
                             </div>
                         </div>

@@ -15,6 +15,7 @@ module.exports = class CMD extends Command {
                     guildOnly: true,
                     reviewerOnly: true,
                 },
+                usage: "[@mention/bot id] (comment)",
                 aliases: ["accept"],
                 disabled: false,
                 category: "Bot Reviewer",
@@ -26,17 +27,18 @@ module.exports = class CMD extends Command {
     async execute({ message, args }) {
         const { config, models } = this.client;
         const botModel = models.Bot;
-        const bot = this.client.util.userFromMentionOrId(args[0]);
-        if (!bot) return message.reply(`Please mention a bot to approve!`);
-        if (!bot.bot) return message.reply(`That is not a real bot!`);
+        const bot = await this.client.util.userFromMentionOrId(args[0]);
+        if (!bot) return message.reply("Please mention a bot to approve!");
+        if (!bot.bot) return message.reply("That is not a real bot!");
+        const comment = args.slice(1).join(" "); //optional
         const data = await botModel.findOne({ botId: bot.id });
         if (!data)
             return message.channel.send(
-                `That bot is not added or is rejected!`
+                "That bot is not added or is rejected!"
             );
         if (data.approved)
             return message.channel.send(
-                `That bot is already approved by someone!`
+                "That bot is already approved by someone!"
             );
         const botMember = await this.client.guilds.cache
             .get(config.servers.main.id)

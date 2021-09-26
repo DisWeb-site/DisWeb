@@ -15,6 +15,7 @@ module.exports = class CMD extends Command {
                     guildOnly: true,
                     reviewerOnly: true,
                 },
+                usage: "[@mention/bot id] [reason]",
                 aliases: ["decline", "deny"],
                 disabled: false,
                 category: "Bot Reviewer",
@@ -26,19 +27,19 @@ module.exports = class CMD extends Command {
     async execute({ message, args }) {
         const { config, models } = this.client;
         const botModel = models.Bot;
-        const bot = this.client.util.userFromMentionOrId(args[0]);
+        const bot = await this.client.util.userFromMentionOrId(args[0]);
         if (!bot)
-            return message.channel.send(`Please mention a bot to reject!`);
+            return message.channel.send("Please mention a bot to reject!");
         if (!bot.bot) return message.channel.send("That is not a real bot!");
         const reason = args.slice(1).join(" ");
         if (!reason)
             return message.channel.send(
-                `Please provide a reason to reject this bot!`
+                "Please provide a reason to reject this bot!"
             );
         const data = await botModel.findOne({ botId: bot.id });
         if (!data)
             return message.channel.send(
-                `That bot is not added or is rejected!`
+                "That bot is not added or is rejected!"
             );
         if (data.approved === true)
             return message.channel.send(`This bot is already approved!`);
@@ -53,7 +54,8 @@ module.exports = class CMD extends Command {
         const embed = new MessageEmbed()
             .setTitle(`Bot Rejected ${config.emojis.approved}`)
             .setDescription(`${bot} is rejected! :tada:`)
-            .addField("Reviewer", `${message.author} (${message.author.id})`);
+            .addField("Reviewer", `${message.author} (${message.author.id})`)
+            .addField("Reason", `${reason}`);
         botLogs.send({
             content: `<@${data.owner}>`,
             embeds: [embed],

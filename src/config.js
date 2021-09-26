@@ -10,7 +10,7 @@ module.exports = {
         botLogs: "891338310339919892",
     },
     roles: {
-        reviewer: "890204725448962080",
+        reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string
     },
     emojis: {
         approved: "<:YesMark:891123032725282877>",

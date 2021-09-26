@@ -118,7 +118,7 @@ class Util {
     }
 
     async userFromMentionOrId(idOrMention) {
-        let user;
+        let user = null;
         if (idOrMention) {
             if (idOrMention.startsWith("<@")) {
                 user = this.userFromMention(idOrMention) ?? null;

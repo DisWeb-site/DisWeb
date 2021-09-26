@@ -47,11 +47,27 @@ module.exports = {
                 );
             if (
                 command.requirements?.reviewerOnly &&
-                !message.member.roles.cache.has(client.config.roles.reviewer)
-            )
-                return message.channel.send(
-                    "You don't have the bot reviewer role, or you are in wrong server, this should be done in main server"
-                );
+                client.config.roles.reviewer
+            ) {
+                const reply =
+                    "You don't have the bot reviewer role to use this command";
+                if (
+                    typeof client.config.roles.reviewer === "string" &&
+                    !message.member.roles.cache.has(
+                        client.config.roles.reviewer
+                    )
+                ) {
+                    return message.channel.send(reply);
+                } else if (typeof client.config.roles.reviewer === "array") {
+                    const has = [];
+                    message.member.roles.cache.forEach((r) => {
+                        if (client.config.roles.reviewer.includes(r.id))
+                            has.push(r.id);
+                    });
+                    if (!has || !has.length || !has[0])
+                        return message.channel.send(reply);
+                }
+            }
             message.channel.sendTyping().catch(() => {});
             command.execute({ prefix, message, args });
         }

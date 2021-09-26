@@ -115,7 +115,6 @@ router.post("/add", CheckAuth, async (req, res) => {
     }*/
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);
-    await botDB.genApiToken();
     await botDB.save();
     params.delete("error");
     params.set("sucess", "true");

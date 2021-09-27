@@ -107,7 +107,7 @@ router.get("/:botId/analytics", CheckAuth, async (req, res) => {
         bot,
         botDB,
         countries,
-        dups: client.util.findArrDups2(countries),
+        dups: client.util.findArrDups2(botDB.analytics.countries),
     });
 });
 module.exports = router;

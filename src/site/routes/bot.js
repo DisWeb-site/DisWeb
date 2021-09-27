@@ -102,7 +102,6 @@ router.get("/:botId/analytics", CheckAuth, async (req, res) => {
                 encodeURIComponent("You are not this bot's owner!!")
         );
     }
-    console.log(client.util.findArrDups2(countries));
     res.render("bot/analytics", {
         req,
         bot,

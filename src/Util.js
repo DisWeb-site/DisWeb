@@ -209,25 +209,23 @@ class Util {
         });
     }
 
+    //https://dev.to/huyddo/find-duplicate-or-repeat-elements-in-js-array-3cl3
     findArrDups2(array) {
         const count = {};
         const result = [];
 
         array.forEach((item) => {
-            if (count[item]) {
-                count[item] += 1;
-                return;
-            }
-            count[item] = 1;
+            if (!count[item]) count[item] = 0;
+            count[item]++;
         });
 
         for (const prop in count) {
-            if (count[prop] >= 2) {
+            if (count[prop] > 1) {
                 result.push(prop);
             }
         }
 
-        //console.log(count);
+        if (this.client?.debug) console.log(count);
         return result;
     }
 }

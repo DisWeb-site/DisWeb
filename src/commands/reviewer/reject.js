@@ -41,7 +41,8 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "That bot is not added or is rejected!"
             );
-        if (data.approved === true)
+        //if (data.owner === message.author.id) return message.reply("Oh no... Bot owners can't reject their own bots.");
+        if (data.approved)
             return message.channel.send(`This bot is already approved!`);
 
         const rejecting = await message.channel.send(

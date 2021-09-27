@@ -129,7 +129,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         embeds: [embed],
     });
     params.delete("error");
-    params.set("sucess", "true");
+    params.set("success", "true");
     params.set("message", "Your bot is added!");
     res.redirect(`/bot/${botId}?${params}`);
 });

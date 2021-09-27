@@ -9,6 +9,9 @@ const util = require("util");
 const config = require("./config");
 const DBCache = require("./db/DBCache");
 const Util = require("./Util");
+const marked = require("marked");
+const createDOMPurify = require("dompurify");
+const { JSDOM } = require("jsdom");
 class UpList extends Client {
     constructor(opts) {
         super({
@@ -31,6 +34,14 @@ class UpList extends Client {
         this.site = require("./site/app");
         this.site.states = {};
         this.site.load(this);
+        const window = new JSDOM("").window;
+        const DOMPurify = createDOMPurify(window);
+        marked.setOptions({
+            sanitizer: (html) => {
+                return DOMPurify.sanitize(html);
+            },
+        });
+        this.marked = marked;
         this.initialize();
     }
 

@@ -5,6 +5,8 @@
  */
 const { Command } = require("../../structures");
 const { MessageEmbed } = require("discord.js");
+const moment = require("moment");
+require("moment-duration-format");
 module.exports = class CMD extends Command {
     constructor(client) {
         super(
@@ -44,6 +46,25 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "That bot is already approved by someone!"
             );
+        const diff =
+            7 * 24 * 60 * 60 * 1000 - (new Date().getTime() - data.addedAt);
+
+        if (diff > 0) {
+            const hours = Math.round(diff / (1000 * 60 * 60));
+            let duration;
+            if (hours == 24) {
+                duration = moment.duration(hours, "hours");
+            } else if (hours == 0) {
+                const minutes = Math.ceil(diff / (1000 * 60));
+                duration = moment.duration(minutes, "minutes");
+            } else {
+                duration = moment.duration(hours, "hours");
+            }
+            duration = duration.humanize();
+            return message.reply(
+                `Woah, not even 7 days over after adding the bot, STILL ${duration} time left. Please try after 7 days!`
+            );
+        }
         let botMember, botMember2;
         try {
             botMember = await this.client.guilds.cache

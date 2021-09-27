@@ -225,7 +225,7 @@ class Util {
             }
         }
 
-        if (this.client?.debug) console.log(count);
+        if (this.client?.debug) console.log(count, array);
         return result;
     }
 }

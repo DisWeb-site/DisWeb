@@ -27,7 +27,7 @@ router.get("/:botId", async (req, res) => {
         botDB.analytics.views++;
         if (process.env.IPINFO_KEY) {
             const res = await axios.get(
-                `https://ipinfo.io/json/${req.ip}?token=${process.env.IPINFO_KEY}`
+                `https://ipinfo.io/${req.ip}?token=${process.env.IPINFO_KEY}`
             );
             if (res.data.country)
                 botDB.analytics.countries.push(res.data.country);

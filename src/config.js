@@ -7,7 +7,7 @@ module.exports = {
     site: {
         port: process.env.PORT ?? 3000,
         secret: process.env.CLIENT_SECRET ?? "rejsaiewsdamsa",
-        url: "https://dislist-production.up.railway.app",
+        url: "https://uplist-production.up.railway.app",
     },
     channels: {
         loginLogs: "890244366189350953",

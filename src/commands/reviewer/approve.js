@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Command } = require("../../structures");
@@ -57,7 +57,7 @@ module.exports = class CMD extends Command {
         }
         if (!botMember)
             return message.channel.send(
-                `This bot is not added to DisList server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
+                `This bot is not added to UpList server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
             );
         if (!botMember2)
             return message.channel.send(

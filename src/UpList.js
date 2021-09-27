@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Client, Intents } = require("discord.js");
@@ -9,7 +9,7 @@ const util = require("util");
 const config = require("./config");
 const DBCache = require("./db/DBCache");
 const Util = require("./Util");
-class DisList extends Client {
+class UpList extends Client {
     constructor(opts) {
         super({
             intents: [
@@ -58,4 +58,4 @@ class DisList extends Client {
         return this.db.models;
     }
 }
-module.exports = DisList;
+module.exports = UpList;

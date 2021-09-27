@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
                     )
                 ) {
                     return message.channel.send(reply);
-                } else if (typeof client.config.roles.reviewer === "array") {
+                } else if (typeof client.config.roles.reviewer !== "string") {
                     const has = [];
                     message.member.roles.cache.forEach((r) => {
                         if (client.config.roles.reviewer.includes(r.id))

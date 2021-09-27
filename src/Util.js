@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Permissions } = require("discord.js");
@@ -174,29 +174,59 @@ class Util {
         return matches[1];
     }
 
-    async fetchBot(id) {
+    async fetchBot(id, optional = false) {
         const { client } = this;
         let bot = null;
         try {
             bot = await client.users.fetch(id);
         } catch (e) {
             if (client.debug) console.log(e);
-            return (
-                "/bots?error=true&message=" +
-                encodeURIComponent("Invalid bot ID")
-            );
+            if (!optional)
+                return (
+                    "/bots?error=true&message=" +
+                    encodeURIComponent("Invalid bot ID")
+                );
         }
         let botDB = null;
         try {
             botDB = await client.db.findBot(bot.id);
         } catch (e) {
             if (client.debug) console.log(e);
-            return (
-                "/bots?error=true&message=" +
-                encodeURIComponent("Bot not found in DB")
-            );
+            if (!optional)
+                return (
+                    "/bots?error=true&message=" +
+                    encodeURIComponent("Bot not found in DB")
+                );
         }
         return { bot, botDB };
+    }
+
+    //https://flexiple.com/find-duplicates-javascript-array/
+    findArrDups(array) {
+        //find duplicates in an array
+        return array.filter((val, index) => {
+            return array.indexOf(val) !== index;
+        });
+    }
+
+    //https://dev.to/huyddo/find-duplicate-or-repeat-elements-in-js-array-3cl3
+    findArrDups2(array) {
+        const count = {};
+        const result = [];
+
+        array.forEach((item) => {
+            if (!count[item]) count[item] = 0;
+            count[item]++;
+        });
+
+        for (const prop in count) {
+            if (count[prop] > 1) {
+                result.push(prop);
+            }
+        }
+
+        if (this.client?.debug) console.log(count, array);
+        return result;
     }
 }
 module.exports = Util;

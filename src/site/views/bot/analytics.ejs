@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <%- include('../includes/head') %>
+    <body>
+        <%- include('../includes/header') %>
+          <!-- ======= Hero Section ======= -->
+          <section id="hero" class="hero d-flex align-items-center">
+              
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up"><%= bot.tag %></h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400"></h2>
+                    </div>
+                </div>
+            </div>
+  
+        </section><!-- End Hero -->
+        <main id="main">
+            <!-- ======= About Section ======= -->
+            <section id="about" class="about">
+                
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3>Analytics</h3>
+                                <p>
+                                    Views: <%= botDB.analytics.views %><br>
+                                    Votes: <%= botDB.analytics.votes %><br>
+                                    <table>
+                                        <tr>
+                                            <th>Country</th>
+                                        </tr>
+                                        <tr>
+                                            <% for (const i in dups) { const val = dups[i]; %>
+                                            <td><%= i %> | (<%= val %>)</td>
+                                            <% } %>
+                                        </tr>
+                                    </table>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+  
+      </section><!-- End About Section -->
+        </main>
+        <%- include('../includes/footer') %>
+    </body>
+</html>

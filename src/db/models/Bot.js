@@ -1,5 +1,9 @@
+/**
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
+ * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
+ */
 const mongoose = require("mongoose");
-const { genToken } = new (require("../../Util"))();
 
 const botSchema = new mongoose.Schema({
     botId: {
@@ -60,25 +64,27 @@ const botSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
+        shardCount: {
+            type: Number,
+            required: false,
+        },
     },
     addedAt: {
         type: Number,
         required: true,
     },
+    approvedAt: {
+        type: Number,
+        default: 0,
+    },
     apiToken: {
         type: String,
-        default: "No token generated",
+        required: true,
     },
     approved: {
         type: Boolean,
         default: false,
     },
-});
-
-botSchema.method("genApiToken", async () => {
-    this.apiToken = genToken();
-    await this.save();
-    return this.apiToken;
 });
 
 const Bot = new mongoose.model("Bot", botSchema);

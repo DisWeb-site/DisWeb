@@ -3,7 +3,7 @@
  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
  * Author: BootstrapMade.com
  * License: https://bootstrapmade.com/license/
- * Proudly Modified by DisList
+ * Proudly Modified by UpList
  */
 (function () {
     "use strict";
@@ -14,7 +14,7 @@
             title: "Succesfull...",
             closeOnConfirm: false,
             text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy DisList - All rights reserved.",
+            footer: "Copyright 2021 &copy UpList - All rights reserved.",
         });
     }
     if (urlParams.has("error")) {
@@ -22,7 +22,7 @@
             icon: "error",
             title: "Ooops...",
             text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy DisList - All rights reserved.",
+            footer: "Copyright 2021 &copy UpList - All rights reserved.",
         });
     }
 

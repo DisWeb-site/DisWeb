@@ -1,5 +1,5 @@
-# DisList
-> Website source of DisList
+# UpList
+> Website & Bot source of UpList
 
 ## FAQ
 

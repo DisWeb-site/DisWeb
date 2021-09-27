@@ -71,7 +71,7 @@ module.exports = class CMD extends Command {
         const reply = {
             content: `<@${data.owner}>`,
             embeds: [embed],
-            attachments: [...message.attachments.values()] ?? [],
+            files: [...message.attachments.values()] ?? [],
         };
         botLogs.send(reply);
         const owner = (await this.client.users.fetch(data.owner)) ?? null;

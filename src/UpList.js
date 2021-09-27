@@ -34,7 +34,7 @@ class UpList extends Client {
         this.site = require("./site/app");
         this.site.states = {};
         this.site.load(this);
-        const window = new JSDOM("").window;
+        const { window } = new JSDOM("");
         const DOMPurify = createDOMPurify(window);
         marked.setOptions({
             sanitizer: (html) => {

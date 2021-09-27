@@ -89,6 +89,7 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
 //GET /bot/:botId/analytics
 router.get("/:botId/analytics", CheckAuth, async (req, res) => {
     const { client } = req;
+    const { countries } = client.data;
     const id = req.params.botId;
     const botData = await client.util.fetchBot(id);
     if (typeof botData === "string") {
@@ -105,7 +106,8 @@ router.get("/:botId/analytics", CheckAuth, async (req, res) => {
         req,
         bot,
         botDB,
-        countries: client.data.countries,
+        countries,
+        dups: client.util.findArrDups2(countries),
     });
 });
 module.exports = router;

@@ -7,6 +7,7 @@ const express = require("express");
 const router = express.Router();
 //POST /stats/:botId
 router.post("/stats/:botId", async (req, res) => {
+    const { client } = req;
     res.type("json");
     const { botId } = req.params;
     const stats = req.body;

@@ -76,11 +76,15 @@ module.exports = class CMD extends Command {
             .setTitle(`Bot Approved ${config.emojis.approved}`)
             .setDescription(`${bot} is approved! :tada:`)
             .addField("Reviewer", `${message.author} (${message.author.id})`);
-        botLogs.send({
+        if (comment) embed.addField("Comment", comment);
+        const reply = {
             content: `<@${data.owner}>`,
             embeds: [embed],
-        });
-        botMember2.kick();
+        };
+        botLogs.send(reply);
+        const owner = (await this.client.users.fetch(data.owner)) ?? null;
+        if (owner) owner.send(reply);
+        if (botMember2) botMember2.kick();
         approving.edit(
             `:white_check_mark: Success! **${bot.tag}** has been approved!`
         );

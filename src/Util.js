@@ -200,5 +200,35 @@ class Util {
         }
         return { bot, botDB };
     }
+
+    //https://flexiple.com/find-duplicates-javascript-array/
+    findArrDups(array) {
+        //find duplicates in an array
+        return array.filter((val, index) => {
+            return array.indexOf(val) !== index;
+        });
+    }
+
+    findArrDups2(array) {
+        const count = {};
+        const result = [];
+
+        array.forEach((item) => {
+            if (count[item]) {
+                count[item] += 1;
+                return;
+            }
+            count[item] = 1;
+        });
+
+        for (const prop in count) {
+            if (count[prop] >= 2) {
+                result.push(prop);
+            }
+        }
+
+        //console.log(count);
+        return result;
+    }
 }
 module.exports = Util;

@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 d-flex flex-column justify-content-center">
-                        <h1 data-aos="fade-up">Add your bot to DisList</h1>
+                        <h1 data-aos="fade-up">Add your bot to UpList</h1>
                         <h2 data-aos="fade-up" data-aos-delay="400"></h2>
                     </div>
                 </div>
@@ -28,38 +28,44 @@
                         <form action="/bots/add" method="POST" id="form" class="form">
                             <div class="row gy-4">
                                 <div class="col-md-6">
-                                    <label for="botId">Bot / Client Id</label>
+                                    <label for="botId">Bot / Client Id</label><br>
                                     <input class="form-control" type="number" placeholder="ID" name="botId" id="botId" required>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="prefix">Prefix</label>
+                                    <label for="prefix">Prefix</label><br>
+                                    <small>What keyword or phrase does your bot react to?</small>
                                     <input class="form-control" type="text" placeholder="Enter your bot's prefix" name="prefix" id="prefix" required maxlength="20">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="shortDesc">Short Description</label>
+                                    <label for="shortDesc">Short Description</label><br>
+                                    <small>A brief description of what your bot is about.</small>
                                     <input class="form-control" type="text" placeholder="A cool bot with features like ..." name="shortDesc" id="shortDesc" required maxlength="300">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="longDesc">Long Description</label>
+                                    <label for="longDesc">Long Description</label><br>
+                                    <small>Tell us what your bot can do. We want to hear the whole story!</small>
                                     <textarea class="form-control" rows="6" placeholder="A brief description for your bot" name="longDesc" id="longDesc" required maxlength="5000"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="support">Support Server (optional)</label>
+                                    <label for="support">Support Server (optional)</label><br>
+                                    <small>People might have many questions about your bot, make sure you can answer them!</small>
                                     <input class="form-control" type="text" placeholder="A permanent invite link to your bot's support server" name="support" id="support">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="github">GitHub (Optional)</label>
-                                    <input class="form-control" type="text" placeholder="If your bot is open source, please share it here" name="github" id="github">
+                                    <label for="github">GitHub (Optional)</label><br>
+                                    <small>Is your bot open-source? We love that! Post your link for some free stars.</small>
+                                    <input class="form-control" type="text" placeholder="https://github.com/UpList-site/UpList" name="github" id="github">
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="website">WebSite (Optional)</label>
-                                    <input class="form-control" type="text" placeholder="If your bot has a site, link it here" name="website" id="website">
+                                    <label for="website">WebSite (Optional)</label><br>
+                                    <small>Got a website? Rep it on your page!</small>
+                                    <input class="form-control" type="text" placeholder="https://uplist.gg" name="website" id="website">
                                 </div>
 
                                 <div class="col-md-12 text-center">

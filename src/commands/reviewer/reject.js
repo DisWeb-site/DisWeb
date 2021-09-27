@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Command } = require("../../structures");
@@ -18,7 +18,7 @@ module.exports = class CMD extends Command {
                 usage: "[@mention/bot id] [reason]",
                 aliases: ["decline", "deny"],
                 disabled: false,
-                category: "Bot Reviewer",
+                category: "Bot reviewer",
             },
             client
         );
@@ -41,9 +41,21 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "That bot is not added or is rejected!"
             );
-        if (data.approved === true)
+        //if (data.owner === message.author.id) return message.reply("Oh no... Bot owners can't reject their own bots.");
+        if (data.approved)
             return message.channel.send(`This bot is already approved!`);
-
+        //let botMember, botMember2;
+        let botMember2;
+        try {
+            /*botMember = await this.client.guilds.cache
+                .get(config.servers.main.id)
+                .members.fetch(bot.id);*/ //not required
+            botMember2 = await this.client.guilds.cache
+                .get(config.servers.test.id)
+                .members.fetch(bot.id);
+        } catch (e) {
+            if (this.client.debug) console.log(e);
+        }
         const rejecting = await message.channel.send(
             `Please wait, rejecting bot...`
         );
@@ -56,11 +68,15 @@ module.exports = class CMD extends Command {
             .setDescription(`${bot} is rejected! :x:`)
             .addField("Reviewer", `${message.author} (${message.author.id})`)
             .addField("Reason", `${reason}`);
-        botLogs.send({
+        const reply = {
             content: `<@${data.owner}>`,
             embeds: [embed],
-        });
-
+            files: [...message.attachments.values()] ?? [],
+        };
+        botLogs.send(reply);
+        const owner = (await this.client.users.fetch(data.owner)) ?? null;
+        if (owner) owner.send(reply);
+        if (botMember2) botMember2.kick();
         rejecting.edit(
             `:white_check_mark: Success! ${bot.tag} has been rejected!`
         );

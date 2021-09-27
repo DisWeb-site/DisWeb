@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-    <%- include('includes/head') %>
+    <%- include('../includes/head') %>
     <body>
-        <%- include('includes/header') %>
+        <%- include('../includes/header') %>
           <!-- ======= Hero Section ======= -->
           <section id="hero" class="hero d-flex align-items-center">
               
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 d-flex flex-column justify-content-center">
-                        <h1 data-aos="fade-up"><%= bot.tag %></h1>
+                        <h1 data-aos="fade-up"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h1>
                         <h2 data-aos="fade-up" data-aos-delay="400"><%= botDB.descriptions.short %></h2>
                     </div>
                 </div>
@@ -22,29 +22,33 @@
                 
                 <div class="container" data-aos="fade-up">
                     <div class="row gx-0">
-
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                             <div class="content">
                                 <h3></h3>
                                 <p>
-                                    <%= botDB.descriptions.long %>
+                                    <%= req.client.marked(botDB.descriptions.long) %>
                                 </p>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                             <div class="content">
                                 <h3>Information</h3>
                                 <p>
-                                    Owner: <%= owner.tag %><br>
+                                    <span class="badge bg-danger">Owner: <%= owner.tag %></span><br>
+                                    <a class="btn btn-success" href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.id %>&scope=bot+applications.commands&permissions=0">Invite</a><br>
                                     <% if (botDB.support) { %>
-                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a>
+                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a><br>
                                     <% } %>
                                     <% if (botDB.github) { %>
-                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a>
+                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a><br>
                                     <% } %>
                                     <% if (botDB.website) { %>
-                                    <a class="btn btn-light" href="<%= botDB.website %>">Website</a>
+                                    <a class="btn btn-primary" href="<%= botDB.website %>">Website</a><br>
                                     <% } %>
                                 </p>
                             </div>
@@ -54,6 +58,6 @@
   
       </section><!-- End About Section -->
         </main>
-        <%- include('includes/footer') %>
+        <%- include('../includes/footer') %>
     </body>
 </html>

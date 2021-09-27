@@ -3,7 +3,7 @@
 * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
-* Proudly modified by DisList
+* Proudly modified by UpList
 */
 
 /*--------------------------------------------------------------
@@ -35,6 +35,18 @@ h4,
 h5,
 h6 {
     font-family: "Nunito", sans-serif;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-color: #96d4d4;
 }
 
 /*--------------------------------------------------------------

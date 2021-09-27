@@ -1,6 +1,6 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Client, Intents } = require("discord.js");
@@ -9,10 +9,17 @@ const util = require("util");
 const config = require("./config");
 const DBCache = require("./db/DBCache");
 const Util = require("./Util");
-class DisList extends Client {
+const marked = require("marked");
+const createDOMPurify = require("dompurify");
+const { JSDOM } = require("jsdom");
+class UpList extends Client {
     constructor(opts) {
         super({
-            intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+            intents: [
+                Intents.FLAGS.GUILDS,
+                Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_PRESENCES,
+            ],
             partials: ["CHANNEL"],
         });
         this.config = config;
@@ -23,9 +30,18 @@ class DisList extends Client {
         this.debug = opts?.debug || process.env.NODE_ENV === "development";
         this.debugLevel = opts?.debugLevel || process.env?.DEBUG_LEVEL || 0;
         this.util = new Util(this);
+        this.data = require("./data");
         this.site = require("./site/app");
         this.site.states = {};
         this.site.load(this);
+        const { window } = new JSDOM("");
+        const DOMPurify = createDOMPurify(window);
+        marked.setOptions({
+            sanitizer: (html) => {
+                return DOMPurify.sanitize(html);
+            },
+        });
+        this.marked = marked;
         this.initialize();
     }
 
@@ -53,4 +69,4 @@ class DisList extends Client {
         return this.db.models;
     }
 }
-module.exports = DisList;
+module.exports = UpList;

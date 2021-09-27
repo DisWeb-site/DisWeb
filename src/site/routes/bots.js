@@ -1,8 +1,9 @@
 /**
- * DisList
- * Copyright (c) 2021 The DisList Team and Contributors
+ * UpList
+ * Copyright (c) 2021 The UpList Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
+const { MessageEmbed } = require("discord.js");
 const axios = require("axios");
 const { CheckAuth } = global;
 const express = require("express");
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
     });
     res.render("bots/index", {
         req,
-        bots,
+        bots: bots.filter((b) => b.approved),
     });
 });
 //GET /bots/add
@@ -46,14 +47,28 @@ router.post("/add", CheckAuth, async (req, res) => {
     const { client } = req;
     const params = new URLSearchParams();
     const data = req.body;
-    const botId = parseInt(data.botId);
+    const { botId } = data;
+    let bot = null;
+    try {
+        bot = await client.users.fetch(botId);
+    } catch (e) {
+        if (client.debug) console.log(e);
+        params.set("message", "Invalid bot ID");
+        return res.redirect(`/bots/add?${params}`);
+    }
     if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
+    let check = null;
+    try {
+        check = await client.models.Bot.findOne({ botId });
+    } catch (e) {
+        if (client.debug) console.log(e);
+    }
     params.set("error", "true");
     if (isNaN(botId)) {
         params.set("message", "Bot ID is not a number");
         return res.redirect(`/bots/add?${params}`);
-    } else if (await req.client.models.Bot.findOne({ botId })) {
+    } else if (check) {
         params.set("message", "Bot already exists in DB");
         return res.redirect(`/bots/add?${params}`);
     }
@@ -73,46 +88,49 @@ router.post("/add", CheckAuth, async (req, res) => {
         },
         owner: req.user.id,
         addedAt: Date.now(),
+        apiToken: client.util.genToken(),
     };
-    for (const i in data) {
-        if (!["website", "support", "github"].includes(i)) return;
-        let url = null;
-        try {
-            url = new URL(data[i]);
-        } catch (e) {
-            if (client.debug) console.log(e);
-        }
-        switch (i) {
-            case "support":
-                if (!url) {
-                    params.set("message", "Invalid support server link");
-                    return res.redirect(`/bots/add?${params}`);
-                }
-                const code = url.pathname.replace("invite/", "");
-                axios
-                    .get(`https://discordapp.com/api/invite/${code}`)
-                    .then((json) => {
-                        if (json.message === "Unknown Invite") {
-                            params.set(
-                                "message",
-                                "Invalid support server invite code or you used a url shortner"
-                            );
-                            res.redirect(`/bots/add?${params}`);
-                            return res.end();
-                        } else {
-                            // the invite is valid, nvm
-                        }
-                    });
-                break;
-        }
-        botData[i] = data[i];
+    if (data["website"]) {
+        botData["website"] = data["website"];
     }
-    const botDB = new client.client.models.Bot(botData);
-    await botDB.genApiToken();
+    if (data["github"]) {
+        botData["github"] = data["github"];
+    }
+    if (data["support"]) {
+        const url = new URL(data["support"]);
+        if (!url) {
+            params.set("message", "Invalid support server link");
+            return res.redirect(`/bots/add?${params}`);
+        }
+        const code = url.pathname.replace("invite/", "");
+        const json = await axios.get(
+            `https://discordapp.com/api/invite/${code}`
+        );
+        if (json.message === "Unknown Invite") {
+            params.set(
+                "message",
+                "Invalid support server invite code or you used a url shortner"
+            );
+            res.redirect(`/bots/add?${params}`);
+            return res.end();
+        } else {
+            // the invite is valid, nvm
+        }
+        botData["support"] = data["support"];
+    }
+    if (client.debug) client.logger.debug("Adding bot to DB");
+    const botDB = new client.models.Bot(botData);
     await botDB.save();
+    const botLogs = await client.channels.fetch(client.config.channels.botLogs);
+    const embed = new MessageEmbed()
+        .setTitle(`New Bot Added`)
+        .setDescription(`${bot} (${bot.id}) is added by <@${botDB.owner}>`);
+    botLogs.send({
+        embeds: [embed],
+    });
     params.delete("error");
-    params.set("sucess", "true");
+    params.set("success", "true");
     params.set("message", "Your bot is added!");
-    res.redirect(`/bots/${botId}?${params}`);
+    res.redirect(`/bot/${botId}?${params}`);
 });
 module.exports = router;

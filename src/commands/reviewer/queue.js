@@ -38,7 +38,18 @@ module.exports = class CMD extends Command {
                 .setColor(`BLURPLE`)
                 .setTitle(`${bot.username}`)
                 .setDescription(botDB.descriptions.short)
-                .setURL(`${this.client.config.site.url}/bot/${bot.id}`);
+                .setURL(`${this.client.config.site.url}/bot/${bot.id}`)
+                .addField(
+                    "Links",
+                    `[Invite](https://discord.com/oauth2/authorize?client_id=${
+                        bot.id
+                    }&scope=bot%20applications.commands&permissions=0) ${
+                        botDB.website ? `| [Website](${botDB.website})` : ""
+                    } ${botDB.support ? `| [Support](${botDB.support})` : ""} ${
+                        botDB.github ? `| [GitHub](${botDB.github})` : ""
+                    }`,
+                    true
+                );
         });
         const pagination = new Pagination(this.client);
         pagination.setPages(pages);

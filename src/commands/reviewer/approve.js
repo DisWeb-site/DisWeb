@@ -36,22 +36,38 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "That bot is not added or is rejected!"
             );
-        if (data.owner === message.author.id) return message.reply("Oh no... Bot owners can't approve their own bots.");
+        if (data.owner === message.author.id)
+            return message.reply(
+                "Oh no... Bot owners can't approve their own bots."
+            );
         if (data.approved)
             return message.channel.send(
                 "That bot is already approved by someone!"
             );
-        const botMember = await this.client.guilds.cache
-            .get(config.servers.main.id)
-            .members.fetch(bot.id);
+        let botMember, botMember2;
+        try {
+            botMember = await this.client.guilds.cache
+                .get(config.servers.main.id)
+                .members.fetch(bot.id);
+            botMember2 = await this.client.guilds.cache
+                .get(config.servers.test.id)
+                .members.fetch(bot.id);
+        } catch (e) {
+            if (this.client.debug) console.log(e);
+        }
         if (!botMember)
             return message.channel.send(
-                "This bot is not added to DisList server, please add it then use this command again"
+                `This bot is not added to DisList server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
+            );
+        if (!botMember2)
+            return message.channel.send(
+                `Uhhhhhh. Hey, did you test the bot, it does not even exist in the test server!`
             );
         const approving = await message.channel.send(
             "Please wait, approving the bot..."
         );
         data.approved = true;
+        data.approvedAt = Date.now();
         await data.save();
         const botLogs = await this.client.channels.fetch(
             config.channels.botLogs
@@ -64,6 +80,7 @@ module.exports = class CMD extends Command {
             content: `<@${data.owner}>`,
             embeds: [embed],
         });
+        botMember2.kick();
         approving.edit(
             `:white_check_mark: Success! **${bot.tag}** has been approved!`
         );

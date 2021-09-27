@@ -68,6 +68,10 @@ const botSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    approvedAt: {
+        type: Number,
+        default: 0,
+    },
     apiToken: {
         type: String,
         required: true,

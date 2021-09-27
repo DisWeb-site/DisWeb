@@ -23,14 +23,19 @@ module.exports = class CMD extends Command {
             return message.reply("Please mention a bot to get it's info!");
         if (!bot.bot) return message.reply("That is not a real bot!");
         const botDB = await botModel.findOne({ botId: bot.id });
-        if (!botDB) return message.channel.send(
-          "That bot is not added or is rejected!"
-      );
+        if (!botDB)
+            return message.channel.send(
+                "That bot is not added or is rejected!"
+            );
         const embed = new MessageEmbed()
             .setColor("#7289da")
             .addField("Name", bot.username, true)
             .addField("ID", bot.id, true)
-            .addField("Status", botDB.approved ? "Approved" : "Not approved", true)
+            .addField(
+                "Status",
+                botDB.approved ? "Approved" : "Not approved",
+                true
+            )
             .addField("Prefix", botDB.prefix, true)
             .addField("About", botDB.descriptions.short, true)
             .addField(
@@ -42,7 +47,13 @@ module.exports = class CMD extends Command {
             )
             .addField(
                 "Links",
-                `[Invite](https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=8) ${botDB.website ? `| [Website](${botDB.website})` : ""} ${botDB.support ? `| [Support](${botDB.support})` : ""} ${botDB.github ? `| [GitHub](${botDB.github})` : ""}`,
+                `[Invite](https://discord.com/oauth2/authorize?client_id=${
+                    bot.id
+                }&scope=bot%20applications.commands&permissions=8) ${
+                    botDB.website ? `| [Website](${botDB.website})` : ""
+                } ${botDB.support ? `| [Support](${botDB.support})` : ""} ${
+                    botDB.github ? `| [GitHub](${botDB.github})` : ""
+                }`,
                 true
             )
             .addField("Owner", `<@${botDB.owner}>`, true);

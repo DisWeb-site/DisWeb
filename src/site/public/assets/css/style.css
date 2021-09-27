@@ -37,6 +37,18 @@ h6 {
     font-family: "Nunito", sans-serif;
 }
 
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-color: #96d4d4;
+}
+
 /*--------------------------------------------------------------
 # Sections
 --------------------------------------------------------------*/

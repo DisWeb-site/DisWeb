@@ -25,12 +25,12 @@ router.get("/:botId", async (req, res) => {
     if (!req.user || req.user.id !== botDB.owner) {
         if (isNaN(botDB.analytics.views)) botDB.analytics.views = 0;
         botDB.analytics.views++;
-        if (process.env.GEOLOC_KEY) {
+        if (process.env.IPINFO_KEY) {
             const res = await axios.get(
-                `https://geolocation-db.com/json/${process.env.GEOLOC_KEY}${req.ip}`
+                `https://ipinfo.io/json/${req.ip}?token=${process.env.IPINFO_KEY}`
             );
-            if (res.data.country_name)
-                botDB.analytics.countries.push(res.data.country_name);
+            if (res.data.country)
+                botDB.analytics.countries.push(res.data.country);
             else if (client.debug) console.log(res);
         }
         await botDB.save();
@@ -105,6 +105,7 @@ router.get("/:botId/analytics", CheckAuth, async (req, res) => {
         req,
         bot,
         botDB,
+        countries: client.countries,
     });
 });
 module.exports = router;

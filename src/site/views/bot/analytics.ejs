@@ -34,8 +34,8 @@
                                             <th>Country</th>
                                         </tr>
                                         <tr>
-                                            <% botDB.analytics.countries.forEach((name) => { %>
-                                            <td><%= name %></td>
+                                            <% botDB.analytics.countries.forEach((code) => { const country = countries.find((c) => c.code.toUpperCase() === code.toUpperCase(); %>
+                                            <td><%= country?.name ?? code %></td>
                                             <% }) %>
                                         </tr>
                                     </table>

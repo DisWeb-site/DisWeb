@@ -27,6 +27,7 @@ class DisList extends Client {
         this.debug = opts?.debug || process.env.NODE_ENV === "development";
         this.debugLevel = opts?.debugLevel || process.env?.DEBUG_LEVEL || 0;
         this.util = new Util(this);
+        this.data = require("./data");
         this.site = require("./site/app");
         this.site.states = {};
         this.site.load(this);

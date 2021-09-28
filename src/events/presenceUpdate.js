@@ -13,19 +13,37 @@ const { MessageEmbed } = require("discord.js");
         if (!newPresence.user.bot || newPresence?.status === oldPresence?.status || newPresence.guild.id !== client.config.servers.main.id) return;
         const { botDB } = await client.util.fetchBot(newPresence.user.id, true);
         if (!botDB) return;
+        const { user } = newPresence;
         let rate = botDB.uptime?.rate ?? 99;
         const uptimeLogs = await client.channels.fetch(client.config.channels.uptimeLogs);
         const makeEmbed = () => {
-            const embed = new MessageEmbed()
+            const embed = new MessageEmbed(botStatus)
+                .setAuthor(user.tag, user.displayAvatarURL())
+                .setTitle(`${client.config.emojis?.[botStatus]} Your bot ${user.tag} ${botStatus === "offline" ? "went offline" : "came back online"}!`)
+                .setDescription(`It is **${user}** this bot!`)
                 .addField("**Uptime Rate**", rate);
             return embed;
         }
-        switch(newPresence.status) {
+        switch(newPresence?.status?.toLowerCase?.()) {
             case "offline":
-                const embed = makeEmbed();
+                const embed = makeEmbed("offline");
                 const msg = await uptimeLogs.send({ embeds: [embed] });
                 botDB.uptime.log = msg.id;
+                botDB.uptime.lastOfflineAt = Date.now();
+                break;
+            case "online":
+            case "dnd":
+            case "idle":
+                const embed = makeEmbed("online");
+                const msg = await uptimeLogs.messages.fetch(`${botDB.uptime.log}`);
+                msg.edit({ embeds: [embed] }).catch(e => msg.channel.send({ embeds: [embed] }));
+                botDB.uptime.log = null;
+                botDB.uptime.lastOfflineAt = null;
+                break;
+            default:
+                console.log(`Unknown status: ${newPresence.status}`);
                 break;
         }
+        await botDB.save();
     },
 };

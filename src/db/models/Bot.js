@@ -94,6 +94,10 @@ const botSchema = new mongoose.Schema({
             type: String,
             required: false,
         },
+        lastOfflineAt: {
+            type: Number,
+            required: false,
+        },
     },
 });
 

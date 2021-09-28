@@ -1,5 +1,3 @@
-const { MessageEmbed } = require("discord.js");
-
 /**
  * DisWeb
  * Copyright (c) 2021 The DisWeb Team and Contributors

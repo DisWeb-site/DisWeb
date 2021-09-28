@@ -19,19 +19,6 @@
         <main id="main">
             <!-- ======= About Section ======= -->
             <section id="about" class="about">
-                
-                <div class="container" data-aos="fade-up">
-                    <div class="row gx-0">
-                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-                            <div class="content">
-                                <h3></h3>
-                                <p>
-                                    <%= req.client.marked(botDB.descriptions.long) %>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="container" data-aos="fade-up">
                     <div class="row gx-0">
@@ -50,6 +37,34 @@
                                     <% if (botDB.website) { %>
                                     <a class="btn btn-primary" href="<%= botDB.website %>">Website</a><br>
                                     <% } %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <% if (req.user?.id === owner.id) { %>
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3>Owner options</h3>
+                                <p>
+                                    <a class="btn btn-success" href="/bot/<%= bot.if %>/analytics">Analytics</a><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3></h3>
+                                <p>
+                                    <%= req.client.marked(botDB.descriptions.long) %>
                                 </p>
                             </div>
                         </div>

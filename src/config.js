@@ -13,6 +13,7 @@ module.exports = {
         loginLogs: "890244366189350953",
         errorLogs: "890175972207394847",
         botLogs: "891338310339919892",
+        reportLogs: "887493136048345134",
     },
     roles: {
         reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string

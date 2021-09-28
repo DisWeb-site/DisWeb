@@ -25,10 +25,10 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "Please give some feedback to send the report."
             );
-        if (report.length < 5)
+        /*if (report.length < 5)
             message.channel.send(
                 "Your report must have at least **5** characters."
-            );
+            );*/
         const reportLogs = await this.client.channels.fetch(
             config.channels.reportLogs
         );

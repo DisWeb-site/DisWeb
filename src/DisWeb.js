@@ -1,6 +1,6 @@
 /**
- * UpList
- * Copyright (c) 2021 The UpList Team and Contributors
+ * DisWeb
+ * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Client, Intents } = require("discord.js");
@@ -12,7 +12,7 @@ const Util = require("./Util");
 const marked = require("marked");
 const createDOMPurify = require("dompurify");
 const { JSDOM } = require("jsdom");
-class UpList extends Client {
+class DisWeb extends Client {
     constructor(opts) {
         super({
             intents: [
@@ -69,4 +69,4 @@ class UpList extends Client {
         return this.db.models;
     }
 }
-module.exports = UpList;
+module.exports = DisWeb;

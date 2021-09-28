@@ -2,7 +2,7 @@
  * Discord Welcome-Bot
  * Copyright (c) 2021 The Welcome-Bot Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
- * Modified by UpList
+ * Modified by DisWeb
  */
 const { Command } = require("../../structures");
 const { Pagination } = require("djs-pagination-buttons");
@@ -33,14 +33,14 @@ module.exports = class CMD extends Command {
         const pages = [new MessageEmbed()];
         const timeout = 200000; //20 secs timeout
         for (let i = 0; i < pages.length; i++) {
-            pages[i].setTitle("UpList help");
+            pages[i].setTitle("DisWeb help");
         }
         if (!args.length) {
             categories.forEach((cat) => {
                 const p = pages.length;
                 const commandsCat = [];
                 pages[p] = new MessageEmbed().setTitle(
-                    `UpList help - ${cat.name} Category`
+                    `DisWeb help - ${cat.name} Category`
                 );
                 commands.forEach((command) => {
                     if (command.category === cat.name)

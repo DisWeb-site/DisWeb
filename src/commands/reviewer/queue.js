@@ -1,6 +1,6 @@
 /**
- * UpList
- * Copyright (c) 2021 The UpList Team and Contributors
+ * DisWeb
+ * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 //eslint-disable-next-line no-unused-vars
@@ -27,7 +27,7 @@ module.exports = class CMD extends Command {
 
         pages[0]
             .setColor(`BLURPLE`)
-            .setAuthor(`UpList Queue`)
+            .setAuthor(`DisWeb Queue`)
             .setDescription(
                 `There are currently **${queue.length}** bot(s) awaiting approval.\nGo to the next page to start the list of bots`
             );

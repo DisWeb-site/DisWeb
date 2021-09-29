@@ -21,12 +21,14 @@ module.exports = (client) => {
         try {
             if (event.once) {
                 client.once(event.name, (...args) => {
-                    if (client.debugLevel > 0) client.logger.log(`${event.name} event triggered`);
+                    if (client.debugLevel > 1)
+                        client.logger.log(`${event.name} event triggered`);
                     event.execute(client, ...args);
                 });
             } else {
                 client.on(event.name, (...args) => {
-                    if (client.debugLevel > 0) client.logger.log(`${event.name} event triggered`);
+                    if (client.debugLevel > 1)
+                        client.logger.log(`${event.name} event triggered`);
                     event.execute(client, ...args);
                 });
             }

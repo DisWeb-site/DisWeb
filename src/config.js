@@ -14,7 +14,7 @@ module.exports = {
         errorLogs: "890175972207394847",
         botLogs: "891338310339919892",
         reportLogs: "887493136048345134",
-        uptimeLogs: "892416911663591456"
+        uptimeLogs: "892416911663591456",
     },
     roles: {
         reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string
@@ -23,7 +23,7 @@ module.exports = {
         approved: "<:YesMark:891123032725282877>",
         rejected: "<:NoMark:891122870938378260>",
         offline: "<:offline:892453833664520302>",
-        online: "<:online:892453879487283221>"
+        online: "<:online:892453879487283221>",
     },
     servers: {
         main: {

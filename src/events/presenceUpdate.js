@@ -72,7 +72,7 @@ module.exports = {
                 );
                 const hours = duration.hours();
                 if (hours > 0) {
-                    rate = rate - hours;
+                    rate = rate - Number(`0.${hours}`, 10);
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

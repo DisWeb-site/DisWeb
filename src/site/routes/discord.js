@@ -2,7 +2,7 @@
  * Discord Welcome-Bot
  * Copyright (c) 2021 The Welcome-Bot Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
- * Modified by UpList
+ * Modified by DisWeb
  */
 const express = require("express");
 const router = express.Router();
@@ -22,7 +22,7 @@ router.get("/login", (req, res) => {
                 req.client.user.id
             }&redirect_uri=${encodeURIComponent(
                 `${req.protocol}://${req.get("host")}/discord/callback`
-            )}&response_type=code&scope=identify%20guilds&state=${
+            )}&response_type=code&scope=identify%20guilds%20guilds.join&state=${
                 req.query?.state || "null"
             }`
         );

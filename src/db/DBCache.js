@@ -2,7 +2,7 @@
  * Discord Welcome-Bot
  * Copyright (c) 2021 The Welcome-Bot Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
- * Modified by UpList
+ * Modified by DisWeb
  */
 const { Collection } = require("discord.js");
 module.exports = class DBCache {
@@ -17,6 +17,7 @@ module.exports = class DBCache {
         setInterval(() => {
             this.refreshCache();
         }, this.client.config.dbCacheRefreshInterval);
+        this.temp = new Collection();
     }
 
     refreshCache() {
@@ -31,6 +32,7 @@ module.exports = class DBCache {
             this.users.delete(id);
             this.findOrCreateUser(id);
         });
+        this.temp = new Collection();
     }
 
     async findBot(botId) {
@@ -57,15 +59,18 @@ module.exports = class DBCache {
                 this.users.set(userDB.userId, userDB);
                 return userDB;
             } else {
+                if (this.temp.has("user.create")) return;
                 if (this.client.debug) {
                     this.client.logger.log(
                         `Creating user (${userId}) in db`,
                         "debug"
                     );
                 }
+                this.temp.set("user.create", true);
                 userDB = new this.models.User({ userId });
                 await userDB.save();
                 this.users.set(userDB.userId, userDB);
+                this.temp.delete("user.create");
                 return userDB;
             }
         }

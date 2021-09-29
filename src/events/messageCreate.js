@@ -1,14 +1,12 @@
 /**
- * UpList
- * Copyright (c) 2021 The UpList Team and Contributors
+ * DisWeb
+ * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 module.exports = {
     name: "messageCreate",
     once: false,
     async execute(client, message) {
-        if (client.debugLevel > 0)
-            client.logger.log("messageCreate event", "debug");
         if (!client.initialized) return;
         //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators#optional_chaining_operator
         if (!client.application?.owner) await client.application?.fetch();

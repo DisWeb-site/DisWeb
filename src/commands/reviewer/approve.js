@@ -1,6 +1,6 @@
 /**
- * UpList
- * Copyright (c) 2021 The UpList Team and Contributors
+ * DisWeb
+ * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Command } = require("../../structures");
@@ -47,7 +47,7 @@ module.exports = class CMD extends Command {
                 "That bot is already approved by someone!"
             );
         const diff =
-            7 * 24 * 60 * 60 * 1000 - (new Date().getTime() - data.addedAt);
+            Number(config.minimumDays) * 24 * 60 * 60 * 1000 - (new Date().getTime() - data.addedAt);
 
         if (diff > 0) {
             const hours = Math.round(diff / (1000 * 60 * 60));
@@ -62,7 +62,7 @@ module.exports = class CMD extends Command {
             }
             duration = duration.humanize();
             return message.reply(
-                `Woah, not even 7 days over after adding the bot, STILL ${duration} time left. Please try after 7 days!`
+                `Woah, not even ${config.minimumDays} day(s) over after adding the bot. Please try after ${duration}!`
             );
         }
         let botMember, botMember2;
@@ -78,7 +78,7 @@ module.exports = class CMD extends Command {
         }
         if (!botMember)
             return message.channel.send(
-                `This bot is not added to UpList server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
+                `This bot is not added to DisWeb server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
             );
         if (!botMember2)
             return message.channel.send(

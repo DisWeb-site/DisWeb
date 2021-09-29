@@ -1,6 +1,6 @@
 /**
- * UpList
- * Copyright (c) 2021 The UpList Team and Contributors
+ * DisWeb
+ * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const AsciiTable = require("ascii-table");
@@ -20,13 +20,17 @@ module.exports = (client) => {
         const event = require(`${eventsFolder}/${file}`);
         try {
             if (event.once) {
-                client.once(event.name, (...args) =>
-                    event.execute(client, ...args)
-                );
+                client.once(event.name, (...args) => {
+                    if (client.debugLevel > 1)
+                        client.logger.log(`${event.name} event triggered`);
+                    event.execute(client, ...args);
+                });
             } else {
-                client.on(event.name, (...args) =>
-                    event.execute(client, ...args)
-                );
+                client.on(event.name, (...args) => {
+                    if (client.debugLevel > 1)
+                        client.logger.log(`${event.name} event triggered`);
+                    event.execute(client, ...args);
+                });
             }
             table.addRow(event.name, "✅");
         } catch (e) {

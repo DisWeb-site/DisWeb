@@ -20,13 +20,15 @@ module.exports = (client) => {
         const event = require(`${eventsFolder}/${file}`);
         try {
             if (event.once) {
-                client.once(event.name, (...args) =>
-                    event.execute(client, ...args)
-                );
+                client.once(event.name, (...args) => {
+                    if (client.debug) client.logger.log(`${event.name} event triggered`);
+                    event.execute(client, ...args);
+                });
             } else {
-                client.on(event.name, (...args) =>
-                    event.execute(client, ...args)
-                );
+                client.on(event.name, (...args) => {
+                    if (client.debug) client.logger.log(`${event.name} event triggered`);
+                    event.execute(client, ...args);
+                });
             }
             table.addRow(event.name, "✅");
         } catch (e) {

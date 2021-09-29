@@ -23,8 +23,12 @@ router.get("/", async (req, res) => {
 router.get("/add", CheckAuth, async (req, res) => {
     const { client } = req;
     const guild = client.guilds.cache.get(client.config.servers.main.id);
-    await guild.members.fetch();
-    const member = guild.members.cache.get(req.user.id);
+    let member = null;
+    try {
+        member = await guild.members.fetch(req.user.id);
+    } catch(e) {
+        if (client.debug) console.log(e);
+    }
     if (!member)
         return res.redirect(
             "/bots?error=true&message=" +
@@ -91,13 +95,38 @@ router.post("/add", CheckAuth, async (req, res) => {
         apiToken: client.util.genToken(),
     };
     if (data["website"]) {
+        let url = null;
+        try {
+            url = new URL(data["website"]);
+        } catch(e) {
+            if (client.debug) console.log(e);
+        }
+        if (!url) {
+            params.set("message", "Invalid website link");
+            return res.redirect(`/bots/add?${params}`);
+        }
         botData["website"] = data["website"];
     }
     if (data["github"]) {
+        let url = null;
+        try {
+            url = new URL(data["github"]);
+        } catch(e) {
+            if (client.debug) console.log(e);
+        }
+        if (!url) {
+            params.set("message", "Invalid github link");
+            return res.redirect(`/bots/add?${params}`);
+        }
         botData["github"] = data["github"];
     }
     if (data["support"]) {
-        const url = new URL(data["support"]);
+        let url = null;
+        try {
+            url = new URL(data["support"]);
+        } catch(e) {
+            if (client.debug) console.log(e);
+        }
         if (!url) {
             params.set("message", "Invalid support server link");
             return res.redirect(`/bots/add?${params}`);

@@ -35,7 +35,7 @@ module.exports = {
             client.config.channels.uptimeLogs
         );
         const makeEmbed = (botStatus = "offline") => {
-            const em = new MessageEmbed(botStatus)
+            const em = new MessageEmbed()
                 .setAuthor(user.tag, user.displayAvatarURL())
                 .setTitle(
                     `${client.config.emojis?.[botStatus]} Your bot ${

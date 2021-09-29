@@ -22,9 +22,9 @@ router.get("/", async (req, res) => {
 //GET /bots/add
 router.get("/add", CheckAuth, async (req, res) => {
     const { client } = req;
-    const member = await client.guilds.cache
-        .get(client.config.servers.main.id)
-        .members.fetch(req.user.id);
+    const guild = client.guilds.cache.get(client.config.servers.main.id);
+    await guild.members.fetch();
+    const member = guild.members.cache.get(req.user.id);
     if (!member)
         return res.redirect(
             "/bots?error=true&message=" +

@@ -16,6 +16,7 @@ mongoose
     .catch((err) => {
         console.error("Error connecting to MongoDB: ", err);
     });
+//error handler
 process.on("unhandledRejection", (error) => {
     client.logger.log("Unhandled promise rejection", "error");
     console.error(error);
@@ -40,4 +41,33 @@ process.on("unhandledRejection", (error) => {
             })
             .catch(() => {});
 });
+//Delete bots which go under 30% uptime rate
+setInterval(async () => {
+    if (!client) return;
+    const bots = await client.models.Bot.find({});
+    const channel = await client.channels.fetch(client.config.channels.botLogs);
+    bots.forEach((botDB) => {
+        if (botDB.uptime.rate < 30) {
+            client.models.Bot.findOneAndDelete({ botId: botDB.botId });
+            if (channel) {
+                channel.send({
+                    content: `<@${botDB.owner}>`,
+                    embeds: [
+                        {
+                            title: "Bot Deleted :x:",
+                            description: `<@${botDB.botId}> has been removed from the system`,
+                            fields: [
+                                {
+                                    name: "**Reason**",
+                                    value: "Uptime rate has reduced to <30 (less than 30)",
+                                    inline: true,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
+        }
+    });
+}, 30 * 60 * 1000); //every 30 minutes
 client.login(process.env.DISCORD_TOKEN);

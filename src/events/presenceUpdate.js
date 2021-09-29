@@ -50,7 +50,7 @@ module.exports = {
                 )
                 .setColor(botStatus === "offline" ? "RED" : "AQUA")
                 .addField("**Uptime Rate**", `${rate}%`);
-                if (duration) embed.addField("**Duration**", `${duration}`);
+            if (duration) embed.addField("**Duration**", `${duration}`);
             return { content: `<@${botDB.owner}>`, embeds: [embed] };
         };
         let reply, msg;
@@ -64,8 +64,16 @@ module.exports = {
             case "online":
             case "dnd":
             case "idle":
-                const duration = moment.duration(moment(botDB.uptime.lastOfflineAt).diff(new Date().getTime())).humanize();
-                reply = makeEmbed("online", duration);
+                const duration = moment.duration(
+                    moment(botDB.uptime.lastOfflineAt).diff(
+                        new Date().getTime()
+                    )
+                );
+                const hours = duration.hours();
+                if (hours > 0) {
+                    rate = rate - hours;
+                }
+                reply = makeEmbed("online", duration.humanize());
                 try {
                     msg = await uptimeLogs.messages.fetch(
                         `${botDB.uptime?.log}`

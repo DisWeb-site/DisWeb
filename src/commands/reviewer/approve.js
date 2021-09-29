@@ -47,7 +47,8 @@ module.exports = class CMD extends Command {
                 "That bot is already approved by someone!"
             );
         const diff =
-            Number(config.minimumDays) * 24 * 60 * 60 * 1000 - (new Date().getTime() - data.addedAt);
+            Number(config.minimumDays) * 24 * 60 * 60 * 1000 -
+            (new Date().getTime() - data.addedAt);
 
         if (diff > 0) {
             const hours = Math.round(diff / (1000 * 60 * 60));

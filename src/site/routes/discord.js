@@ -85,6 +85,18 @@ router.get("/callback", async (req, res) => {
     /* Change format (from "0": { data }, "1": { data }, etc... to [ { data }, { data } ]) */
     const guilds = [];
     for (const index in userData.guilds) guilds.push(userData.guilds[index]);
+    if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
+        response = await fetch(
+            `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
+            {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${tokens.access_token}` },
+            }
+        );
+        const json = await response.json();
+        if (json.retry_after) await req.client.wait(json.retry_after);
+        else userData.guilds = json;
+    }
     req.session.user = {
         ...userData.infos,
         guilds,

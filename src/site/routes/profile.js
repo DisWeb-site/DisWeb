@@ -14,8 +14,11 @@ router.get("/", CheckAuth, (req, res) => {
 router.get("/:userId", async (req, res) => {
     const { client } = req;
     const user = await client.users.fetch(req.params.userId);
-    if (!user) return res.redirect(`/?error=true&message=${encodeURIComponent("User not found")}`);
-    let bots = await client.models.Bot.find({ });
+    if (!user)
+        return res.redirect(
+            `/?error=true&message=${encodeURIComponent("User not found")}`
+        );
+    let bots = await client.models.Bot.find({});
     bots = bots.filter((bot) => {
         let owners = [bot.owner]; //this format for easily including co-owners for bot after co owners feature is added
         return owners.includes(user.id);

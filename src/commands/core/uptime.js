@@ -29,17 +29,25 @@ module.exports = class CMD extends Command {
         if (args[0]) {
             const bot = await this.client.util.userFromMentionOrId(args[0]);
             if (!bot) return;
-            const botDB = await this.client.models.Bot.findOne({ botId: bot.id });
-            if (!botDB) return message.channel.send("Sorry bot is not found in the db");
+            const botDB = await this.client.models.Bot.findOne({
+                botId: bot.id,
+            });
+            if (!botDB)
+                return message.channel.send("Sorry bot is not found in the db");
             const online = bot.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
-            .duration(botDB.uptime[online ? "lastOnlineFrom" : "lastOfflineAt"])
-            .format(" D [days], H [hours], m [minutes], s [seconds]");
+                .duration(
+                    botDB.uptime[online ? "lastOnlineFrom" : "lastOfflineAt"]
+                )
+                .format(" D [days], H [hours], m [minutes], s [seconds]");
             embed = new MessageEmbed()
                 .setAuthor(bot.tag, bot.displayAvatarURL())
                 .setTitle(`_**${bot.tag}**_`)
                 .addField("**Uptime Rate**", `${botDB.uptime.rate}%`)
-                .addField(`**${online ? "Online" : "Offline"} from**`, `\`\`\`${duration}\`\`\``);
+                .addField(
+                    `**${online ? "Online" : "Offline"} from**`,
+                    `\`\`\`${duration}\`\`\``
+                );
             return message.channel.send({ embeds: [embed] });
         }
         const duration = moment

@@ -67,7 +67,7 @@ setInterval(async () => {
                     ],
                 });
             }
-        } else {
+        } else if (botDB.uptime.rate < 100) {
             botDB.uptime.rate = botDB.uptime.rate + 0.01;
         }
     });

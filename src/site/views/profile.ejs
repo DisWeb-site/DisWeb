@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <%- include('includes/head') %>
+    <body>
+        <%- include('includes/header') %>
+          <!-- ======= Hero Section ======= -->
+          <section id="hero" class="hero d-flex align-items-center">
+              
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up">Profile of <%= user.tag %></h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400"></h2>
+                    </div>
+                </div>
+            </div>
+  
+        </section><!-- End Hero -->
+        <main id="main">
+            <!-- ======= About Section ======= -->
+            <section id="about" class="about">
+                
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3><%= user.tag %>'s bots</h3>
+                                <p>
+                                    <% bots.forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return;} %>
+                                        <div class="card" style="width: 18rem;">
+                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                                <p class="card-text"><%= botDB.descriptions.short %></p>
+                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+      
+            </section><!-- End About Section -->
+        </main>
+        <%- include('includes/footer') %>
+    </body>
+</html>

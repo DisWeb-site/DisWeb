@@ -47,7 +47,7 @@ module.exports = {
                     }!`
                 )
                 .setColor(botStatus === "offline" ? "RED" : "AQUA")
-                .addField("**Uptime Rate**", rate);
+                .addField("**Uptime Rate**", `${rate}%`);
             return em;
         };
         let embed, msg;

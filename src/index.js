@@ -41,7 +41,7 @@ process.on("unhandledRejection", (error) => {
             })
             .catch(() => {});
 });
-//Delete bots which go under 30% uptime rate
+//Delete bots which go under 30% uptime rate & give uptime 0.01% to all other bots
 setInterval(async () => {
     if (!client) return;
     const bots = await client.models.Bot.find({});
@@ -67,7 +67,9 @@ setInterval(async () => {
                     ],
                 });
             }
+        } else {
+            botDB.uptime.rate = botDB.uptime.rate + 0.01;
         }
     });
-}, 30 * 60 * 1000); //every 30 minutes
+}, 1 * 60 * 60 * 1000); //every hour
 client.login(process.env.DISCORD_TOKEN);

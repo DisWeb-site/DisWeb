@@ -56,15 +56,6 @@ module.exports = {
         let reply, msg, duration, hours;
         switch (newPresence?.status?.toLowerCase?.()) {
             case "offline":
-                duration = moment.duration(
-                    moment(botDB.uptime.lastOnlineFrom).diff(
-                        new Date().getTime()
-                    )
-                );
-                hours = duration.hours();
-                if (hours > 0) {
-                    rate = rate + Number(`0.${hours}`);
-                }
                 reply = makeEmbed("offline");
                 msg = await uptimeLogs.send(reply);
                 botDB.uptime.log = msg.id;
@@ -81,7 +72,7 @@ module.exports = {
                 );
                 hours = duration.hours();
                 if (hours > 0) {
-                    rate = rate - Number(`0.${hours}`);
+                    rate = rate - Number(`0.0${hours}`);
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

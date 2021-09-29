@@ -23,7 +23,7 @@ module.exports = class CMD extends Command {
         );
     }
 
-    execute({ message, args }) {
+    async execute({ message, args }) {
         let embed;
         const date = new Date();
         if (args[0]) {

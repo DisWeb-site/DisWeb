@@ -53,15 +53,15 @@ module.exports = {
             if (duration) embed.addField("**Duration**", `${duration}`);
             return { content: `<@${botDB.owner}>`, embeds: [embed] };
         };
-        let reply, msg;
+        let reply, msg, duration, hours;
         switch (newPresence?.status?.toLowerCase?.()) {
             case "offline":
-                const duration = moment.duration(
+                duration = moment.duration(
                     moment(botDB.uptime.lastOnlineFrom).diff(
                         new Date().getTime()
                     )
                 );
-                const hours = duration.hours();
+                hours = duration.hours();
                 if (hours > 0) {
                     rate = rate + Number(`0.${hours}`);
                 }
@@ -74,12 +74,12 @@ module.exports = {
             case "online":
             case "dnd":
             case "idle":
-                const duration = moment.duration(
+                duration = moment.duration(
                     moment(botDB.uptime.lastOfflineAt).diff(
                         new Date().getTime()
                     )
                 );
-                const hours = duration.hours();
+                hours = duration.hours();
                 if (hours > 0) {
                     rate = rate - Number(`0.${hours}`);
                 }

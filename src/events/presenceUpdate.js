@@ -46,6 +46,7 @@ module.exports = {
                             : "came back online"
                     }!`
                 )
+                .setColor(botStatus === "offline" ? "RED" : "AQUA")
                 .setDescription(`${user}`)
                 .addField("**Uptime Rate**", rate);
             return em;

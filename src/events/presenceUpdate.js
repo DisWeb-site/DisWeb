@@ -60,6 +60,7 @@ module.exports = {
                 msg = await uptimeLogs.send(reply);
                 botDB.uptime.log = msg.id;
                 botDB.uptime.lastOfflineAt = Date.now();
+                botDB.uptime.lastOnlineFrom = null;
                 break;
             case "online":
             case "dnd":
@@ -84,6 +85,7 @@ module.exports = {
                 }
                 botDB.uptime.log = null;
                 botDB.uptime.lastOfflineAt = null;
+                botDB.uptime.lastOnlineFrom = Date.now();
                 break;
             default:
                 console.log(`Unknown status: ${newPresence.status}`);

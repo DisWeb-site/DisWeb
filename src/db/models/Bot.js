@@ -98,6 +98,10 @@ const botSchema = new mongoose.Schema({
             type: Number,
             required: false,
         },
+        lastOnlineFrom: {
+            type: Number,
+            required: false,
+        },
     },
 });
 

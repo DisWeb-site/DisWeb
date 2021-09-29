@@ -63,7 +63,7 @@ module.exports = {
                 );
                 const hours = duration.hours();
                 if (hours > 0) {
-                    rate = rate + Number(`0.${hours}`, 10);
+                    rate = rate + Number(`0.${hours}`);
                 }
                 reply = makeEmbed("offline");
                 msg = await uptimeLogs.send(reply);
@@ -81,7 +81,7 @@ module.exports = {
                 );
                 const hours = duration.hours();
                 if (hours > 0) {
-                    rate = rate - Number(`0.${hours}`, 10);
+                    rate = rate - Number(`0.${hours}`);
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

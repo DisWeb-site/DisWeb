@@ -14,7 +14,7 @@ const { MessageEmbed } = require("discord.js");
         const { user } = newPresence;
         let rate = botDB.uptime?.rate ?? 99;
         const uptimeLogs = await client.channels.fetch(client.config.channels.uptimeLogs);
-        const makeEmbed = () => {
+        const makeEmbed = (botStatus) => {
             const em = new MessageEmbed(botStatus)
                 .setAuthor(user.tag, user.displayAvatarURL())
                 .setTitle(`${client.config.emojis?.[botStatus]} Your bot ${user.tag} ${botStatus === "offline" ? "went offline" : "came back online"}!`)

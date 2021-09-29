@@ -4,6 +4,8 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { MessageEmbed } = require("discord.js");
+const moment = require("moment");
+require("moment-duration-format");
 module.exports = {
     name: "presenceUpdate",
     once: false,
@@ -34,8 +36,8 @@ module.exports = {
         const uptimeLogs = await client.channels.fetch(
             client.config.channels.uptimeLogs
         );
-        const makeEmbed = (botStatus = "offline") => {
-            const em = new MessageEmbed()
+        const makeEmbed = (botStatus = "offline", duration = null) => {
+            const embed = new MessageEmbed()
                 .setAuthor(user.tag, user.displayAvatarURL())
                 .setTitle(
                     `${client.config.emojis?.[botStatus]} Your bot ${
@@ -48,7 +50,8 @@ module.exports = {
                 )
                 .setColor(botStatus === "offline" ? "RED" : "AQUA")
                 .addField("**Uptime Rate**", `${rate}%`);
-            return em;
+                if (duration) embed.addField("**Duration**", `${duration}`);
+            return embed;
         };
         let embed, msg;
         switch (newPresence?.status?.toLowerCase?.()) {
@@ -61,7 +64,8 @@ module.exports = {
             case "online":
             case "dnd":
             case "idle":
-                embed = makeEmbed("online");
+                const duration = moment.duration(moment(botDB.uptime.lastOfflineAt).diff(new Date().getTime())).humanize();
+                embed = makeEmbed("online", duration);
                 try {
                     msg = await uptimeLogs.messages.fetch(
                         `${botDB.uptime?.log}`

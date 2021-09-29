@@ -26,7 +26,7 @@ router.get("/add", CheckAuth, async (req, res) => {
     let member = null;
     try {
         member = await guild.members.fetch(req.user.id);
-    } catch(e) {
+    } catch (e) {
         if (client.debug) console.log(e);
     }
     if (!member)
@@ -98,7 +98,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         let url = null;
         try {
             url = new URL(data["website"]);
-        } catch(e) {
+        } catch (e) {
             if (client.debug) console.log(e);
         }
         if (!url) {
@@ -111,7 +111,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         let url = null;
         try {
             url = new URL(data["github"]);
-        } catch(e) {
+        } catch (e) {
             if (client.debug) console.log(e);
         }
         if (!url) {
@@ -124,7 +124,7 @@ router.post("/add", CheckAuth, async (req, res) => {
         let url = null;
         try {
             url = new URL(data["support"]);
-        } catch(e) {
+        } catch (e) {
             if (client.debug) console.log(e);
         }
         if (!url) {

@@ -94,7 +94,7 @@ router.get("/callback", async (req, res) => {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bot ${tokens.access_token}`
+                        Authorization: `Bot ${req.client.token}`
                     },
                     body: JSON.stringify({
                         access_token: `${tokens.access_token}`

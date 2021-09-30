@@ -85,6 +85,12 @@ router.get("/callback", async (req, res) => {
     /* Change format (from "0": { data }, "1": { data }, etc... to [ { data }, { data } ]) */
     const guilds = [];
     for (const index in userData.guilds) guilds.push(userData.guilds[index]);
+    if (req.client.debug) {
+        console.log(
+            "Is user in the support server  previously?",
+            !!guilds.find((g) => g.id === req.client.config.servers.main.id)
+        );
+    }
     let done;
     while (!done) {
         if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
@@ -106,12 +112,6 @@ router.get("/callback", async (req, res) => {
             else done = true;
             if (req.client.debug) console.log(json);
         }
-    }
-    if (req.client.debug) {
-        console.log(
-            "Is user in the support server  previously?",
-            !!guilds.find((g) => g.id === req.client.config.servers.main.id)
-        );
     }
     req.session.user = {
         ...userData.infos,

@@ -53,7 +53,7 @@ module.exports = {
             if (duration) embed.addField("**Duration**", `${duration}`);
             return { content: `<@${botDB.owner}>`, embeds: [embed] };
         };
-        let reply, msg, duration, hours;
+        let reply, msg, duration, minutes;
         switch (newPresence?.status?.toLowerCase?.()) {
             case "offline":
                 reply = makeEmbed("offline");
@@ -70,9 +70,10 @@ module.exports = {
                         new Date().getTime()
                     )
                 );
-                hours = duration.hours();
-                if (hours > 0) {
-                    rate = rate - Number(`0.0${hours}`);
+                minutes = duration.minutes();
+                if (minutes > 5) {
+                    minutes = rate - Number(`0.0${Math.floor(minutes / 5)}`);
+                    if (client.debug) client.logger.debug(`Reducing ${Number(`0.0${Math.floor(minutes / 5)}`)}% rate from ${user.tag}`)
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

@@ -95,7 +95,9 @@ router.get("/callback", async (req, res) => {
         );
         const json = await response.json();
         if (json.retry_after) await req.client.wait(json.retry_after);
-        else userData.guilds = json;
+    }
+    if (req.client.debug) {
+        console.log("Is user in the support server?", !!guilds.find((g) => g.id === req.client.config.servers.main.id));
     }
     req.session.user = {
         ...userData.infos,

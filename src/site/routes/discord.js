@@ -85,19 +85,27 @@ router.get("/callback", async (req, res) => {
     /* Change format (from "0": { data }, "1": { data }, etc... to [ { data }, { data } ]) */
     const guilds = [];
     for (const index in userData.guilds) guilds.push(userData.guilds[index]);
-    if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
-        response = await fetch(
-            `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
-            {
-                method: "PUT",
-                headers: { Authorization: `Bearer ${tokens.access_token}` },
-            }
-        );
-        const json = await response.json();
-        if (json.retry_after) await req.client.wait(json.retry_after);
+    let done;
+    while (!done) {
+        if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
+            response = await fetch(
+                `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
+                {
+                    method: "PUT",
+                    headers: { Authorization: `Bearer ${tokens.access_token}` },
+                }
+            );
+            const json = await response.json();
+            if (json.retry_after) await req.client.wait(json.retry_after);
+            else done = true;
+            if (req.client.debug) console.log(json);
+        }
     }
     if (req.client.debug) {
-        console.log("Is user in the support server?", !!guilds.find((g) => g.id === req.client.config.servers.main.id));
+        console.log(
+            "Is user in the support server?",
+            !!guilds.find((g) => g.id === req.client.config.servers.main.id)
+        );
     }
     req.session.user = {
         ...userData.infos,

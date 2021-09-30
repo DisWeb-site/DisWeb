@@ -21,8 +21,12 @@ router.post("/stats/:botId", async (req, res) => {
             message: "Either Server count or Shard count should be provided",
         });
     }
-    const botData = await client.util.fetchBot(botId);
-    const { botDB } = botData;
+    let botDB;
+    try {
+        botDB = await client.util.fetchBot(botId);
+    } catch(e) {
+        //nothing required to do
+    }
     if (!botDB) {
         return res
             .status(400)
@@ -31,7 +35,7 @@ router.post("/stats/:botId", async (req, res) => {
     botDB.stats = stats;
     botDB.markModified("stats");
     await botDB.save();
-    res.json({ error: false, message: "Updated server count" });
+    res.json({ error: false, message: "Updated bot stats" });
     res.end();
 });
 module.exports = router;

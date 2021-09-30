@@ -37,19 +37,6 @@ class DisWeb extends Client {
         const { window } = new JSDOM("");
         const DOMPurify = createDOMPurify(window);
         this.marked = (text) => DOMPurify.sanitize(render(text));
-        Array.prototype.diff = (arr2, highlight = true) => {
-            if (!arr2)
-                throw new TypeError(
-                    "Array#diff: argument 1 (arr2) is not provided"
-                );
-            return this.filter((x) => !arr2.includes(x))
-                .map((x) => (highlight ? `- ${x}` : x))
-                .concat(
-                    arr2
-                        .filter((x) => !this.includes(x))
-                        .map((x) => (highlight ? `+ ${x}` : x))
-                ); //symmetric difference
-        };
         this.initialize();
     }
 

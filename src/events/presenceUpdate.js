@@ -97,6 +97,7 @@ module.exports = {
                 console.log(`Unknown status: ${newPresence.status}`);
                 break;
         }
+        botDB.uptime.rate = rate;
         await botDB.save();
     },
 };

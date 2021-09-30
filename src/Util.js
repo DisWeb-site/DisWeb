@@ -51,7 +51,7 @@ class Util {
 
     async fetchUser(userData, client) {
         //const { client } = this;
-        if (userData.guilds) {
+        /*if (userData.guilds) {
             for (let i = 0; i < userData.guilds.length; i++) {
                 //let guild = userData.guilds[i];
                 const guild = userData.guilds[i];
@@ -69,7 +69,7 @@ class Util {
                     guild.botInvited = true;
                 } else {
                     guild.botInvited = false;
-                }*/
+                }*/ /*
                 guild.admin = admin;
                 guild.manageUrl = `/manage/${guild.id}`;
                 guild.iconURL = guild.icon
@@ -78,7 +78,7 @@ class Util {
                 userData.guilds[i] = guild;
             }
             userData.displayedGuilds = userData.guilds.filter((g) => g.admin);
-        }
+        }*/
         client.db.findOrCreateUser(userData.id);
         const user = await client.users.fetch(userData.id);
         return { user, userData };
@@ -230,6 +230,21 @@ class Util {
         return result;
     }
 
+    diff(arr1, arr2, highlight = true) {
+        if (!arr2)
+            throw new TypeError(
+                "Array#diff: argument 1 (arr2) is not provided"
+            );
+        return arr1
+            .filter((x) => !arr2.includes(x))
+            .map((x) => (highlight ? `- ${x}` : x))
+            .concat(
+                arr2
+                    .filter((x) => !arr1.includes(x))
+                    .map((x) => (highlight ? `+ ${x}` : x))
+            ); //symmetric difference
+    }
+
     async handleBotData(data) {
         const { client } = this;
         const params = new URLSearchParams();
@@ -297,6 +312,7 @@ class Util {
             }
             botData["support"] = data["support"];
         }
+        return data;
     }
 }
 module.exports = Util;

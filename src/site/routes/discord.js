@@ -87,7 +87,7 @@ router.get("/callback", async (req, res) => {
     for (const index in userData.guilds) guilds.push(userData.guilds[index]);
     if (req.client.debug) {
         console.log(
-            "Is user in the support server  previously?",
+            "Is user in the support server previously?",
             !!guilds.find((g) => g.id === req.client.config.servers.main.id)
         );
     }

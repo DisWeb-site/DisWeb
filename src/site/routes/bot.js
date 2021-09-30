@@ -4,6 +4,7 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const axios = require("axios");
+const { MessageEmbed } = require("discord.js");
 const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
@@ -70,7 +71,7 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
     });
 });
 //POST /bot/:botId/edit
-router.get("/:botId/edit", CheckAuth, async (req, res) => {
+router.post("/:botId/edit", CheckAuth, async (req, res) => {
     const { client } = req;
     const params = new URLSearchParams();
     const botId = req.params.botId;
@@ -104,20 +105,21 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
     if (typeof botData === "string") {
         return res.redirect(botData);
     }
-    const diff = `${Object.values(botData)
-        .diff(Object.values(botDB.toJSON()))
-        .join("\n")}`;
+    if (client.debugLevel > 0) console.log("Submitted bot data", botData);
+    /*const diff = `${client.util
+        .diff(Object.values(botData), Object.values(botDB.toJSON()))
+        .join("\n")}`;*/
     for (const i in botData) {
-        if (botDB?.[i] === botData[i]) return;
         botDB[i] = botData[i];
     }
+    if (client.debugLevel > 0) console.log("DB data after modification", botDB);
     await botDB.save();
     const botLogs = await client.channels.fetch(client.config.channels.botLogs);
     const embed = new MessageEmbed()
         .setTitle("Bot Edited")
         .setDescription(`${bot} (${bot.id}) is edited`)
-        .addField("**Owner**", `<@${botDB.owner}> (${botDB.owner})`)
-        .addField("**Diff**", "```diff" + diff + "```");
+        .addField("**Owner**", `<@${botDB.owner}> (${botDB.owner})`);
+        //.addField("**Diff**", "```diff" + diff + "```");
     botLogs.send({
         content: `<@${req.user.id}>`,
         embeds: [embed],

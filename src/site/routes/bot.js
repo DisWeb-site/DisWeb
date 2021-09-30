@@ -72,8 +72,10 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
 //POST /bot/:botId/edit
 router.get("/:botId/edit", CheckAuth, async (req, res) => {
     const { client } = req;
-    const id = req.params.botId;
-    const botData = await client.util.fetchBot(id);
+    const params = new URLSearchParams();
+    const botId = req.params.botId;
+    const data = req.body;
+    let botData = await client.util.fetchBot(botId);
     if (typeof botData === "string") {
         return res.redirect(botData);
     }
@@ -84,7 +86,46 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
                 encodeURIComponent("You are not this bot's owner!!")
         );
     }
-    //edit bot backend, not done yet
+    if (client.debug) console.log(data);
+    const reqFields = ["shortDesc", "longDesc", "prefix"];
+    params.set("error", "true");
+    for (let i = 0; i < reqFields.length; i++) {
+        const field = reqFields[i];
+        if (!Object.keys(data).includes(field)) {
+            params.set("message", "Required fields are missing");
+            return res.redirect(`/bots/add?${params}`);
+        }
+    }
+    botData = await client.util.handleBotData({
+        ...data,
+        owner: req.user.id,
+        botId,
+    });
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const diff = `${Object.values(botData)
+        .diff(Object.values(botDB.toJSON()))
+        .join("\n")}`;
+    for (const i in botData) {
+        if (botDB?.[i] === botData[i]) return;
+        botDB[i] = botData[i];
+    }
+    await botDB.save();
+    const botLogs = await client.channels.fetch(client.config.channels.botLogs);
+    const embed = new MessageEmbed()
+        .setTitle("Bot Edited")
+        .setDescription(`${bot} (${bot.id}) is edited`)
+        .addField("**Owner**", `<@${botDB.owner}> (${botDB.owner})`)
+        .addField("**Diff**", "```diff" + diff + "```");
+    botLogs.send({
+        content: `<@${req.user.id}>`,
+        embeds: [embed],
+    });
+    params.delete("error");
+    params.set("success", "true");
+    params.set("message", "Successfully edited your bot!");
+    res.redirect(`/bot/${botId}?${params}`);
 });
 //GET /bot/:botId/analytics
 router.get("/:botId/analytics", CheckAuth, async (req, res) => {

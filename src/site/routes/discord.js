@@ -92,18 +92,18 @@ router.get("/callback", async (req, res) => {
         );
     }
     let done;
-    while (!done) {
-        if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
+    if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
+        while (!done) {
             response = await fetch(
                 `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
                 {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bot ${req.client.token}`
+                        Authorization: `Bot ${req.client.token}`,
                     },
                     body: JSON.stringify({
-                        access_token: `${tokens.access_token}`
+                        access_token: `${tokens.access_token}`,
                     }),
                 }
             );

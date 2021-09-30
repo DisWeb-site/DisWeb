@@ -4,7 +4,6 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { MessageEmbed } = require("discord.js");
-const axios = require("axios");
 const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
@@ -66,7 +65,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     try {
         check = await client.models.Bot.findOne({ botId });
     } catch (e) {
-        if (client.debug) console.log(e);
+        //nothing required to be done, if error ocurres then the bot is not in the db already
     }
     params.set("error", "true");
     if (isNaN(botId)) {
@@ -83,76 +82,19 @@ router.post("/add", CheckAuth, async (req, res) => {
             return res.redirect(`/bots/add?${params}`);
         }
     }
-    const botData = {
-        botId: botId,
-        prefix: data.prefix,
-        descriptions: {
-            short: data.shortDesc,
-            long: data.longDesc,
-        },
+    const botData = await client.util.handleBotData({
+        ...data,
         owner: req.user.id,
-        addedAt: Date.now(),
-        apiToken: client.util.genToken(),
-    };
-    if (data["website"]) {
-        let url = null;
-        try {
-            url = new URL(data["website"]);
-        } catch (e) {
-            if (client.debug) console.log(e);
-        }
-        if (!url) {
-            params.set("message", "Invalid website link");
-            return res.redirect(`/bots/add?${params}`);
-        }
-        botData["website"] = data["website"];
-    }
-    if (data["github"]) {
-        let url = null;
-        try {
-            url = new URL(data["github"]);
-        } catch (e) {
-            if (client.debug) console.log(e);
-        }
-        if (!url) {
-            params.set("message", "Invalid github link");
-            return res.redirect(`/bots/add?${params}`);
-        }
-        botData["github"] = data["github"];
-    }
-    if (data["support"]) {
-        let url = null;
-        try {
-            url = new URL(data["support"]);
-        } catch (e) {
-            if (client.debug) console.log(e);
-        }
-        if (!url) {
-            params.set("message", "Invalid support server link");
-            return res.redirect(`/bots/add?${params}`);
-        }
-        const code = url.pathname.replace("invite/", "");
-        const json = await axios.get(
-            `https://discordapp.com/api/invite/${code}`
-        );
-        if (json.message === "Unknown Invite") {
-            params.set(
-                "message",
-                "Invalid support server invite code or you used a url shortner"
-            );
-            res.redirect(`/bots/add?${params}`);
-            return res.end();
-        } else {
-            // the invite is valid, nvm
-        }
-        botData["support"] = data["support"];
+    });
+    if (typeof botData === "string") {
+        return res.redirect(botData);
     }
     if (client.debug) client.logger.debug("Adding bot to DB");
     const botDB = new client.models.Bot(botData);
     await botDB.save();
     const botLogs = await client.channels.fetch(client.config.channels.botLogs);
     const embed = new MessageEmbed()
-        .setTitle(`New Bot Added`)
+        .setTitle("New Bot Added")
         .setDescription(`${bot} (${bot.id}) is added by <@${botDB.owner}>`);
     botLogs.send({
         embeds: [embed],

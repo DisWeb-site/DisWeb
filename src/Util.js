@@ -4,6 +4,7 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Permissions } = require("discord.js");
+const axios = require("axios");
 class Util {
     constructor(client) {
         this.client = client ?? null;
@@ -227,6 +228,75 @@ class Util {
 
         if (this.client?.debug) console.log(count, array);
         return result;
+    }
+
+    async handleBotData(data) {
+        const { client } = this;
+        const params = new URLSearchParams();
+        params.set("error", "true");
+        const botData = {
+            botId: data.botId,
+            prefix: data.prefix,
+            descriptions: {
+                short: data.shortDesc,
+                long: data.longDesc,
+            },
+            owner: data.owner,
+            addedAt: Date.now(),
+            apiToken: this.genToken(),
+        };
+        if (data["website"]) {
+            let url = null;
+            try {
+                url = new URL(data["website"]);
+            } catch (e) {
+                if (client.debug) console.log(e);
+            }
+            if (!url) {
+                params.set("message", "Invalid website link");
+                return `/bots/add?${params}`;
+            }
+            botData["website"] = data["website"];
+        }
+        if (data["github"]) {
+            let url = null;
+            try {
+                url = new URL(data["github"]);
+            } catch (e) {
+                if (client.debug) console.log(e);
+            }
+            if (!url) {
+                params.set("message", "Invalid github link");
+                return `/bots/add?${params}`;
+            }
+            botData["github"] = data["github"];
+        }
+        if (data["support"]) {
+            let url = null;
+            try {
+                url = new URL(data["support"]);
+            } catch (e) {
+                if (client.debug) console.log(e);
+            }
+            if (!url) {
+                params.set("message", "Invalid support server link");
+                return `/bots/add?${params}`;
+            }
+            const code = url.pathname.replace("invite/", "");
+            const json = await axios.get(
+                `https://discord.com/api/invite/${code}`
+            );
+            if (json.message === "Unknown Invite") {
+                params.set(
+                    "message",
+                    "Invalid support server invite code or you used a url shortner"
+                );
+                return `/bots/add?${params}`;
+            } else {
+                // the invite is valid, nvm
+            }
+            botData["support"] = data["support"];
+        }
     }
 }
 module.exports = Util;

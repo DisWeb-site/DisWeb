@@ -73,7 +73,12 @@ module.exports = {
                 minutes = duration.minutes();
                 if (minutes > 5) {
                     minutes = rate - Number(`0.0${Math.floor(minutes / 5)}`);
-                    if (client.debug) client.logger.debug(`Reducing ${Number(`0.0${Math.floor(minutes / 5)}`)}% rate from ${user.tag}`)
+                    if (client.debug)
+                        client.logger.debug(
+                            `Reducing ${Number(
+                                `0.0${Math.floor(minutes / 5)}`
+                            )}% rate from ${user.tag}`
+                        );
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

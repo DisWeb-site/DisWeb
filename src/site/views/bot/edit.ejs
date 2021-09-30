@@ -21,56 +21,50 @@
             <section id="forms" class="forms">
                 <div class="container" data-aos="fade-up">
                     <header class="section-header">
-                        <h2>Add your bot</h2>
-                        <p>Please put your bot's details below</p>
+                        <h2>Edit bot</h2>
+                        <p></p>
                     </header>
                     <div class="col-lg-6">
                         <form action="/bots/add" method="POST" id="form" class="form">
                             <div class="row gy-4">
                                 <div class="col-md-6">
-                                    <label for="botId">Bot / Client Id</label><br>
-                                    <input class="form-control" type="number" placeholder="ID" name="botId" id="botId" required>
-                                </div>
-
-                                <div class="col-md-6">
                                     <label for="prefix">Prefix</label><br>
                                     <small>What keyword or phrase does your bot react to?</small>
-                                    <input class="form-control" type="text" placeholder="Enter your bot's prefix" name="prefix" id="prefix" required maxlength="20">
+                                    <input class="form-control" type="text" placeholder="Enter your bot's prefix" name="prefix" id="prefix" required maxlength="20" value="<%= botDB.prefix %>">
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="shortDesc">Short Description</label><br>
                                     <small>A brief description of what your bot is about.</small>
-                                    <input class="form-control" type="text" placeholder="A cool bot with features like ..." name="shortDesc" id="shortDesc" required maxlength="300">
+                                    <input class="form-control" type="text" placeholder="A cool bot with features like ..." name="shortDesc" id="shortDesc" required maxlength="300" value="<%= botDB.descriptions.short %>">
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="longDesc">Long Description</label><br>
                                     <small>Tell us what your bot can do. We want to hear the whole story!</small>
-                                    <textarea class="form-control" rows="6" placeholder="A brief description for your bot" name="longDesc" id="longDesc" required maxlength="5000"></textarea>
+                                    <textarea class="form-control" rows="6" placeholder="A brief description for your bot" name="longDesc" id="longDesc" required maxlength="5000" value="<%= botDB.descriptions.long %>"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="support">Support Server (optional)</label><br>
                                     <small>People might have many questions about your bot, make sure you can answer them!</small>
-                                    <input class="form-control" type="text" placeholder="A permanent invite link to your bot's support server" name="support" id="support">
+                                    <input class="form-control" type="text" placeholder="A permanent invite link to your bot's support server" name="support" id="support" value="<%= botDB.support ?? "" %>">
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="github">GitHub (Optional)</label><br>
                                     <small>Is your bot open-source? We love that! Post your link for some free stars.</small>
-                                    <input class="form-control" type="text" placeholder="https://github.com/DisWeb-site/DisWeb" name="github" id="github">
+                                    <input class="form-control" type="text" placeholder="https://github.com/DisWeb-site/DisWeb" name="github" id="github" value="<%= botDB.github ?? "" %>">
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="website">WebSite (Optional)</label><br>
                                     <small>Got a website? Rep it on your page!</small>
-                                    <input class="form-control" type="text" placeholder="https://disweb.gg" name="website" id="website">
+                                    <input class="form-control" type="text" placeholder="https://disweb.gg" name="website" id="website" value="<%= botDB.website ?? "" %>">
                                 </div>
 
                                 <div class="col-md-12 text-center">
-                                    <p>Make sure you have read the <a href="/bots/rules">Bot rules</a>.</p>
-                                    <button type="submit">Add bot</button>
+                                    <button type="submit">Edit bot</button>
                                 </div>
                             </div>
                         </form>

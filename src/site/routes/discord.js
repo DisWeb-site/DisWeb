@@ -109,7 +109,7 @@ router.get("/callback", async (req, res) => {
     }
     if (req.client.debug) {
         console.log(
-            "Is user in the support server?",
+            "Is user in the support server  previously?",
             !!guilds.find((g) => g.id === req.client.config.servers.main.id)
         );
     }

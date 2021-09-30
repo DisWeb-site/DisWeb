@@ -92,7 +92,13 @@ router.get("/callback", async (req, res) => {
                 `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
                 {
                     method: "PUT",
-                    headers: { Authorization: `Bearer ${tokens.access_token}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bot ${tokens.access_token}`
+                    },
+                    body: JSON.stringify({
+                        access_token: `${tokens.access_token}`
+                    }),
                 }
             );
             const json = await response.json();

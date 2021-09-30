@@ -103,13 +103,13 @@ router.get("/callback", async (req, res) => {
             );
             const json = await response.json();
             if (json.retry_after) await req.client.wait(json.retry_after);
-            else done = true;
+            else if (!json.message && !json.code) done = true;
             if (req.client.debug) console.log(json);
         }
     }
     if (req.client.debug) {
         console.log(
-            "Is user in the support server?",
+            "Is user in the support server previously?",
             !!guilds.find((g) => g.id === req.client.config.servers.main.id)
         );
     }

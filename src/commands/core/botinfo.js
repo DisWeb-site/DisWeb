@@ -32,7 +32,7 @@ module.exports = class CMD extends Command {
             );
         const embed = new MessageEmbed()
             .setColor("#7289da")
-            .addField("Name", bot.username, true)
+            .setTitle(`_**${bot.tag}**_`)
             .addField("ID", bot.id, true)
             .addField(
                 "Status",

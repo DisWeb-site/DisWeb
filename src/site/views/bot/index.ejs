@@ -80,7 +80,7 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open("DELETE", url);
                 xhr.onload = function() {
-                    if (xhr.status != 200) {
+                    if (xhr.status === 200) {
                         window.location.href = `<%= redirectAfterDeleteURL %>?success=true&message=${encodeURIComponent("Bot Deleted")}`;
                     } else {
                         window.location.href = `<%= redirectAfterDeleteURL %>?error=true&message=${encodeURIComponent("Could not delete bot")}`;

@@ -63,5 +63,12 @@ class DisWeb extends Client {
     get models() {
         return this.db.models;
     }
+
+    get servers() {
+        return {
+            main: this.guilds.cache.get(this.config.servers.main.id),
+            test: this.guilds.cache.get(this.config.servers.test.id),
+        }
+    }
 }
 module.exports = DisWeb;

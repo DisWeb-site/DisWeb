@@ -83,7 +83,7 @@ module.exports = class CMD extends Command {
             );
         if (!botMember2)
             return message.channel.send(
-                `Uhhhhhh. Hey, did you test the bot, it does not even exist in the test server!`
+                "Uhhhhhh. Hey, did you test the bot, it does not even exist in the test server!"
             );
         const approving = await message.channel.send(
             "Please wait, approving the bot..."

@@ -79,6 +79,10 @@ module.exports = {
                                 `0.0${Math.floor(minutes / 5)}`
                             )}% rate from ${user.tag}`
                         );
+                } else if (client.debug) {
+                    client.logger.log(
+                        `${user.tag} was offline for ${minutes} minute(s)`
+                    );
                 }
                 reply = makeEmbed("online", duration.humanize());
                 try {

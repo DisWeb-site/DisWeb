@@ -26,6 +26,7 @@ module.exports = {
         //some emojis
         approved: "<:YesMark:891123032725282877>",
         rejected: "<:NoMark:891122870938378260>",
+        deleted: "<:NoMark:891122870938378260>",
         offline: "<:offline:892453833664520302>",
         online: "<:online:892453879487283221>",
     },

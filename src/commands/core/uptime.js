@@ -34,7 +34,8 @@ module.exports = class CMD extends Command {
             });
             if (!botDB)
                 return message.channel.send("Sorry bot is not found in the db");
-            const online = bot.presence?.status?.toLowerCase?.() === "online";
+            const member = await this.client.servers.main.members.fetch(bot.id);
+            const online = member.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
                 .duration(
                     botDB.uptime[online ? "lastOnlineFrom" : "lastOfflineAt"]

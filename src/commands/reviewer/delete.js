@@ -9,14 +9,14 @@ module.exports = class CMD extends Command {
     constructor(client) {
         super(
             {
-                name: "reject",
-                description: "Reject a bot",
+                name: "delete",
+                description: "Delete a bot",
                 requirements: {
                     guildOnly: true,
                     reviewerOnly: true,
                 },
                 usage: "[@mention/bot id] [reason]",
-                aliases: ["decline", "deny"],
+                aliases: ["remove"],
                 disabled: false,
                 category: "Bot reviewer",
             },
@@ -29,27 +29,27 @@ module.exports = class CMD extends Command {
         const botModel = models.Bot;
         const bot = await this.client.util.userFromMentionOrId(args[0]);
         if (!bot)
-            return message.channel.send("Please mention a bot to reject!");
+            return message.channel.send("Please mention a bot to delete!");
         if (!bot.bot) return message.channel.send("That is not a real bot!");
         const reason = args.slice(1).join(" ");
         if (!reason)
             return message.channel.send(
-                "Please provide a reason to reject this bot!"
+                "Please provide a reason to delete this bot!"
             );
         const data = await botModel.findOne({ botId: bot.id });
         if (!data)
             return message.channel.send(
                 "That bot is not added or is rejected!"
             );
-        //if (data.owner === message.author.id) return message.reply("Oh no... Bot owners can't reject their own bots.");
-        if (data.approved)
-            return message.channel.send("This bot is already approved!");
-        //let botMember, botMember2;
-        let botMember2;
+        if (!data.approved)
+            return message.channel.send(
+                "This bot is not yet approved, so use reject command!"
+            );
+        let botMember, botMember2;
         try {
-            /*botMember = await this.client.guilds.cache
+            botMember = await this.client.guilds.cache
                 .get(config.servers.main.id)
-                .members.fetch(bot.id);*/ //not required
+                .members.fetch(bot.id);
             botMember2 = await this.client.guilds.cache
                 .get(config.servers.test.id)
                 .members.fetch(bot.id);
@@ -57,15 +57,15 @@ module.exports = class CMD extends Command {
             if (this.client.debug) console.log(e);
         }
         const rejecting = await message.channel.send(
-            "Please wait, rejecting bot..."
+            "Please wait, deleting bot..."
         );
         await botModel.findOneAndDelete({ botId: bot.id });
         const botLogs = await this.client.channels.fetch(
             config.channels.botLogs
         );
         const embed = new MessageEmbed()
-            .setTitle(`Bot Rejected ${config.emojis.rejected}`)
-            .setDescription(`${bot} is rejected! :x:`)
+            .setTitle(`Bot Deleted ${config.emojis.deleted}`)
+            .setDescription(`${bot} is deleted! :x:`)
             .addField("Reviewer", `${message.author} (${message.author.id})`)
             .addField("Reason", `${reason}`);
         const reply = {
@@ -76,9 +76,10 @@ module.exports = class CMD extends Command {
         botLogs.send(reply);
         const owner = (await this.client.users.fetch(data.owner)) ?? null;
         if (owner) owner.send(reply);
+        if (botMember && botMember.kickable) botMember.kick();
         if (botMember2 && botMember2.kickable) botMember2.kick();
         rejecting.edit(
-            `:white_check_mark: Success! ${bot.tag} has been rejected!`
+            `:white_check_mark: Success! ${bot.tag} has been deleted!`
         );
     }
 };

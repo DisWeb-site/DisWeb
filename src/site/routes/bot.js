@@ -17,7 +17,32 @@ router.get("/:botId", async (req, res) => {
         return res.redirect(botData);
     }
     const { bot, botDB } = botData;
-    if (!botDB.approved && (!req.user || req.user.id !== botDB.owner))
+    let member;
+    try {
+        if (req.user)
+            member = await client.guilds.cache
+                .get(client.config.servers.main.id)
+                .members.fetch(req.user.id);
+    } catch (e) {}
+    let reviewerCheck = false;
+    if (req.user) {
+        if (
+            typeof client.config.roles.reviewer === "string" &&
+            member.roles.cache.has(client.config.roles.reviewer)
+        ) {
+            reviewerCheck = true;
+        } else if (typeof client.config.roles.reviewer !== "string") {
+            const has = [];
+            message.member.roles.cache.forEach((r) => {
+                if (client.config.roles.reviewer.includes(r.id)) has.push(r.id);
+            });
+            if (has && has.length && has[0]) reviewerCheck = true;
+        }
+    }
+    if (
+        !botDB.approved &&
+        (!req.user || (req.user.id !== botDB.owner && !reviewerCheck))
+    )
         return res.redirect(
             `/bots/add?error=true&message=${encodeURIComponent(
                 "Bot is not approved so you can't view it.<br>\nIf you are this bot's owner then please login and try again"
@@ -47,7 +72,8 @@ router.get("/:botId", async (req, res) => {
         bot,
         botDB,
         owner,
-        redirectAfterDeleteURL: `${new URL(req.currentURL).pathname = "/bots"}`
+        redirectAfterDeleteURL: `${(new URL(req.currentURL).pathname =
+            "/bots")}`,
     });
 });
 //GET /bot/:botId/edit
@@ -75,7 +101,7 @@ router.get("/:botId/edit", CheckAuth, async (req, res) => {
 router.post("/:botId/edit", CheckAuth, async (req, res) => {
     const { client } = req;
     const params = new URLSearchParams();
-    const botId = req.params.botId;
+    const { botId } = req.params;
     const data = req.body;
     let botData = await client.util.fetchBot(botId);
     if (typeof botData === "string") {
@@ -120,7 +146,7 @@ router.post("/:botId/edit", CheckAuth, async (req, res) => {
         .setTitle("Bot Edited")
         .setDescription(`${bot} (${bot.id}) is edited`)
         .addField("**Owner**", `<@${botDB.owner}> (${botDB.owner})`);
-        //.addField("**Diff**", "```diff" + diff + "```");
+    //.addField("**Diff**", "```diff" + diff + "```");
     botLogs.send({
         content: `<@${req.user.id}>`,
         embeds: [embed],
@@ -169,10 +195,27 @@ router.delete("/:botId/", CheckAuth, async (req, res) => {
                 encodeURIComponent("You are not this bot's owner!!")
         );
     }
-    const member = await client.guilds.cache.get(client.config.servers.main.id).members.fetch(bot.id);
+    const member = await client.guilds.cache
+        .get(client.config.servers.main.id)
+        .members.fetch(bot.id);
     if (member.kickable) member.kick();
-    else client.logger.error(`${bot.tag} (${bot.id}) has been deleted from the db, but it can't be kicked in the main server`);
+    else
+        client.logger.error(
+            `${bot.tag} (${bot.id}) has been deleted from the db, but it can't be kicked in the main server`
+        );
     await client.models.Bot.findOneAndDelete({ botId: botDB.botId });
+    const botLogs = await client.channels.fetch(client.config.channels.botLogs);
+    const embed = new MessageEmbed()
+        .setTitle(`Bot Deleted ${client.config.emojis.deleted}`)
+        .setDescription(`${bot} is deleted! :x:`)
+        .addField("Reason", `Deleted by owner himself`);
+    const reply = {
+        content: `<@${botDB.owner}>`,
+        embeds: [embed],
+    };
+    botLogs.send(reply);
+    //const owner = (await this.client.users.fetch(data.owner)) ?? null;
+    //if (owner) owner.send(reply);
     //res.redirect(`/bots?success=true&message=${encodeURIComponent("Bot Deleted")}`);
     res.sendStatus(200);
 });

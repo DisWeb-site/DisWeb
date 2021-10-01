@@ -134,8 +134,8 @@
      */
     on("click", ".mobile-nav-toggle", function (e) {
         select("#navbar").classList.toggle("navbar-mobile");
-        this.classList.toggle("fa-list");
-        this.classList.toggle("fa-times-circle");
+        this.classList.toggle("bi-list");
+        this.classList.toggle("bi-x");
     });
 
     /**

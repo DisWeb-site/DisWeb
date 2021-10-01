@@ -47,6 +47,7 @@ router.get("/:botId", async (req, res) => {
         bot,
         botDB,
         owner,
+        redirectAfterDeleteURL: `${new URL(req.currentURL).pathname = "/bots"}`
     });
 });
 //GET /bot/:botId/edit
@@ -152,5 +153,27 @@ router.get("/:botId/analytics", CheckAuth, async (req, res) => {
         countries,
         dups: client.util.findArrDups2(botDB.analytics.countries),
     });
+});
+//DELETE /bot/:botId/
+router.delete("/:botId/", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    if (botDB.owner !== req.user.id) {
+        return res.redirect(
+            "/bots?error=true&message=" +
+                encodeURIComponent("You are not this bot's owner!!")
+        );
+    }
+    const member = await client.guilds.cache.get(client.config.servers.main.id).members.fetch(bot.id);
+    if (member.kickable) member.kick();
+    else client.logger.error(`${bot.tag} (${bot.id}) has been deleted from the db, but it can't be kicked in the main server`);
+    await client.models.Bot.findOneAndDelete({ botId: botDB.botId });
+    //res.redirect(`/bots?success=true&message=${encodeURIComponent("Bot Deleted")}`);
+    res.sendStatus(200);
 });
 module.exports = router;

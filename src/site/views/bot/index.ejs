@@ -50,7 +50,9 @@
                             <div class="content">
                                 <h3>Owner options</h3>
                                 <p>
+                                    <a class="btn btn-warning" href="/bot/<%= bot.id %>/edit">Edit</a><br>
                                     <a class="btn btn-success" href="/bot/<%= bot.id %>/analytics">Analytics</a><br>
+                                    <a class="btn btn-danger" onclick="deleteReq('/bot/<%= bot.id %>')">Delete</a><br>
                                 </p>
                             </div>
                         </div>
@@ -73,6 +75,23 @@
   
       </section><!-- End About Section -->
         </main>
+        <script>
+            function deleteReq(url) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("DELETE", url);
+                xhr.onload = function() {
+                    if (xhr.status != 200) {
+                        window.location.href = `<%= redirectAfterDeleteURL %>?success=true&message=${encodeURIComponent("Bot Deleted")}`;
+                    } else {
+                        window.location.href = `<%= redirectAfterDeleteURL %>?error=true&message=${encodeURIComponent("Could not delete bot")}`;
+                    }
+                };
+                xhr.onerror = function() {
+                    window.location.href = `<%= redirectAfterDeleteURL %>?error=true&message=${encodeURIComponent("Could not delete bot. Network connection error mostly")}`;
+                };
+                xhr.send();
+            }
+        </script>
         <%- include('../includes/footer') %>
     </body>
 </html>

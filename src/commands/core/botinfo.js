@@ -14,7 +14,7 @@ module.exports = class CMD extends Command {
                 usage: "[@mention / bot id]",
                 aliases: ["bi"],
                 disabled: false,
-                category: "Bot reviewer",
+                category: "Core",
             },
             client
         );
@@ -59,7 +59,8 @@ module.exports = class CMD extends Command {
                 }`,
                 true
             )
-            .addField("Owner", `<@${botDB.owner}>`, true);
+            .addField("Owner", `<@${botDB.owner}>`, true)
+            .setURL(`${this.client.config.site.url}/bot/${bot.id}`);
         message.channel.send({ embeds: [embed] });
     }
 };

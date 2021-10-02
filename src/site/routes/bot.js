@@ -33,7 +33,7 @@ router.get("/:botId", async (req, res) => {
             reviewerCheck = true;
         } else if (typeof client.config.roles.reviewer !== "string") {
             const has = [];
-            message.member.roles.cache.forEach((r) => {
+            member.roles.cache.forEach((r) => {
                 if (client.config.roles.reviewer.includes(r.id)) has.push(r.id);
             });
             if (has && has.length && has[0]) reviewerCheck = true;

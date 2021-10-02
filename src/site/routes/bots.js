@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
     res.render("bots/index", {
         req,
         bots: bots.filter((b) => b.approved),
+        allBots: bots
     });
 });
 //GET /bots/add

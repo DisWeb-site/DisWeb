@@ -3,10 +3,11 @@
  * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
+const apiLimiter = require("../controllers/apiLimiter");
 const express = require("express");
 const router = express.Router();
 //POST /stats/:botId
-router.post("/stats/:botId", async (req, res) => {
+router.post("/stats/:botId", apiLimiter, async (req, res) => {
     const { client } = req;
     res.type("json");
     const { botId } = req.params;

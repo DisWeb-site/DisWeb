@@ -45,7 +45,12 @@ process.on("unhandledRejection", (error) => {
 const normalize = async () => {
     if (!client) return;
     const bots = await client.models.Bot.find({});
-    const channel = await client.channels.fetch(client.config.channels.botLogs);
+    let channel;
+    try {
+        channel = await client.channels.fetch(client.config.channels.botLogs);
+    } catch(e) {
+        console.log(e);
+    }
     bots.forEach(async (botDB) => {
         const bot = client.users.cache.get(botDB.botId);
         const member = bot?.id

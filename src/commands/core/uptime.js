@@ -34,9 +34,13 @@ module.exports = class CMD extends Command {
             });
             if (!botDB)
                 return message.channel.send("Sorry bot is not found in the db");
-            const member = await this.client.servers.main.members.fetch(bot.id);
+            let member, member2;
+            try {
+                member = await this.client.servers.main.members.fetch(bot.id);
+                member2 = await this.client.servers.test.members.fetch(bot.id);
+            } catch(e) {}
             const online =
-                member.presence?.status?.toLowerCase?.() === "online";
+                (member ?? member2)?.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
                 .duration(
                     moment().diff(

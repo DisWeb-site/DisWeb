@@ -42,6 +42,7 @@ module.exports = {
         },
     },
     owners: ["815204465937481749", "797266146000633888", "693754859014324295"], //owners who can use eval like commands
+    adsCode: "297-240-3472", //google ads code, comment out if you don't want
     prefix: process.env.BOT_PREFIX ?? "d/", //bot prefix
     dbCacheRefreshInterval: 1 * 60 * 60 * 1000, //refresh db cache every hour
     minimumDays: 2, //minimum days for a bot to be allowed to get approved, set to 0 if you don't want this

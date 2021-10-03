@@ -36,4 +36,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1"></script>
 <!-- Pure counter 1.2.x -->
 <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs@1.2/dist/purecounter_vanilla.js"></script>
+<% if (req.client?.config?.adsCode) { %>
+<!-- Google ads -->
+<script data-ad-client="ca-pub-<%= req.client?.config?.adsCode.replace(/-/g, "") %>" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<% } %>
 <script src="/assets/js/main.js"></script>

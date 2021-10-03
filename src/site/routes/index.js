@@ -33,6 +33,7 @@ router.get("/logout", async (req, res) => {
 router.get("/team", (req, res) => {
     res.render("team", {
         req,
+        staff: req.client.servers.main.members.cache.filter(m => m.roles.cache.has(req.client.config.staff)),
     });
 });
 //GET /about

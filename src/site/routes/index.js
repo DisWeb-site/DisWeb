@@ -12,11 +12,16 @@ router.get("/", async (req, res) => {
     bots.forEach(async ({ botId }) => {
         await req.client.users.fetch(botId);
     });
+    const users = await req.client.models.User.find({});
+    users.forEach(async ({ userId }) => {
+        await req.client.users.fetch(userId);
+    });
     res.render("index", {
         req,
         bots: bots.filter((b) => b.approved),
         botsNotApp: bots.filter((b) => !b.approved),
         allBots: bots,
+        users,
     });
 });
 //GET /login

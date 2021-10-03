@@ -20,11 +20,7 @@ module.exports = {
     },
     roles: {
         //roles
-        reviewer: ["890204725448962080", "890561802964967445"], //should be array of role ids
-        //first reviewer role id should be from main server and not from test server
-        staff: "890390501855993906",
-        admin: "887493135649894444",
-        moderator: "887493135649894443"
+        reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string
     },
     emojis: {
         //some emojis

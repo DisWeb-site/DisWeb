@@ -36,7 +36,7 @@
                     </header>
 
                     <div class="row gy-4">
-                        <!--<div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                             <div class="member">
                                 <div class="member-img">
                                     <img src="https://cdn.discordapp.com/avatars/815204465937481749/883d202fcb3d957a7538a2f5bf90a35d.png?size=256" alt="">
@@ -45,31 +45,116 @@
                                         <a href=""><i class="bi bi-facebook"></i></a>
                                         <a href=""><i class="bi bi-instagram"></i></a>
                                         <a href=""><i class="bi bi-linkedin"></i></a>
-                                    </div>--
+                                    </div>-->
                                 </div>
                                 <div class="member-info">
                                     <h4>PuneetGopinath#7179</h4>
                                     <span>Founder and Maintainer</span>
-                                    <!--<p>I love DisWeb.</p>--
+                                    <!--<p>I love DisWeb.</p>-->
                                     <a href="/profile/815204465937481749" class="btn btn-primary">View profile</a>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
 
-                        <% for (const i in staff) { const member = staff[i]; const user = member.user; %>
                         <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                             <div class="member">
                                 <div class="member-img">
-                                    <img src="<%= user.displayAvatarURL({ format: "png", size: 256 }) %>" alt="">
+                                    <img src="https://cdn.discordapp.com/avatars/693754859014324295/5b285031a110c8a1741c368985225a81.png?size=256" alt="">
+                                    <!--<div class="social">
+                                        <a href=""><i class="bi bi-twitter"></i></a>
+                                        <a href=""><i class="bi bi-facebook"></i></a>
+                                        <a href=""><i class="bi bi-instagram"></i></a>
+                                        <a href=""><i class="bi bi-linkedin"></i></a>
+                                    </div>-->
                                 </div>
                                 <div class="member-info">
-                                    <h4><%= user.tag %></h4>
-                                    <span><%= `${member.roles.cache.has(req.client.config.roles.admin) ? "Administrator," : ""} ${member.roles.cache.has(req.client.config.roles.developer) ? "Developer," : ""} ${member.roles.cache.has(req.client.config.roles.moderator) ? "Moderator," : ""} ${member.roles.cache.has(req.client.config.roles.reviewer[0]) ? "Bot reviewer" : ""}` %></span>
-                                    <a href="/profile/<%= user.id %>" class="btn btn-primary">View profile</a>
+                                    <h4>abhijoshi2k#6842</h4>
+                                    <span>Co-Founder and Reviewer</span>
+                                    <!--<p>I love DisWeb.</p>-->
+                                    <a href="/profile/693754859014324295" class="btn btn-primary">View profile</a>
                                 </div>
                             </div>
                         </div>
-                        <% } %>
+
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+                            <div class="member">
+                                <div class="member-img">
+                                    <img src="https://cdn.discordapp.com/avatars/797266146000633888/99ee62ed0cf1004bbe2148c2e8eb9422.png?size=256" class="img-fluid" alt="">
+                                    <!--<div class="social">
+                                        <a href=""><i class="bi bi-twitter"></i></a>
+                                        <a href=""><i class="bi bi-facebook"></i></a>
+                                        <a href=""><i class="bi bi-instagram"></i></a>
+                                        <a href=""><i class="bi bi-linkedin"></i></a>
+                                    </div>-->
+                                </div>
+                                <div class="member-info">
+                                    <h4>peter p#7857</h4>
+                                    <span>Co-founder, Reviewer and Contributer</span>
+                                    <!--<p>I help in coding the site.</p>-->
+                                    <a href="/profile/797266146000633888" class="btn btn-primary">View profile</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+                            <div class="member">
+                                <div class="member-img">
+                                    <img src="https://cdn.discordapp.com/avatars/868182931477241896/7ae9b9d4cd646dddaa082e2f1a1e6bb0.png?size=256" class="img-fluid" alt="">
+                                    <!--<div class="social">
+                                        <a href=""><i class="bi bi-twitter"></i></a>
+                                        <a href=""><i class="bi bi-facebook"></i></a>
+                                        <a href=""><i class="bi bi-instagram"></i></a>
+                                        <a href=""><i class="bi bi-linkedin"></i></a>
+                                    </div>-->
+                                </div>
+                                <div class="member-info">
+                                    <h4>Neeraj#0001</h4>
+                                    <span>Reviewer and Contributer</span>
+                                    <!--<p>Description</p>-->
+                                    <a href="/profile/868182931477241896" class="btn btn-primary">View profile</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
+                            <div class="member">
+                                <div class="member-img">
+                                    <img src="https://cdn.discordapp.com/avatars/728806245573591132/a_5b3aacea97146ce74c1b267e306c65fb.png?size=256" class="img-fluid" alt="">
+                                    <!--<div class="social">
+                                        <a href=""><i class="bi bi-twitter"></i></a>
+                                        <a href=""><i class="bi bi-facebook"></i></a>
+                                        <a href=""><i class="bi bi-instagram"></i></a>
+                                        <a href=""><i class="bi bi-linkedin"></i></a>
+                                    </div>-->
+                                </div>
+                                <div class="member-info">
+                                    <h4></ Jethalal>#9999</h4>
+                                    <span>Moderator and Reviewer</span>
+                                    <!--<p>A pround moderator and bot reviewer at DisWeb.</p>-->
+                                    <a href="/profile/728806245573591132" class="btn btn-primary">View profile</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="600">
+                            <div class="member">
+                                <div class="member-img">
+                                    <img src="https://cdn.discordapp.com/avatars/632652385881423873/19597635354d238b598adb683d233283.png?size=256" class="img-fluid" alt="">
+                                    <!--<div class="social">
+                                        <a href=""><i class="bi bi-twitter"></i></a>
+                                        <a href=""><i class="bi bi-facebook"></i></a>
+                                        <a href=""><i class="bi bi-instagram"></i></a>
+                                        <a href=""><i class="bi bi-linkedin"></i></a>
+                                    </div>-->
+                                </div>
+                                <div class="member-info">
+                                    <h4>happy boy#2544</h4>
+                                    <span>Moderator and Reviewer</span>
+                                    <!--<p>I am a bot reviewer and mod here!</p>-->
+                                    <a href="/profile/632652385881423873" class="btn btn-primary">View profile</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

@@ -24,24 +24,29 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        let embed;
+        let embed = new MessageEmbed().setColor("GREEN").setTimestamp();
         const date = new Date();
         if (args[0]) {
             const bot = await this.client.util.userFromMentionOrId(args[0]);
-            if (!bot) return;
+            if (!bot || !bot.bot) return;
             const botDB = await this.client.models.Bot.findOne({
                 botId: bot.id,
             });
             if (!botDB)
                 return message.channel.send("Sorry bot is not found in the db");
             const member = await this.client.servers.main.members.fetch(bot.id);
-            const online = member.presence?.status?.toLowerCase?.() === "online";
+            const online =
+                member.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
                 .duration(
-                    botDB.uptime[online ? "lastOnlineFrom" : "lastOfflineAt"]
+                    moment(
+                        botDB.uptime[
+                            online ? "lastOnlineFrom" : "lastOfflineAt"
+                        ]
+                    ).diff(new Date().getTime())
                 )
                 .format(" D [days], H [hours], m [minutes], s [seconds]");
-            embed = new MessageEmbed()
+            embed
                 .setAuthor(bot.tag, bot.displayAvatarURL())
                 .setTitle(`_**${bot.tag}**_`)
                 .addField("**Uptime Rate**", `${botDB.uptime.rate}%`)
@@ -61,9 +66,7 @@ module.exports = class CMD extends Command {
             .addField(
                 "Date launched",
                 `\`\`\`${moment(timestamp).format("LLLL")}\`\`\``
-            )
-            .setColor("GREEN")
-            .setTimestamp();
+            );
         message.channel.send({
             embeds: [embed],
         });

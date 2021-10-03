@@ -68,7 +68,7 @@ class DisWeb extends Client {
         return {
             main: this.guilds.cache.get(this.config.servers.main.id),
             test: this.guilds.cache.get(this.config.servers.test.id),
-        }
+        };
     }
 }
 module.exports = DisWeb;

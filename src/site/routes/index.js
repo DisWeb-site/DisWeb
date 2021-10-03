@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
         req,
         bots: bots.filter((b) => b.approved),
         botsNotApp: bots.filter((b) => !b.approved),
-        allBots: bots
+        allBots: bots,
     });
 });
 //GET /login

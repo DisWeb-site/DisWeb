@@ -42,7 +42,7 @@ process.on("unhandledRejection", (error) => {
             .catch(() => {});
 });
 //Delete bots which go under 30% uptime rate & give uptime 0.01% to all other bots
-setInterval(async () => {
+const normalize = async () => {
     if (!client) return;
     const bots = await client.models.Bot.find({});
     const channel = await client.channels.fetch(client.config.channels.botLogs);
@@ -82,7 +82,9 @@ setInterval(async () => {
         }
         await botDB.save();
     });
-}, 1 * 60 * 60 * 1000); //every hour
+};
+setInterval(normalize, 1 * 60 * 60 * 1000); //every hour
+normalize();
 const botsPromise = client.models.Bot.find({});
 botsPromise.then((bots) => {
     bots.forEach(async (botDB) => {

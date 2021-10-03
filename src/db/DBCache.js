@@ -10,10 +10,7 @@ module.exports = class DBCache {
         this.client = client;
         this.bots = new Collection();
         this.users = new Collection();
-        this.models = {
-            Bot: require("./models/Bot"),
-            User: require("./models/User"),
-        };
+        this.models = require("./models");
         setInterval(() => {
             this.refreshCache();
         }, this.client.config.dbCacheRefreshInterval);

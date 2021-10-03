@@ -30,8 +30,7 @@ router.get("/logout", async (req, res) => {
     res.end();
 });
 //GET /team
-router.get("/team", async (req, res) => {
-    await req.client.servers.main.members.fetch();
+router.get("/team", (req, res) => {
     res.render("team", {
         req,
         staff: req.client.servers.main.members.cache.filter(m => m.roles.cache.has(req.client.config.staff)),

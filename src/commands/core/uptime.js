@@ -39,7 +39,7 @@ module.exports = class CMD extends Command {
                 member.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
                 .duration(
-                    moment(new Date.getTime()).diff(
+                    moment().diff(
                         botDB.uptime[
                             online ? "lastOnlineFrom" : "lastOfflineAt"
                         ]

@@ -24,6 +24,6 @@ const statsSchema = new mongoose.Schema({
     }
 });
 
-const Stats = new mongoose.model("Bot", statsSchema);
+const Stats = new mongoose.model("Stats", statsSchema);
 
 module.exports = Stats;

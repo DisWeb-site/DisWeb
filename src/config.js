@@ -21,6 +21,7 @@ module.exports = {
     roles: {
         //roles
         reviewer: ["890204725448962080", "890561802964967445"], //can be array of role ids or string
+        developer: "894566888611385395"
     },
     emojis: {
         //some emojis

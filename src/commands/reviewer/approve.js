@@ -66,14 +66,11 @@ module.exports = class CMD extends Command {
                 `Woah, not even ${config.minimumDays} day(s) over after adding the bot. Please try after ${duration}!`
             );
         }
-        let botMember, botMember2;
+        let botMember, botMember2, ownerMember;
         try {
-            botMember = await this.client.guilds.cache
-                .get(config.servers.main.id)
-                .members.fetch(bot.id);
-            botMember2 = await this.client.guilds.cache
-                .get(config.servers.test.id)
-                .members.fetch(bot.id);
+            botMember = await this.servers.main.members.fetch(bot.id);
+            botMember2 = await this.servers.main.members.fetch(bot.id);
+            ownerMember = await this.servers.main.members.fetch(data.owner);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }
@@ -107,7 +104,8 @@ module.exports = class CMD extends Command {
         botLogs.send(reply);
         const owner = (await this.client.users.fetch(data.owner)) ?? null;
         if (owner) owner.send(reply);
-        if (botMember2) botMember2.kick();
+        if (botMember2 && botMember2.kickable) botMember2.kick();
+        if (ownerMember) ownerMember.roles.add(config.roles.developer);
         approving.edit(
             `:white_check_mark: Success! **${bot.tag}** has been approved!`
         );

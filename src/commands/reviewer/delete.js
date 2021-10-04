@@ -45,14 +45,11 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "This bot is not yet approved, so use reject command!"
             );
-        let botMember, botMember2;
+        let botMember, botMember2, ownerMember;
         try {
-            botMember = await this.client.guilds.cache
-                .get(config.servers.main.id)
-                .members.fetch(bot.id);
-            botMember2 = await this.client.guilds.cache
-                .get(config.servers.test.id)
-                .members.fetch(bot.id);
+            botMember = await this.servers.main.members.fetch(bot.id);
+            botMember2 = await this.servers.main.members.fetch(bot.id);
+            ownerMember = await this.servers.main.members.fetch(data.owner);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }
@@ -78,6 +75,7 @@ module.exports = class CMD extends Command {
         if (owner) owner.send(reply);
         if (botMember && botMember.kickable) botMember.kick();
         if (botMember2 && botMember2.kickable) botMember2.kick();
+        if (ownerMember) ownerMember.roles.remove(config.roles.developer);
         rejecting.edit(
             `:white_check_mark: Success! ${bot.tag} has been deleted!`
         );

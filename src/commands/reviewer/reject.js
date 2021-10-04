@@ -47,12 +47,8 @@ module.exports = class CMD extends Command {
         //let botMember, botMember2;
         let botMember2;
         try {
-            /*botMember = await this.client.guilds.cache
-                .get(config.servers.main.id)
-                .members.fetch(bot.id);*/ //not required
-            botMember2 = await this.client.guilds.cache
-                .get(config.servers.test.id)
-                .members.fetch(bot.id);
+            /*botMember = await this.servers.main.members.fetch(bot.id);*/ //not required
+            botMember2 = await this.servers.main.members.fetch(bot.id);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }

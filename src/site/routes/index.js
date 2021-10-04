@@ -52,8 +52,10 @@ router.get("/terms", (req, res) => {
         req,
     });
 });
-//GET /privacy-policy
-router.get("/privacy-policy", (req, res) => {
-    res.send("Coming Soon");
+//GET /privacy
+router.get("/privacy", (req, res) => {
+    res.render("privacy", {
+        req,
+    });
 });
 module.exports = router;

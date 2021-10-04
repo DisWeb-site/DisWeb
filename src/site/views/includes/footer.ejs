@@ -8,7 +8,7 @@
               <li><i class="fas fa-chevron-right"></i> <a href="/">Home</a></li>
               <li><i class="fas fa-chevron-right"></i> <a href="/about">About us</a></li>
               <li><i class="fas fa-chevron-right"></i> <a href="/terms">Terms of service</a></li>
-              <li><i class="fas fa-chevron-right"></i> <a href="/privacy-policy">Privacy policy</a></li>
+              <li><i class="fas fa-chevron-right"></i> <a href="/privacy">Privacy policy</a></li>
             </ul>
           </div>
         </div>
@@ -38,6 +38,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs@1.2/dist/purecounter_vanilla.js"></script>
 <% if (req.client?.config?.adsCode) { %>
 <!-- Google ads -->
-<script data-ad-client="ca-pub-<%= req.client?.config?.adsCode.replace(/-/g, "") %>" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script data-ad-client="ca-pub-<%= req.client?.config?.adsCode.replace(/-/g, '') %>" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <% } %>
 <script src="/assets/js/main.js"></script>

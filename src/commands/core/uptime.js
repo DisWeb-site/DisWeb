@@ -24,24 +24,33 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        let embed;
+        let embed = new MessageEmbed().setColor("GREEN").setTimestamp();
         const date = new Date();
         if (args[0]) {
             const bot = await this.client.util.userFromMentionOrId(args[0]);
-            if (!bot) return;
+            if (!bot || !bot.bot) return;
             const botDB = await this.client.models.Bot.findOne({
                 botId: bot.id,
             });
             if (!botDB)
                 return message.channel.send("Sorry bot is not found in the db");
-            const member = await this.client.servers.main.members.fetch(bot.id);
-            const online = member.presence?.status?.toLowerCase?.() === "online";
+            let member, member2;
+            try {
+                member = await this.client.servers.main.members.fetch(bot.id);
+                member2 = await this.client.servers.test.members.fetch(bot.id);
+            } catch(e) {}
+            const online =
+                (member ?? member2)?.presence?.status?.toLowerCase?.() === "online";
             const duration = moment
                 .duration(
-                    botDB.uptime[online ? "lastOnlineFrom" : "lastOfflineAt"]
+                    moment().diff(
+                        botDB.uptime[
+                            online ? "lastOnlineFrom" : "lastOfflineAt"
+                        ]
+                    )
                 )
                 .format(" D [days], H [hours], m [minutes], s [seconds]");
-            embed = new MessageEmbed()
+            embed
                 .setAuthor(bot.tag, bot.displayAvatarURL())
                 .setTitle(`_**${bot.tag}**_`)
                 .addField("**Uptime Rate**", `${botDB.uptime.rate}%`)
@@ -61,9 +70,7 @@ module.exports = class CMD extends Command {
             .addField(
                 "Date launched",
                 `\`\`\`${moment(timestamp).format("LLLL")}\`\`\``
-            )
-            .setColor("GREEN")
-            .setTimestamp();
+            );
         message.channel.send({
             embeds: [embed],
         });

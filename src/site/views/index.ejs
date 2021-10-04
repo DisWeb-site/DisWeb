@@ -9,8 +9,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 d-flex flex-column justify-content-center">
-                        <h1 data-aos="fade-up">Title</h1>
-                        <h2 data-aos="fade-up" data-aos-delay="400"></h2>
+                        <h1 data-aos="fade-up">DisWeb</h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400">DisWeb is a discord list</h2>
                     </div>
                 </div>
             </div>
@@ -25,9 +25,11 @@
 
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                             <div class="content">
-                                <h3>Title</h3>
+                                <h3>Lists</h3>
                                 <p>
-                                    content
+                                    <ol>
+                                        <li><a href="/bots">Bot list</a><i class="bi bi-arrow-right"></i></li>
+                                    </ol>
                                 </p>
                             </div>
                         </div>
@@ -35,6 +37,45 @@
                 </div>
       
             </section><!-- End About Section -->
+            <!-- ======= Counts Section ======= -->
+            <section id="counts" class="counts">
+                <div class="container" data-aos="fade-up">
+
+                    <div class="row gy-4">
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="count-box">
+                                <i class="fas fa-robot" style="color: #ee6c20;"></i>
+                                <div>
+                                    <span data-purecounter-start="0" data-purecounter-end="<%= bots.length %>" data-purecounter-duration="1" class="purecounter"></span>
+                                    <p>Approved Bots</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="count-box">
+                                <i class="fas fa-robot" style="color: #ee6c20;"></i>
+                                <div>
+                                    <span data-purecounter-start="0" data-purecounter-end="<%= botsNotApp.length %>" data-purecounter-duration="1" class="purecounter"></span>
+                                    <p>Unapproved Bots</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="count-box">
+                                <i class="bi bi-people" style="color: #ee6c20;"></i>
+                                <div>
+                                    <span data-purecounter-start="0" data-purecounter-end="<%= users.length %>" data-purecounter-duration="1" class="purecounter"></span>
+                                    <p>Users</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section><!-- End Counts Section -->
         </main>
         <%- include('includes/footer') %>
     </body>

@@ -42,13 +42,20 @@ process.on("unhandledRejection", (error) => {
             .catch(() => {});
 });
 //Delete bots which go under 30% uptime rate & give uptime 0.01% to all other bots
-setInterval(async () => {
+const normalize = async () => {
     if (!client) return;
     const bots = await client.models.Bot.find({});
-    const channel = await client.channels.fetch(client.config.channels.botLogs);
+    let channel;
+    try {
+        channel = await client.channels.fetch(client.config.channels.botLogs);
+    } catch(e) {
+        console.log(e);
+    }
     bots.forEach(async (botDB) => {
         const bot = client.users.cache.get(botDB.botId);
-        const member = bot?.id ? await client.servers.main.members.fetch(bot.id) : null;
+        const member = bot?.id
+            ? await client.servers.main.members.fetch(bot.id)
+            : null;
         if (botDB.uptime.rate < 30) {
             client.models.Bot.findOneAndDelete({ botId: botDB.botId });
             if (channel) {
@@ -70,18 +77,27 @@ setInterval(async () => {
                 });
             }
             return;
-        } else if (botDB.uptime.rate < 100 && member?.presence?.status?.toLowerCase?.() === "online") {
+        } else if (
+            botDB.uptime.rate < 100 &&
+            member?.presence?.status?.toLowerCase?.() === "online"
+        ) {
             botDB.uptime.rate = botDB.uptime.rate + 0.12;
+        } else if (botDB.uptime.rate > 100) {
+            botDB.uptime.rate = 100;
         }
         await botDB.save();
     });
-}, 1 * 60 * 60 * 1000); //every hour
+};
+setInterval(normalize, 1 * 60 * 60 * 1000); //every hour
+normalize();
 const botsPromise = client.models.Bot.find({});
 botsPromise.then((bots) => {
     bots.forEach(async (botDB) => {
         if (botDB.uptime.lastOnlineFrom || botDB.uptime.lastOfflineAt) return;
         const bot = client.users.cache.get(botDB.botId);
-        const member = bot?.id ? await client.servers.main.members.fetch(bot.id) : null;
+        const member = bot?.id
+            ? await client.servers.main.members.fetch(bot.id)
+            : null;
         if (member?.presence?.status?.toLowerCase?.() === "offline") {
             botDB.uptime.lastOfflineAt = Date.now();
         } else {

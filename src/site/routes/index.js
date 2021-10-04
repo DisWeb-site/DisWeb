@@ -7,8 +7,22 @@ const { CheckAuth } = global;
 const express = require("express");
 const router = express.Router();
 //GET /
-router.get("/", (req, res) => {
-    res.redirect("/bots");
+router.get("/", async (req, res) => {
+    const bots = await req.client.models.Bot.find({});
+    bots.forEach(async ({ botId }) => {
+        await req.client.users.fetch(botId);
+    });
+    const users = await req.client.models.User.find({});
+    users.forEach(async ({ userId }) => {
+        await req.client.users.fetch(userId);
+    });
+    res.render("index", {
+        req,
+        bots: bots.filter((b) => b.approved),
+        botsNotApp: bots.filter((b) => !b.approved),
+        allBots: bots,
+        users,
+    });
 });
 //GET /login
 router.get("/login", CheckAuth, (req, res) => {

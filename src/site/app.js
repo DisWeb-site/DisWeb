@@ -8,7 +8,7 @@ const path = require("path");
 const express = require("express");
 
 module.exports.load = (client) => {
-    const { CheckAuth, fetchUser } = client.util;
+    const { CheckAuth, fetchUser, handleStats } = client.util;
     global.CheckAuth = CheckAuth;
     const session = require("express-session");
     if (client.debug) client.logger.debug("Loading dashboard");
@@ -49,7 +49,8 @@ module.exports.load = (client) => {
                 req.originalUrl
             }`;
             next();
-        });
+        })
+        .use(handleStats);
 
     const routesFolder = path.join(__dirname, "/routes");
     const routesFiles = fs

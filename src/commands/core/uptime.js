@@ -64,7 +64,7 @@ module.exports = class CMD extends Command {
             .duration(message.client.uptime)
             .format(" D [days], H [hours], m [minutes], s [seconds]");
         const timestamp = date.getTime() - Math.floor(message.client.uptime);
-        embed = new MessageEmbed()
+        embed
             .setTitle(":hourglass_flowing_sand:")
             .addField("Uptime", `\`\`\`${duration}\`\`\``)
             .addField(

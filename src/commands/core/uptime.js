@@ -38,9 +38,10 @@ module.exports = class CMD extends Command {
             try {
                 member = await this.client.servers.main.members.fetch(bot.id);
                 member2 = await this.client.servers.test.members.fetch(bot.id);
-            } catch(e) {}
+            } catch (e) {}
             const online =
-                (member ?? member2)?.presence?.status?.toLowerCase?.() === "online";
+                (member ?? member2)?.presence?.status?.toLowerCase?.() ===
+                "online";
             const duration = moment
                 .duration(
                     moment().diff(

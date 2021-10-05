@@ -9,7 +9,7 @@ const statsSchema = new mongoose.Schema({
     userId: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     country: [String],
     views: {
@@ -20,8 +20,8 @@ const statsSchema = new mongoose.Schema({
         page: {
             type: String,
             required: false,
-        }
-    }
+        },
+    },
 });
 
 const Stats = new mongoose.model("Stats", statsSchema);

@@ -48,7 +48,7 @@ const normalize = async () => {
     let channel;
     try {
         channel = await client.channels.fetch(client.config.channels.botLogs);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
     }
     bots.forEach(async (botDB) => {

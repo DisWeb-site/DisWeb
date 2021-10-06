@@ -38,9 +38,10 @@ module.exports = class CMD extends Command {
             try {
                 member = await this.client.servers.main.members.fetch(bot.id);
                 member2 = await this.client.servers.test.members.fetch(bot.id);
-            } catch(e) {}
+            } catch (e) {}
             const online =
-                (member ?? member2)?.presence?.status?.toLowerCase?.() === "online";
+                (member ?? member2)?.presence?.status?.toLowerCase?.() ===
+                "online";
             const duration = moment
                 .duration(
                     moment().diff(
@@ -64,7 +65,7 @@ module.exports = class CMD extends Command {
             .duration(message.client.uptime)
             .format(" D [days], H [hours], m [minutes], s [seconds]");
         const timestamp = date.getTime() - Math.floor(message.client.uptime);
-        embed = new MessageEmbed()
+        embed
             .setTitle(":hourglass_flowing_sand:")
             .addField("Uptime", `\`\`\`${duration}\`\`\``)
             .addField(

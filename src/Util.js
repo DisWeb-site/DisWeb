@@ -320,7 +320,7 @@ class Util {
         let stats;
         try {
             stats = await req.client.models.Stats.findOne(search);
-        } catch(e) {}
+        } catch (e) {}
         if (!stats) {
             stats = new req.client.models.Stats(search);
             await stats.save();

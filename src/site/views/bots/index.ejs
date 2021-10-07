@@ -34,16 +34,18 @@
                             <div class="content">
                                 <h3>Promoted bots</h3>
                                 <p>
+                                    <div class="card-deck">
                                     <% promotedBots.sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
-                                                <p class="card-text"><%= botDB.descriptions.short %></p>
-                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
-                                            </div>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                         </div>
+                                    </div>
                                     <% }); %>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -55,16 +57,18 @@
                             <div class="content">
                                 <h3>Top voted bots</h3>
                                 <p>
+                                    <div class="card-deck">
                                     <% bots.sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
-                                                <p class="card-text"><%= botDB.descriptions.short %></p>
-                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
-                                            </div>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                         </div>
+                                    </div>
                                     <% }); %>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -76,16 +80,18 @@
                             <div class="content">
                                 <h3>Newly added bots</h3>
                                 <p>
+                                    <div class="card-deck">
                                     <% bots.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt)).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
-                                                <p class="card-text"><%= botDB.descriptions.short %></p>
-                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
-                                            </div>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                         </div>
+                                    </div>
                                     <% }); %>
+                                    </div>
                                 </p>
                             </div>
                         </div>

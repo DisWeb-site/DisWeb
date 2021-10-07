@@ -329,8 +329,7 @@ class Util {
             const res = await axios.get(
                 `https://ipinfo.io/${req.ip}?token=${process.env.IPINFO_KEY}`
             );
-            if (res.data.country)
-                stats.country.push(res.data.country);
+            if (res.data.country) stats.country.push(res.data.country);
             else if (req.client.debug) console.log(res);
         }
         stats.views++;

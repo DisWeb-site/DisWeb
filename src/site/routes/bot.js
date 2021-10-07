@@ -23,7 +23,7 @@ router.get("/:botId", async (req, res) => {
             member = await client.guilds.cache
                 .get(client.config.servers.main.id)
                 .members.fetch(req.user.id);
-    } catch (e) {}
+    } catch (e) {} //eslint-disable-line no-empty
     let reviewerCheck = false;
     if (req.user) {
         if (

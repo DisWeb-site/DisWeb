@@ -17,6 +17,13 @@ router.get("/", async (req, res) => {
         req,
         bots: bots.filter((b) => b.approved),
         allBots: bots,
+        promotedBots: bots
+            .filter((b) => b.approved)
+            .filter((b) => {
+                if (!req.client.servers.main) return;
+                const m = req.client.servers.main.members.cache.get(b.botId);
+                return m.roles.cache.has(req.client.config.roles?.promoted);
+            }),
     });
 });
 //GET /bots/add

@@ -24,7 +24,7 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        let embed = new MessageEmbed().setColor("GREEN").setTimestamp();
+        const embed = new MessageEmbed().setColor("GREEN").setTimestamp();
         const date = new Date();
         if (args[0]) {
             const bot = await this.client.util.userFromMentionOrId(args[0]);
@@ -38,7 +38,7 @@ module.exports = class CMD extends Command {
             try {
                 member = await this.client.servers.main.members.fetch(bot.id);
                 member2 = await this.client.servers.test.members.fetch(bot.id);
-            } catch (e) {}
+            } catch (e) {} //eslint-disable-line no-empty
             const online =
                 (member ?? member2)?.presence?.status?.toLowerCase?.() ===
                 "online";

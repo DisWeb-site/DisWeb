@@ -49,13 +49,14 @@ const normalize = async () => {
     try {
         channel = await client.channels.fetch(client.config.channels.botLogs);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
     }
     bots.forEach(async (botDB) => {
         const bot = client.users.cache.get(botDB.botId);
-        const member = bot?.id
-            ? await client.servers.main.members.fetch(bot.id)
-            : null;
+        const member =
+            bot?.id && client.servers.main
+                ? await client.servers.main.members.fetch(bot.id)
+                : null;
         if (botDB.uptime.rate < 30) {
             client.models.Bot.findOneAndDelete({ botId: botDB.botId });
             if (channel) {
@@ -95,9 +96,10 @@ botsPromise.then((bots) => {
     bots.forEach(async (botDB) => {
         if (botDB.uptime.lastOnlineFrom || botDB.uptime.lastOfflineAt) return;
         const bot = client.users.cache.get(botDB.botId);
-        const member = bot?.id
-            ? await client.servers.main.members.fetch(bot.id)
-            : null;
+        const member =
+            bot?.id && client.servers.main
+                ? await client.servers.main.members.fetch(bot.id)
+                : null;
         if (member?.presence?.status?.toLowerCase?.() === "offline") {
             botDB.uptime.lastOfflineAt = Date.now();
         } else {

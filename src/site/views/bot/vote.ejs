@@ -25,7 +25,8 @@
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
                             <div class="content">
                                 <p>
-                                    <a class="btn btn-danger" onclick="putReq('/bot/<%= bot.id %>/vote')">Vote for <%= bot.tag %></a><br>
+                                    <a class="btn btn-primary m-1" onclick="putReq('/bot/<%= bot.id %>/vote')">Vote for <%= bot.tag %></a><br>
+                                    <a class="btn btn-danger m-1" href="/bot/<%= bot.id %>">Cancel</a>
                                 </p>
                             </div>
                         </div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <%- include('../includes/head') %>
+    <body>
+        <%- include('../includes/header') %>
+        <!-- ======= Hero Section ======= -->
+        <section id="hero" class="hero d-flex align-items-center">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400"><%= botDB.descriptions.short %></h2>
+                    </div>
+                </div>
+            </div>
+
+        </section><!-- End Hero -->
+        <main id="main">
+            <!-- ======= About Section ======= -->
+            <section id="about" class="about">
+
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                            <div class="content">
+                                <p>
+                                    <a class="btn btn-danger" onclick="putReq('/bot/<%= bot.id %>/vote')">Vote for <%= bot.tag %></a><br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section><!-- End About Section -->
+        </main>
+        <script>
+            function putReq(url) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("PUT", url);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        window.location.href = `<%= redirectAfterVoteURL %>?success=true&message=${encodeURIComponent("Sucessfully voted for bot")}`;
+                    } else {
+                        window.location.href = `<%= redirectAfterVoteURL %>?error=true&message=${encodeURIComponent("Could not vote for bot")}`;
+                    }
+                };
+                xhr.onerror = function() {
+                    window.location.href = `<%= redirectAfterVoteURL %>?error=true&message=${encodeURIComponent("Could not vote for bot. Network connection error mostly")}`;
+                };
+                xhr.send();
+            }
+        </script>
+        <%- include('../includes/footer') %>
+    </body>
+</html>

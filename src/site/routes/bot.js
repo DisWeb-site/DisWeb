@@ -219,4 +219,37 @@ router.delete("/:botId/", CheckAuth, async (req, res) => {
     //res.redirect(`/bots?success=true&message=${encodeURIComponent("Bot Deleted")}`);
     res.sendStatus(200);
 });
+//GET /bot/:botId/vote
+router.get("/:botId/vote", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    res.render("bot/vote", {
+        req,
+        bot,
+        botDB,
+        redirectAfterVoteURL: `${(new URL(
+            req.currentURL
+        ).pathname = `/bot/${bot.id}`)}`,
+    });
+});
+//PUT /bot/:botId/vote
+router.put("/:botId/vote", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    if (isNaN(botDB.analytics.votes)) botDB.analytics.votes = 0;
+    botDB.analytics.votes = botDB.analytics.votes + 1;
+    botDB.analytics.lastVotedUsers.push(req.user?.id);
+    await botDB.save();
+    res.sendStatus(200);
+});
 module.exports = router;

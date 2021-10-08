@@ -17,6 +17,7 @@ module.exports = {
         botLogs: "891338310339919892",
         reportLogs: "887493136048345134",
         uptimeLogs: "892416911663591456",
+        suggestionLog: "887493136048345132" // i (Relly) added manually :), remove this after you see it.
     },
     roles: {
         //roles

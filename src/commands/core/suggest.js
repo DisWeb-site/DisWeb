@@ -20,9 +20,9 @@ module.exports = class CMD extends Command {
         );
     }
 
-    execute({ message, args }) {
+    async execute({ message, args }) {
         const suggestion = args.join(" ");
-        if (!suggestion) return message.channel.send(`Please include your suggestion to submit it.`);
+        if (!suggestion) return message.channel.send("Please include your suggestion to submit it.");
 
         const { config } = this.client;
         const suggestionLog = await this.client.channels.fetch(
@@ -31,21 +31,20 @@ module.exports = class CMD extends Command {
 
         const embed = new MessageEmbed()
         .setAuthor(message.author.tag, message.author.displayAvatarURL())
-        .setTitle(`New suggestion`)
+        .setTitle("New suggestion")
         .setDescription(suggestion)
-        .addField(`
-        **From guild:**`, 
+        .addField(
+        "**From guild:**", 
         `${message.guild.name} (${message.guild.id})`
         )
         .addField(
-            `**Submitted By**`, 
+            "**Submitted By**", 
             `<@${message.author.id}> (${message.author.id})`
         )
         .setFooter(`${message.author.tag} made a new suggestion!`);
         suggestionLog.send({ embeds: [embed] });
         message.channel.send(
-            `:white_check_mark: Your suggestion has been submitted!
-Thanks!`
+            ":white_check_mark: Your suggestion has been submitted! Thanks"
         );
     }
 };

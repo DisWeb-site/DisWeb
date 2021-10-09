@@ -1,5 +1,5 @@
 # By default @abhijoshi2k, @PuneetGopinath will review pull requests
 *       @abhijoshi2k @PuneetGopinath
 
-# Any file in /src/commands with .js extension will be reviewed by @neeraj395
-/src/commands/**/*.js @neeraj395
+# Any file in /src/commands with .js extension will be reviewed by @RellyLegend
+/src/commands/**/*.js @RellyLegend

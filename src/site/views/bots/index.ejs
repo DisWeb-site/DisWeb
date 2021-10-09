@@ -30,47 +30,74 @@
                 
                 <div class="container" data-aos="fade-up">
                     <div class="row gx-0">
-
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                            <div class="content">
+                                <h3>Promoted bots</h3>
+                                <p>
+                                    <div class="card-deck">
+                                    <% promotedBots.sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
                         <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
                             <div class="content">
                                 <h3>Top voted bots</h3>
                                 <p>
+                                    <div class="card-deck">
                                     <% bots.sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
-                                                <p class="card-text"><%= botDB.descriptions.short %></p>
-                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
-                                            </div>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                         </div>
+                                    </div>
                                     <% }); %>
+                                    </div>
                                 </p>
                             </div>
                         </div>
-
-                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                    </div>
+                </div>
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="300">
                             <div class="content">
                                 <h3>Newly added bots</h3>
                                 <p>
+                                    <div class="card-deck">
                                     <% bots.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt)).slice(0, 6).forEach((botDB) => { const bot = req.client.users.cache.get(botDB.botId); if(!bot) {return; } %>
-                                        <div class="card" style="width: 18rem;">
-                                            <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
-                                                <p class="card-text"><%= botDB.descriptions.short %></p>
-                                                <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
-                                            </div>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= bot.displayAvatarURL({ size: 256, format: 'png' }) %>" alt="Bot avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= bot.tag %> <span class="badge bg-danger">Servers: <%= botDB.stats.serverCount === 0 ? "N/A" : botDB.stats.serverCount %></span></h5>
+                                            <p class="card-text"><%= botDB.descriptions.short %></p>
+                                            <a href="/bot/<%= bot.id %>" class="btn btn-primary">View bot</a>
                                         </div>
+                                    </div>
                                     <% }); %>
+                                    </div>
                                 </p>
                             </div>
                         </div>
-  
-          </div>
-        </div>
-  
-      </section><!-- End About Section -->
+                    </div>
+                </div>
+            </section><!-- End About Section -->
         </main>
         <%- include('../includes/footer') %>
     </body>

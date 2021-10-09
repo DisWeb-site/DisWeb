@@ -56,7 +56,7 @@ module.exports = class CMD extends Command {
                     botDB.website ? `| [Website](${botDB.website})` : ""
                 } ${botDB.support ? `| [Support](${botDB.support})` : ""} ${
                     botDB.github ? `| [GitHub](${botDB.github})` : ""
-                }`,
+                } | [Vote](${this.client.config.site.url}/bot/${bot.id}/vote)`,
                 true
             )
             .addField("Owner", `<@${botDB.owner}>`, true)

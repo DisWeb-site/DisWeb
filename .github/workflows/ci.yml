@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16.x"
+          cache: "yarn"
+      - name: Install dependencies
+        run: yarn install
+      #- name: Run Tests
+        #run: npm run test

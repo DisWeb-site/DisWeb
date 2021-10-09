@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 });
 //GET /login
 router.get("/login", CheckAuth, (req, res) => {
-    res.redirect("/discord/login");
+    res.redirect("/");
 });
 //GET /logout
 router.get("/logout", async (req, res) => {

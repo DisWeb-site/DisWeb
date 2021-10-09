@@ -27,6 +27,10 @@ router.post("/stats/:botId", apiLimiter, async (req, res) => {
         return res
             .status(400)
             .json({ error: true, message: "Can't find bot. Check the bot ID" });
+    } else if (req.headers?.Authorization !== botDB.apiToken) {
+        return res
+            .status(401)
+            .json({ error: true, message: "Oooops. Invalid bot token" });
     }
     botDB.stats = stats;
     botDB.markModified("stats");

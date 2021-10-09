@@ -24,6 +24,8 @@ module.exports.load = (client) => {
         .set("views", path.join(__dirname, "/views"))
         // Get real IPs even if behind proxy
         .set("trust proxy", true)
+        //Disable the "X-Powered-By: Express" HTTP header.
+        .set("x-powered-by", false)
         //Set express session
         .use(
             session({

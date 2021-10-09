@@ -27,15 +27,16 @@
                                 <h3>Information</h3>
                                 <p>
                                     <span class="badge bg-danger">Owner: <%= owner.tag %></span><br>
-                                    <a class="btn btn-success" href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.id %>&scope=bot+applications.commands&permissions=0">Invite</a><br>
+                                    <a role="button" class="btn btn-success m-1" href="https://discord.com/api/oauth2/authorize?client_id=<%= bot.id %>&scope=bot+applications.commands&permissions=0">Invite</a><br>
+                                    <a role="button" class="btn btn-info m-1" href="/bot/<%= bot.id %>/vote">Vote</a>
                                     <% if (botDB.support) { %>
-                                    <a class="btn btn-warning" href="<%= botDB.support %>">Support server</a><br>
+                                    <a role="button" class="btn btn-warning m-1" href="<%= botDB.support %>">Support server</a><br>
                                     <% } %>
                                     <% if (botDB.github) { %>
-                                    <a class="btn btn-dark" href="<%= botDB.github %>">GitHub</a><br>
+                                    <a role="button" class="btn btn-dark m-1" href="<%= botDB.github %>">GitHub</a><br>
                                     <% } %>
                                     <% if (botDB.website) { %>
-                                    <a class="btn btn-primary" href="<%= botDB.website %>">Website</a><br>
+                                    <a role="button" class="btn btn-link m-1" href="<%= botDB.website %>">Website</a><br>
                                     <% } %>
                                 </p>
                             </div>
@@ -50,9 +51,9 @@
                             <div class="content">
                                 <h3>Owner options</h3>
                                 <p>
-                                    <a class="btn btn-warning" href="/bot/<%= bot.id %>/edit">Edit</a><br>
-                                    <a class="btn btn-success" href="/bot/<%= bot.id %>/analytics">Analytics</a><br>
-                                    <a class="btn btn-danger" onclick="deleteReq('/bot/<%= bot.id %>')">Delete</a><br>
+                                    <a class="btn btn-warning m-1" href="/bot/<%= bot.id %>/edit">Edit</a><br>
+                                    <a class="btn btn-success m-1" href="/bot/<%= bot.id %>/analytics">Analytics</a><br>
+                                    <a class="btn btn-danger m-1" onclick="deleteReq('/bot/<%= bot.id %>')">Delete</a><br>
                                 </p>
                             </div>
                         </div>

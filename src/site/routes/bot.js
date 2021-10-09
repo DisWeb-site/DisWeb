@@ -23,7 +23,7 @@ router.get("/:botId", async (req, res) => {
             member = await client.guilds.cache
                 .get(client.config.servers.main.id)
                 .members.fetch(req.user.id);
-    } catch (e) {}
+    } catch (e) {} //eslint-disable-line no-empty
     let reviewerCheck = false;
     if (req.user) {
         if (
@@ -217,6 +217,48 @@ router.delete("/:botId/", CheckAuth, async (req, res) => {
     //const owner = (await this.client.users.fetch(data.owner)) ?? null;
     //if (owner) owner.send(reply);
     //res.redirect(`/bots?success=true&message=${encodeURIComponent("Bot Deleted")}`);
+    res.sendStatus(200);
+});
+//GET /bot/:botId/vote
+router.get("/:botId/vote", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    res.render("bot/vote", {
+        req,
+        bot,
+        botDB,
+        redirectAfterVoteURL: `${(new URL(
+            req.currentURL
+        ).pathname = `/bot/${bot.id}`)}`,
+    });
+});
+//PUT /bot/:botId/vote
+router.put("/:botId/vote", CheckAuth, async (req, res) => {
+    const { client } = req;
+    const id = req.params.botId;
+    const botData = await client.util.fetchBot(id);
+    if (typeof botData === "string") {
+        return res.redirect(botData);
+    }
+    const { bot, botDB } = botData;
+    if (isNaN(botDB.analytics.votes)) botDB.analytics.votes = 0;
+    botDB.analytics.votes = botDB.analytics.votes + 1;
+    botDB.analytics.lastVotedUsers.push(req.user?.id);
+    await botDB.save();
+    const voteLogs = await client.channels.fetch(
+        client.config.channels.voteLogs
+    );
+    const embed = new MessageEmbed()
+        .setTitle(`${req.user.tag} voted for ${bot.tag}`)
+        .setDescription(`${bot} (${bot.id})`);
+    voteLogs.send({
+        embeds: [embed],
+    });
     res.sendStatus(200);
 });
 module.exports = router;

@@ -7,7 +7,6 @@
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a class="nav-link scrollto active" href="/">Home</a></li>
-                <li><a class="nav-link scrollto" href="/team">Team</a></li>
                 <li><a class="nav-link scrollto" href="/discord">Discord server</a></li>
                 <% if (req.user) { %>
                 <li class="dropdown"><a href="#"><span><%= req.user.tag %></span> <i class="fas fa-caret-down"></i></a>
@@ -27,7 +26,7 @@
                     </ul>
                 </li>
               <% } else { %>
-              <li><a class="getstarted scrollto" href="/login">Login</a></li>
+              <li><a class="getstarted scrollto" href="/login">Login</i></a></li>
               <% } %>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>

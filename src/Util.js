@@ -320,7 +320,7 @@ class Util {
         let stats;
         try {
             stats = await req.client.models.Stats.findOne(search);
-        } catch (e) {}
+        } catch (e) {} //eslint-disable-line no-empty
         if (!stats) {
             stats = new req.client.models.Stats(search);
             await stats.save();
@@ -329,8 +329,7 @@ class Util {
             const res = await axios.get(
                 `https://ipinfo.io/${req.ip}?token=${process.env.IPINFO_KEY}`
             );
-            if (res.data.country && !stats.country.includes(res.data.country))
-                stats.country.push(res.data.country);
+            if (res.data.country) stats.country.push(res.data.country);
             else if (req.client.debug) console.log(res);
         }
         stats.views++;

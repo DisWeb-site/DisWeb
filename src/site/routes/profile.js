@@ -20,7 +20,7 @@ router.get("/:userId", async (req, res) => {
         );
     let bots = await client.models.Bot.find({});
     bots = bots.filter((bot) => {
-        let owners = [bot.owner]; //this format for easily including co-owners for bot after co owners feature is added
+        const owners = [bot.owner]; //this format for easily including co-owners for bot after co owners feature is added
         return owners.includes(user.id);
     });
     bots.forEach(async (botDB) => {

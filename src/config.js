@@ -18,7 +18,7 @@ module.exports = {
         reportLogs: "887493136048345134",
         uptimeLogs: "892416911663591456",
         suggestionLog: "887493136048345132",
-        voteLogs: "895576180072251404"
+        voteLogs: "895576180072251404",
     },
     roles: {
         //roles

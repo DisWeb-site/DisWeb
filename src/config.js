@@ -17,7 +17,8 @@ module.exports = {
         botLogs: "891338310339919892",
         reportLogs: "887493136048345134",
         uptimeLogs: "892416911663591456",
-        voteLogs: "895576180072251404"
+        suggestionLog: "887493136048345132",
+        voteLogs: "895576180072251404",
     },
     roles: {
         //roles

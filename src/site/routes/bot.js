@@ -250,7 +250,9 @@ router.put("/:botId/vote", CheckAuth, async (req, res) => {
     botDB.analytics.votes = botDB.analytics.votes + 1;
     botDB.analytics.lastVotedUsers.push(req.user?.id);
     await botDB.save();
-    const voteLogs = await client.channels.fetch(client.config.channels.voteLogs);
+    const voteLogs = await client.channels.fetch(
+        client.config.channels.voteLogs
+    );
     const embed = new MessageEmbed()
         .setTitle(`${req.user.tag} voted for ${bot.tag}`)
         .setDescription(`${bot} (${bot.id})`);

@@ -27,7 +27,7 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        const { config, models } = this.client;
+        const { config, models, servers } = this.client;
         const botModel = models.Bot;
         const bot = await this.client.util.userFromMentionOrId(args[0]);
         if (!bot) return message.reply("Please mention a bot to approve!");
@@ -45,6 +45,22 @@ module.exports = class CMD extends Command {
         if (data.approved)
             return message.channel.send(
                 "That bot is already approved by someone!"
+            );
+        let botMember, botMember2, ownerMember;
+        try {
+            botMember = await servers.main.members.fetch(bot.id);
+            botMember2 = await servers.test.members.fetch(bot.id);
+            ownerMember = await servers.main.members.fetch(data.owner);
+        } catch (e) {
+            if (this.client.debug) console.log(e);
+        }
+        if (!botMember)
+            return message.channel.send(
+                `This bot is not added to DisWeb server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
+            );
+        if (!botMember2)
+            return message.channel.send(
+                "Uhhhhhh. Hey, did you test the bot, it does not even exist in the test server!"
             );
         const diff =
             Number(config.minimumDays) * 24 * 60 * 60 * 1000 -
@@ -66,22 +82,6 @@ module.exports = class CMD extends Command {
                 `Woah, not even ${config.minimumDays} day(s) over after adding the bot. Please try after ${duration}!`
             );
         }
-        let botMember, botMember2, ownerMember;
-        try {
-            botMember = await this.servers.main.members.fetch(bot.id);
-            botMember2 = await this.servers.main.members.fetch(bot.id);
-            ownerMember = await this.servers.main.members.fetch(data.owner);
-        } catch (e) {
-            if (this.client.debug) console.log(e);
-        }
-        if (!botMember)
-            return message.channel.send(
-                `This bot is not added to DisWeb server, please add it: https://discord.com/oauth2/authorize?client_id=${bot.id}&scope=bot%20applications.commands&permissions=0`
-            );
-        if (!botMember2)
-            return message.channel.send(
-                "Uhhhhhh. Hey, did you test the bot, it does not even exist in the test server!"
-            );
         const approving = await message.channel.send(
             "Please wait, approving the bot..."
         );

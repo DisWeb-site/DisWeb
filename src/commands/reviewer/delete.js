@@ -25,7 +25,7 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        const { config, models } = this.client;
+        const { config, models, servers } = this.client;
         const botModel = models.Bot;
         const bot = await this.client.util.userFromMentionOrId(args[0]);
         if (!bot)
@@ -47,9 +47,9 @@ module.exports = class CMD extends Command {
             );
         let botMember, botMember2, ownerMember;
         try {
-            botMember = await this.servers.main.members.fetch(bot.id);
-            botMember2 = await this.servers.main.members.fetch(bot.id);
-            ownerMember = await this.servers.main.members.fetch(data.owner);
+            botMember = await servers.main.members.fetch(bot.id);
+            botMember2 = await servers.main.members.fetch(bot.id);
+            ownerMember = await servers.main.members.fetch(data.owner);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }

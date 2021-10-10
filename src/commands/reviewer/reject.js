@@ -25,7 +25,7 @@ module.exports = class CMD extends Command {
     }
 
     async execute({ message, args }) {
-        const { config, models } = this.client;
+        const { config, models, servers } = this.client;
         const botModel = models.Bot;
         const bot = await this.client.util.userFromMentionOrId(args[0]);
         if (!bot)
@@ -44,11 +44,10 @@ module.exports = class CMD extends Command {
         //if (data.owner === message.author.id) return message.reply("Oh no... Bot owners can't reject their own bots.");
         if (data.approved)
             return message.channel.send("This bot is already approved!");
-        //let botMember, botMember2;
-        let botMember2;
+        let botMember, botMember2;
         try {
-            /*botMember = await this.servers.main.members.fetch(bot.id);*/ //not required
-            botMember2 = await this.servers.main.members.fetch(bot.id);
+            botMember = await servers.main.members.fetch(bot.id);
+            botMember2 = await servers.main.members.fetch(bot.id);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }
@@ -72,6 +71,7 @@ module.exports = class CMD extends Command {
         botLogs.send(reply);
         const owner = (await this.client.users.fetch(data.owner)) ?? null;
         if (owner) owner.send(reply);
+        if (botMember && botMember.kickable) botMember.kick();
         if (botMember2 && botMember2.kickable) botMember2.kick();
         rejecting.edit(
             `:white_check_mark: Success! ${bot.tag} has been rejected!`

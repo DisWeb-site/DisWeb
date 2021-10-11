@@ -66,9 +66,7 @@ module.exports = {
             case "dnd":
             case "idle":
                 duration = moment.duration(
-                    moment(botDB.uptime.lastOfflineAt).diff(
-                        new Date().getTime()
-                    )
+                    moment().diff(botDB.uptime.lastOfflineAt)
                 );
                 minutes = duration.minutes();
                 if (minutes > 5) {

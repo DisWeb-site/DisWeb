@@ -69,12 +69,12 @@ module.exports = {
                     moment().diff(botDB.uptime.lastOfflineAt)
                 );
                 minutes = duration.minutes();
-                if (minutes > 5) {
-                    minutes = rate - Number(`0.0${Math.floor(minutes / 5)}`);
+                if (minutes > 0) {
+                    minutes = rate - Number(`0.0${Math.floor(minutes)}`);
                     if (client.debug)
                         client.logger.debug(
                             `Reducing ${Number(
-                                `0.0${Math.floor(minutes / 5)}`
+                                `0.0${Math.floor(minutes)}`
                             )}% rate from ${user.tag}`
                         );
                 } else if (client.debug) {

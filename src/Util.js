@@ -101,7 +101,7 @@ class Util {
             if (idOrMention.startsWith("<@")) {
                 user = this.userFromMention(idOrMention) ?? null;
             }
-            if (!isNaN(parseInt(idOrMention))) {
+            if (!isNaN(idOrMention)) {
                 user = (await this.client.users.fetch(idOrMention)) ?? null;
             }
         }

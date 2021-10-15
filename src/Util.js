@@ -297,18 +297,21 @@ class Util {
                 params.set("message", "Invalid support server link");
                 return `/bots/add?${params}`;
             }
-            const code = url.pathname.replace("invite/", "");
-            const json = await axios.get(
-                `https://discord.com/api/invite/${code}`
-            );
-            if (json.message === "Unknown Invite") {
+            const code =
+                url.pathname?.replace?.("/", "")?.replace?.("invite/", "") ??
+                null;
+            let json;
+            try {
+                if (code)
+                    json = await axios
+                        .get(`https://discord.com/api/invite/${code}`)
+                        .then((res) => res.data);
+            } catch (e) {
                 params.set(
                     "message",
                     "Invalid support server invite code or you used a url shortner"
                 );
                 return `/bots/add?${params}`;
-            } else {
-                // the invite is valid, nvm
             }
             botData["support"] = data["support"];
         }

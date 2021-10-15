@@ -51,34 +51,6 @@ class Util {
 
     async fetchUser(userData, client) {
         //const { client } = this;
-        /*if (userData.guilds) {
-            for (let i = 0; i < userData.guilds.length; i++) {
-                //let guild = userData.guilds[i];
-                const guild = userData.guilds[i];
-                const perms = new Permissions(BigInt(guild.permissions));
-                let admin = false;
-                if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
-                    admin = true;
-                }
-                /*let djsGuild = null;
-                try {
-                    djsGuild = await client.guilds.fetch(guild.id);
-                } catch(e) {}
-                if (djsGuild && djsGuild.id) {
-                    guild = djsGuild;
-                    guild.botInvited = true;
-                } else {
-                    guild.botInvited = false;
-                }*/ /*
-                guild.admin = admin;
-                guild.manageUrl = `/manage/${guild.id}`;
-                guild.iconURL = guild.icon
-                    ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`
-                    : "https://emoji.gg/assets/emoji/discord.png";
-                userData.guilds[i] = guild;
-            }
-            userData.displayedGuilds = userData.guilds.filter((g) => g.admin);
-        }*/
         client.db.findOrCreateUser(userData.id);
         const user = await client.users.fetch(userData.id);
         return { user, userData };
@@ -190,7 +162,7 @@ class Util {
         }
         let botDB = null;
         try {
-            botDB = await client.db.findBot(bot.id);
+            botDB = await client.db.models.Bot.findOne({ boltId: bot.id });
         } catch (e) {
             if (client.debug) console.log(e);
             if (!optional)

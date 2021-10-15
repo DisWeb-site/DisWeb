@@ -78,7 +78,7 @@ module.exports = {
                             )}% rate from ${user.tag}`
                         );
                 } else if (client.debug) {
-                    client.logger.log(
+                    client.logger.debug(
                         `${user.tag} was offline for ${minutes} minute(s)`
                     );
                 }

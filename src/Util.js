@@ -162,7 +162,7 @@ class Util {
         }
         let botDB = null;
         try {
-            botDB = await client.db.models.Bot.findOne({ boltId: bot.id });
+            botDB = await client.db.models.Bot.findOne({ botId: bot.id });
         } catch (e) {
             if (client.debug) console.log(e);
             if (!optional)

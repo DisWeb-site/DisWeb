@@ -10,11 +10,12 @@ class Util {
         this.client = client ?? null;
     }
 
-    genToken() {
+    genToken(length = 32) {
         let token = "";
+        //const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789.-_";
         const characters =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789.-_";
-        for (let i = 0; i < 32; i++) {
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789"; //without .-_
+        for (let i = 0; i < length; i++) {
             token += characters.charAt(
                 Math.floor(Math.random() * characters.length)
             );
@@ -51,34 +52,6 @@ class Util {
 
     async fetchUser(userData, client) {
         //const { client } = this;
-        /*if (userData.guilds) {
-            for (let i = 0; i < userData.guilds.length; i++) {
-                //let guild = userData.guilds[i];
-                const guild = userData.guilds[i];
-                const perms = new Permissions(BigInt(guild.permissions));
-                let admin = false;
-                if (perms.has(Permissions.FLAGS.MANAGE_GUILD) || guild.owner) {
-                    admin = true;
-                }
-                /*let djsGuild = null;
-                try {
-                    djsGuild = await client.guilds.fetch(guild.id);
-                } catch(e) {}
-                if (djsGuild && djsGuild.id) {
-                    guild = djsGuild;
-                    guild.botInvited = true;
-                } else {
-                    guild.botInvited = false;
-                }*/ /*
-                guild.admin = admin;
-                guild.manageUrl = `/manage/${guild.id}`;
-                guild.iconURL = guild.icon
-                    ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`
-                    : "https://emoji.gg/assets/emoji/discord.png";
-                userData.guilds[i] = guild;
-            }
-            userData.displayedGuilds = userData.guilds.filter((g) => g.admin);
-        }*/
         client.db.findOrCreateUser(userData.id);
         const user = await client.users.fetch(userData.id);
         return { user, userData };
@@ -129,7 +102,7 @@ class Util {
             if (idOrMention.startsWith("<@")) {
                 user = this.userFromMention(idOrMention) ?? null;
             }
-            if (!isNaN(parseInt(idOrMention))) {
+            if (!isNaN(idOrMention)) {
                 user = (await this.client.users.fetch(idOrMention)) ?? null;
             }
         }
@@ -190,7 +163,7 @@ class Util {
         }
         let botDB = null;
         try {
-            botDB = await client.db.findBot(bot.id);
+            botDB = await client.db.models.Bot.findOne({ botId: bot.id });
         } catch (e) {
             if (client.debug) console.log(e);
             if (!optional)
@@ -297,18 +270,23 @@ class Util {
                 params.set("message", "Invalid support server link");
                 return `/bots/add?${params}`;
             }
-            const code = url.pathname.replace("invite/", "");
-            const json = await axios.get(
-                `https://discord.com/api/invite/${code}`
-            );
-            if (json.message === "Unknown Invite") {
+            const code =
+                url.pathname?.replace?.("/", "")?.replace?.("invite/", "") ??
+                null;
+            try {
+                if (code) {
+                    await axios
+                        .get(`https://discord.com/api/invite/${code}`)
+                        .then((res) => res.data);
+                } else {
+                    throw new Error("code is undefined");
+                }
+            } catch (e) {
                 params.set(
                     "message",
                     "Invalid support server invite code or you used a url shortner"
                 );
                 return `/bots/add?${params}`;
-            } else {
-                // the invite is valid, nvm
             }
             botData["support"] = data["support"];
         }

@@ -4,6 +4,8 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const axios = require("axios");
+const moment = require("moment");
+require("moment-duration-format");
 const { MessageEmbed } = require("discord.js");
 const { CheckAuth } = global;
 const express = require("express");
@@ -25,7 +27,7 @@ router.get("/:botId", async (req, res) => {
                 .members.fetch(req.user.id);
     } catch (e) {} //eslint-disable-line no-empty
     let reviewerCheck = false;
-    if (req.user) {
+    if (req.user && !botDB.approved) {
         if (
             typeof client.config.roles.reviewer === "string" &&
             member.roles.cache.has(client.config.roles.reviewer)
@@ -228,6 +230,12 @@ router.get("/:botId/vote", CheckAuth, async (req, res) => {
         return res.redirect(botData);
     }
     const { bot, botDB } = botData;
+    if (!botDB.approved)
+        return res.redirect(
+            `/bots?error=true&message=${encodeURIComponent(
+                "Sorry, Only approved bots can be voted"
+            )}`
+        );
     res.render("bot/vote", {
         req,
         bot,
@@ -241,24 +249,81 @@ router.get("/:botId/vote", CheckAuth, async (req, res) => {
 router.put("/:botId/vote", CheckAuth, async (req, res) => {
     const { client } = req;
     const id = req.params.botId;
+    if (!req.user) return res.redirect(`/${id}/vote`);
     const botData = await client.util.fetchBot(id);
     if (typeof botData === "string") {
         return res.redirect(botData);
     }
     const { bot, botDB } = botData;
+    let vote;
+    try {
+        vote = await client.models.Vote.find({
+            botId: bot.id,
+            userId: req.user.id,
+        })
+            .then((votes) => votes)
+            .catch((e) => {
+                throw e;
+            });
+    } catch (e) {
+        if (client.debugLevel > 1) console.log(e);
+    }
+    vote = vote.at(-1);
+    if (vote) {
+        const diff =
+            12 * 60 * 60 * 1000 - //12 hours
+            (new Date().getTime() - vote.votedAt);
+        if (diff > 0) {
+            const hours = Math.round(diff / (1000 * 60 * 60));
+            let duration;
+            if (hours == 24) {
+                duration = moment.duration(hours, "hours");
+            } else if (hours == 0) {
+                const minutes = Math.ceil(diff / (1000 * 60));
+                duration = moment.duration(minutes, "minutes");
+            } else {
+                duration = moment.duration(hours, "hours");
+            }
+            duration = duration.humanize();
+            return res.redirect(
+                `/bot/${bot.id}?error=true&message=${encodeURIComponent(
+                    `You have already voted in the last 12 hours. Try again in ${duration}`
+                )}`
+            );
+        }
+    } else if (client.debug) {
+        client.logger.debug(
+            `There was no vote found in db for ${req.user.tag} (${req.user.id}), so I guess this user didn't vote in last 12 hours`
+        );
+    }
+    vote = new client.models.Vote({
+        botId: bot.id,
+        userId: req.user.id,
+        votedAt: new Date().getTime(),
+    });
+    await vote.save();
     if (isNaN(botDB.analytics.votes)) botDB.analytics.votes = 0;
     botDB.analytics.votes = botDB.analytics.votes + 1;
-    botDB.analytics.lastVotedUsers.push(req.user?.id);
     await botDB.save();
-    const voteLogs = await client.channels.fetch(
-        client.config.channels.voteLogs
-    );
+    let voteLogs;
+    try {
+        voteLogs = await client.channels.fetch(client.config.channels.voteLogs);
+        // eslint-disable-next-line no-empty
+    } catch (e) {}
     const embed = new MessageEmbed()
         .setTitle(`${req.user.tag} voted for ${bot.tag}`)
         .setDescription(`${bot} (${bot.id})`);
-    voteLogs.send({
-        embeds: [embed],
-    });
-    res.sendStatus(200);
+    if (voteLogs)
+        voteLogs.send({
+            embeds: [embed],
+        });
+    else client.logger.error("Can't get channels.voteLogs");
+    res.redirect(
+        `${(new URL(
+            req.currentURL
+        ).pathname = `/bot/${bot.id}`)}?success=true&message=${encodeURIComponent(
+            "Sucessfully voted for bot"
+        )}`
+    );
 });
 module.exports = router;

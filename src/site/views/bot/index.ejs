@@ -51,6 +51,7 @@
                             <div class="content">
                                 <h3>Owner options</h3>
                                 <p>
+                                    <span class="badge bg-danger">Api token: <%= botDB.apiToken %></span><br>
                                     <a class="btn btn-warning m-1" href="/bot/<%= bot.id %>/edit">Edit</a><br>
                                     <a class="btn btn-success m-1" href="/bot/<%= bot.id %>/analytics">Analytics</a><br>
                                     <a class="btn btn-danger m-1" onclick="deleteReq('/bot/<%= bot.id %>')">Delete</a><br>

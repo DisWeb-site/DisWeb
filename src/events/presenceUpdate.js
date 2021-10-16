@@ -66,21 +66,19 @@ module.exports = {
             case "dnd":
             case "idle":
                 duration = moment.duration(
-                    moment(botDB.uptime.lastOfflineAt).diff(
-                        new Date().getTime()
-                    )
+                    moment().diff(botDB.uptime.lastOfflineAt)
                 );
                 minutes = duration.minutes();
-                if (minutes > 5) {
-                    minutes = rate - Number(`0.0${Math.floor(minutes / 5)}`);
+                if (minutes > 0) {
+                    minutes = rate - Number(`0.0${Math.floor(minutes)}`);
                     if (client.debug)
                         client.logger.debug(
                             `Reducing ${Number(
-                                `0.0${Math.floor(minutes / 5)}`
+                                `0.0${Math.floor(minutes)}`
                             )}% rate from ${user.tag}`
                         );
                 } else if (client.debug) {
-                    client.logger.log(
+                    client.logger.debug(
                         `${user.tag} was offline for ${minutes} minute(s)`
                     );
                 }

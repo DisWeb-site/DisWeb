@@ -40,8 +40,8 @@
                 const xhr = new XMLHttpRequest();
                 xhr.open("PUT", url);
                 xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        window.location.href = `<%= redirectAfterVoteURL %>?success=true&message=${encodeURIComponent("Sucessfully voted for bot")}`;
+                    if (xhr.responseURL !== url) {
+                        window.location.href = xhr.responseURL;
                     } else {
                         window.location.href = `<%= redirectAfterVoteURL %>?error=true&message=${encodeURIComponent("Could not vote for bot")}`;
                     }

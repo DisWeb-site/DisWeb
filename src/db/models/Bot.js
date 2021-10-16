@@ -56,7 +56,6 @@ const botSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
-        lastVotedUsers: [String],
         countries: [String],
     },
     stats: {

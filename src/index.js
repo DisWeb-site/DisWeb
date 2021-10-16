@@ -7,6 +7,7 @@ require("dotenv").config();
 const DisWeb = require("./DisWeb");
 const client = new DisWeb();
 const mongoose = require("mongoose");
+const clock = require("date-events")();
 // eslint-disable-next-line no-undef
 mongoose
     .connect(process.env.MONGO_URL)
@@ -52,7 +53,7 @@ const normalize = async () => {
         //console.log(e);
     }
     bots.forEach(async (botDB) => {
-        const bot = client.users.cache.get(botDB.botId);
+        const bot = await client.users.fetch(botDB.botId);
         const member =
             bot?.id && client.servers.main
                 ? await client.servers.main.members.fetch(bot.id)
@@ -105,6 +106,25 @@ botsPromise.then((bots) => {
         } else {
             botDB.uptime.lastOnlineFrom = Date.now();
         }
+        await botDB.save();
+    });
+});
+clock.on("month", async (/*mon, month*/) => {
+    //mon = month number (1-12) and month = month name (lowercase)
+    const bots = await client.models.Bot.find({});
+    await client.models.Vote.remove({}); //remove all votes
+    bots.forEach(async (botDB) => {
+        /*const bot = await client.users.fetch(botDB.botId);
+        const member =
+            bot?.id && client.servers.main
+                ? await client.servers.main.members.fetch(bot.id)
+                : null;*/
+        botDB.analytics = {
+            votes: 0,
+            invites: 0,
+            views: 0,
+            countries: [],
+        };
         await botDB.save();
     });
 });

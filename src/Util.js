@@ -10,11 +10,12 @@ class Util {
         this.client = client ?? null;
     }
 
-    genToken() {
+    genToken(length = 32) {
         let token = "";
+        //const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789.-_";
         const characters =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789.-_";
-        for (let i = 0; i < 32; i++) {
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzy0123456789"; //without .-_
+        for (let i = 0; i < length; i++) {
             token += characters.charAt(
                 Math.floor(Math.random() * characters.length)
             );
@@ -272,12 +273,14 @@ class Util {
             const code =
                 url.pathname?.replace?.("/", "")?.replace?.("invite/", "") ??
                 null;
-            let json;
             try {
-                if (code)
-                    json = await axios
+                if (code) {
+                    await axios
                         .get(`https://discord.com/api/invite/${code}`)
                         .then((res) => res.data);
+                } else {
+                    throw new Error("code is undefined");
+                }
             } catch (e) {
                 params.set(
                     "message",

@@ -41,9 +41,10 @@ router.get("/callback", async (req, res) => {
         "redirect_uri",
         `${req.protocol}://${req.get("host")}/discord/callback`
     );
-    let response = await axios.get("https://discord.com/api/oauth2/token", {
-        method: "POST",
-        body: params.toString(),
+    let response = await axios({
+        method: "post",
+        url: "https://discord.com/api/oauth2/token",
+        data: params.toString(),
         headers: {
             Authorization: `Basic ${btoa(
                 `${req.client.user.id}:${req.client.config.site.secret}`
@@ -51,7 +52,7 @@ router.get("/callback", async (req, res) => {
             "Content-Type": "application/x-www-form-urlencoded",
         },
     });
-    const tokens = await response.json();
+    const tokens = response.data;
     if (tokens.error || !tokens.access_token) {
         if (req.client.debug && process.env.NODE_ENV === "development")
             console.log(tokens);
@@ -65,7 +66,6 @@ router.get("/callback", async (req, res) => {
         if (!userData.infos) {
             // eslint-disable-next-line no-await-in-loop
             response = await axios.get("http://discord.com/api/users/@me", {
-                method: "GET",
                 headers: { Authorization: `Bearer ${tokens.access_token}` },
             });
             const json = response.data;
@@ -79,7 +79,6 @@ router.get("/callback", async (req, res) => {
             response = await axios.get(
                 "http://discord.com/api/users/@me/guilds",
                 {
-                    method: "GET",
                     headers: { Authorization: `Bearer ${tokens.access_token}` },
                 }
             );
@@ -102,19 +101,17 @@ router.get("/callback", async (req, res) => {
     if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
         while (!done) {
             // eslint-disable-next-line no-await-in-loop
-            response = await axios.get(
-                `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bot ${req.client.token}`,
-                    },
-                    body: JSON.stringify({
-                        access_token: `${tokens.access_token}`,
-                    }),
-                }
-            );
+            response = await axios({
+                url: `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bot ${req.client.token}`,
+                },
+                data: {
+                    access_token: `${tokens.access_token}`,
+                },
+            });
             const json = response.data;
             // eslint-disable-next-line no-await-in-loop
             if (json.retry_after) await req.client.wait(json.retry_after);

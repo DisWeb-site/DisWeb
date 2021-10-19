@@ -14,10 +14,18 @@ router.get("/", CheckAuth, async (req, res) => {
     } catch (e) {
         if (req.client.debugLevel > 1) console.log(e);
     }
-    if (!member) return res.redirect(`/?error=true&message=${encodeURIComponent("You are not even in the server of DisWeb, how can I say that you are a staff lol")}`);
-    if (!member.roles.cache.has(req.client.config.roles.staff)) return res.redirect(`/?error=true&message=${encodeURIComponent("You are not a staff")}`);
+    if (!member)
+        return res.redirect(
+            `/?error=true&message=${encodeURIComponent(
+                "You are not even in the server of DisWeb, how can I say that you are a staff lol"
+            )}`
+        );
+    if (!member.roles.cache.has(req.client.config.roles.staff))
+        return res.redirect(
+            `/?error=true&message=${encodeURIComponent("You are not a staff")}`
+        );
     const stats = new Map();
-    await req.client.models.Stats.find({}).then(stats => {
+    await req.client.models.Stats.find({}).then((stats) => {
         stats.forEach((stat) => {
             stats.set(stat.userId, stat);
         });

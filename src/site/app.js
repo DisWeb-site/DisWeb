@@ -54,7 +54,7 @@ module.exports.load = (client) => {
         })
         .use(async (req, res, next) => {
             console.log(`${req.method} ${req.path} - ${req.ip}`);
-            const search = { userId: req.user?.id ?? "anonymous" };
+            const search = { userId: req?.user?.id ?? "anonymous" };
             let stats;
             try {
                 stats = await req.client.models.Stats.findOne(search);

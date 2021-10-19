@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <%- include('includes/head') %>
+    <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed sidebar-closed sidebar-fixed sidebar-collapse">
+        <div class="wrapper">
+            <%- include('includes/header') %>
+            <div class="content-wrapper px-4 py-2" >
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1>Admin dashboard</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </section>
+                <section class="content">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Total Views</h3>
+                            <div class="card-tools">
+                                <span class="badge badge-primary">This month</span>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <!-- /.card-header -->
+                            <div class="card-body">
+                                <span data-purecounter-start="0" data-purecounter-end="<%= stats.reduce((acc, stat) => acc + stat.views) %>" data-purecounter-duration="1" class="purecounter"></span>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                </section>
+            </div>
+        </div>
+        <%- include('includes/footer') %>
+    </body>
+</html>

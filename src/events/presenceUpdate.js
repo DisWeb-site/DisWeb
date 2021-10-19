@@ -70,7 +70,7 @@ module.exports = {
                 );
                 minutes = duration.minutes();
                 if (minutes > 0) {
-                    minutes = rate - Number(`0.0${Math.floor(minutes)}`);
+                    rate = rate - Number(`0.0${Math.floor(minutes)}`);
                     if (client.debug)
                         client.logger.debug(
                             `Reducing ${Number(

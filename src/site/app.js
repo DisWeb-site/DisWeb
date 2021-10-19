@@ -8,7 +8,7 @@ const path = require("path");
 const express = require("express");
 
 module.exports.load = (client) => {
-    const { CheckAuth, fetchUser, handleStats } = client.util;
+    const { CheckAuth, fetchUser } = client.util;
     global.CheckAuth = CheckAuth;
     const session = require("express-session");
     if (client.debug) client.logger.debug("Loading dashboard");
@@ -52,7 +52,29 @@ module.exports.load = (client) => {
             }`;
             next();
         })
-        .use(handleStats);
+        .use(async (req, res, next) => {
+            console.log(`${req.method} ${req.path} - ${req.ip}`);
+            const search = { userId: req.user?.id ?? "anonymous" };
+            let stats;
+            try {
+                stats = await req.client.models.Stats.findOne(search);
+            } catch (e) {} //eslint-disable-line no-empty
+            if (!stats) {
+                stats = new req.client.models.Stats(search);
+                await stats.save();
+            }
+            if (process.env.IPINFO_KEY) {
+                const res = await require("axios").get(
+                    `https://ipinfo.io/${req.ip}?token=${process.env.IPINFO_KEY}`
+                );
+                if (res.data.country) stats.country.push(res.data.country);
+                else if (req.client.debug) console.log(res);
+            }
+            stats.views++;
+            stats.last.page = req.originalUrl;
+            await stats.save();
+            next();
+        });
 
     const routesFolder = path.join(__dirname, "/routes");
     const routesFiles = fs

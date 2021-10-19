@@ -292,28 +292,5 @@ class Util {
         }
         return botData;
     }
-
-    async handleStats(req, res, next) {
-        const search = { userId: req.user?.id ?? "anonymous" };
-        let stats;
-        try {
-            stats = await req.client.models.Stats.findOne(search);
-        } catch (e) {} //eslint-disable-line no-empty
-        if (!stats) {
-            stats = new req.client.models.Stats(search);
-            await stats.save();
-        }
-        if (process.env.IPINFO_KEY) {
-            const res = await axios.get(
-                `https://ipinfo.io/${req.ip}?token=${process.env.IPINFO_KEY}`
-            );
-            if (res.data.country) stats.country.push(res.data.country);
-            else if (req.client.debug) console.log(res);
-        }
-        stats.views++;
-        stats.last.page = req.originalUrl;
-        await stats.save();
-        next();
-    }
 }
 module.exports = Util;

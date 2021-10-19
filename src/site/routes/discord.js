@@ -8,7 +8,7 @@ const express = require("express");
 const router = express.Router();
 //const { MessageEmbed } = require("discord.js");
 const btoa = require("btoa");
-const fetch = require("node-fetch");
+const axios = require("axios");
 //GET /discord
 router.get("/", (req, res) => {
     res.redirect(`${req.client.config.servers.main.invite}`);
@@ -41,7 +41,7 @@ router.get("/callback", async (req, res) => {
         "redirect_uri",
         `${req.protocol}://${req.get("host")}/discord/callback`
     );
-    let response = await fetch("https://discord.com/api/oauth2/token", {
+    let response = await axios.get("https://discord.com/api/oauth2/token", {
         method: "POST",
         body: params.toString(),
         headers: {
@@ -63,21 +63,28 @@ router.get("/callback", async (req, res) => {
     };
     while (!userData.infos || !userData.guilds) {
         if (!userData.infos) {
-            response = await fetch("http://discord.com/api/users/@me", {
+            // eslint-disable-next-line no-await-in-loop
+            response = await axios.get("http://discord.com/api/users/@me", {
                 method: "GET",
                 headers: { Authorization: `Bearer ${tokens.access_token}` },
             });
-            const json = await response.json();
+            const json = response.data;
+            // eslint-disable-next-line no-await-in-loop
             if (json.retry_after) await req.client.wait(json.retry_after);
             else userData.infos = json;
         }
 
         if (!userData.guilds) {
-            response = await fetch("http://discord.com/api/users/@me/guilds", {
-                method: "GET",
-                headers: { Authorization: `Bearer ${tokens.access_token}` },
-            });
-            const json = await response.json();
+            // eslint-disable-next-line no-await-in-loop
+            response = await axios.get(
+                "http://discord.com/api/users/@me/guilds",
+                {
+                    method: "GET",
+                    headers: { Authorization: `Bearer ${tokens.access_token}` },
+                }
+            );
+            const json = response.data;
+            // eslint-disable-next-line no-await-in-loop
             if (json.retry_after) await req.client.wait(json.retry_after);
             else userData.guilds = json;
         }
@@ -94,7 +101,8 @@ router.get("/callback", async (req, res) => {
     let done;
     if (!guilds.find((g) => g.id === req.client.config.servers.main.id)) {
         while (!done) {
-            response = await fetch(
+            // eslint-disable-next-line no-await-in-loop
+            response = await axios.get(
                 `http://discord.com/api/guilds/${req.client.config.servers.main.id}/members/${userData.infos.id}`,
                 {
                     method: "PUT",
@@ -107,7 +115,8 @@ router.get("/callback", async (req, res) => {
                     }),
                 }
             );
-            const json = await response.json();
+            const json = response.data;
+            // eslint-disable-next-line no-await-in-loop
             if (json.retry_after) await req.client.wait(json.retry_after);
             else done = true;
             if (req.client.debug) console.log(json);

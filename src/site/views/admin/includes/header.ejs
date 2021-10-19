@@ -33,14 +33,14 @@
         </a>
         <!-- Sidebar -->
         <div class="sidebar">
-            <% if (user) { %>
+            <% if (req.user) { %>
             <!-- Sidebar user panel -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="<%= user.displayAvatarURL({size: 32}) %>" class="img-circle elevation-2" alt="User Image">
+                    <img src="<%= req.user.displayAvatarURL({size: 32}) %>" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block"><%= user.tag %></a>
+                    <a href="#" class="d-block"><%= req.user.tag %></a>
                 </div>
             </div>
             <% } else { %>
@@ -57,24 +57,10 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item menu-open">
-                        <a href="/dashboard" class="nav-link">
+                        <a href="/admin" class="nav-link">
                             <i class="fas fa-tachometer-alt"></i>
                             <p>
-                                <%= translate("dashboard:dashboard") %>
-                            </p>
-                        </a>
-                        <a href="/profile" class="nav-link">
-                            <i class="fas fa-user"></i>
-                            <p>
-                                <%= translate("misc:profile") %>
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                        <a href="/settings" class="nav-link">
-                            <i class="fas fa-cog"></i>
-                            <p>
-                                Settings
-                                <span class="right badge badge-danger">New</span>
+                                Dashboard
                             </p>
                         </a>
                     </li>

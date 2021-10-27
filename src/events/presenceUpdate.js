@@ -32,7 +32,7 @@ module.exports = {
             return;
         }
         const { user } = newPresence;
-        const rate = botDB.uptime?.rate ?? 99;
+        let rate = botDB.uptime?.rate ?? 99;
         const uptimeLogs = await client.channels.fetch(
             client.config.channels.uptimeLogs
         );

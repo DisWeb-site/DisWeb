@@ -25,8 +25,8 @@ router.get("/", CheckAuth, async (req, res) => {
             `/?error=true&message=${encodeURIComponent("You are not a staff")}`
         );
     const stats = new Map();
-    await req.client.models.Stats.find({}).then((stats) => {
-        stats.forEach((stat) => {
+    await req.client.models.Stats.find({}).then((stats2) => {
+        stats2.forEach((stat) => {
             stats.set(stat.userId, stat);
         });
     });
@@ -34,6 +34,7 @@ router.get("/", CheckAuth, async (req, res) => {
         req,
         member,
         stats,
+        statsArray: [...stats.values()],
     });
 });
 module.exports = router;

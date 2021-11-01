@@ -297,7 +297,7 @@ class Util {
         const { client } = this;
         let results = [];
         const bots = await client.models.Bot.find({});
-        bots.forEach((botDB) => {
+        bots.forEach(async (botDB) => {
             const bot = await client.users.fetch(botDB.botId);
             if (
                 bot.tag.indexOf(search) !== -1 ||
@@ -311,6 +311,7 @@ class Util {
                     ]);
             }
         });
+        await client.wait(1000);
         return !results?.length ? null : results;
     }
 }

@@ -82,7 +82,7 @@ module.exports = {
             let text = "";
             if (results) {
                 results.forEach((result) => {
-                    text += `${results.indexOf(result)}. [${result.bot.tag}](${
+                    text += `${results.indexOf(result) + 1}. [${result.bot.tag}](${
                         client.config.site.url
                     }/bot/${result.bot.id}) - ${
                         result.botDB.descriptions.short.slice(0, 40) + "..."

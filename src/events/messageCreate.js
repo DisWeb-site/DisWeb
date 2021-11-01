@@ -91,7 +91,7 @@ module.exports = {
             }
             const embed = new Embed()
                 .setTitle("Search Results")
-                .setDescription(results === null ? "No results" : text);
+                .setDescription(!results ? "No results" : text);
             message.channel.send({ embeds: [embed] });
         }
         const mentionRegex = new RegExp(

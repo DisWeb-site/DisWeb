@@ -316,6 +316,7 @@ class Util {
             });
         });
         await client.wait(1000);
+        results = Object.values(results);
         return !results?.length ? null : results;
     }
 }

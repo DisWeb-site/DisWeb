@@ -84,7 +84,7 @@ module.exports = {
                 results.forEach((result) => {
                     text += `${results.indexOf(results)}. [${result.bot.tag}](${
                         client.config.site.url
-                    }/bot/${bot.id}) - ${
+                    }/bot/${result.bot.id}) - ${
                         result.botDB.descriptions.short.slice(0, 30) + "..."
                     }`;
                 });

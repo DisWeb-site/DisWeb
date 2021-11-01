@@ -292,5 +292,26 @@ class Util {
         }
         return botData;
     }
+
+    async findabot(search) {
+        const { client } = this;
+        let results = [];
+        const bots = await client.models.Bot.find({});
+        bots.forEach((botDB) => {
+            const bot = await client.users.fetch(botDB.botId);
+            if (
+                bot.tag.indexOf(search) !== -1 ||
+                botDB.descriptions.long.indexOf(search) !== -1 ||
+                botDB.descriptions.short.indexOf(search) !== -1
+            ) {
+                results.push({ bot, botDB });
+                if (client.debugLevel > 4)
+                    client.logger.debug(`A bot found! ${bot.tag} (${bot.id})`, [
+                        "findabot",
+                    ]);
+            }
+        });
+        return !results?.length ? null : results;
+    }
 }
 module.exports = Util;

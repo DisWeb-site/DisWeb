@@ -19,6 +19,7 @@ module.exports = {
         uptimeLogs: "892416911663591456",
         suggestionLog: "887493136048345132",
         voteLogs: "895576180072251404",
+        findabot: "904602691660046336", //put null to disable find a bot channel
     },
     roles: {
         //roles

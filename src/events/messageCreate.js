@@ -3,6 +3,7 @@
  * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
+const { Embed } = require("../structures");
 module.exports = {
     name: "messageCreate",
     once: false,
@@ -73,6 +74,25 @@ module.exports = {
             }
             message.channel.sendTyping().catch(() => {});
             command.execute({ prefix, message, args });
+        } else if (
+            message.channel.id === client.config.channels?.findabot &&
+            !message.reference
+        ) {
+            const results = await client.util.findabot(message.cleanContent());
+            let text = "";
+            if (results) {
+                results.forEach((result) => {
+                    text += `${results.indexOf(results)}. [${result.bot.tag}](${
+                        client.config.site.url
+                    }/bot/${bot.id}) - ${
+                        result.botDB.descriptions.short.slice(0, 30) + "..."
+                    }`;
+                });
+            }
+            const embed = new Embed()
+                .setTitle("Search Results")
+                .setDescription(results === null ? "No results" : text);
+            message.channel.send({ embeds: [embed] });
         }
         const mentionRegex = new RegExp(
             `^(<@!?${message.client.user.id}>)\\s*`

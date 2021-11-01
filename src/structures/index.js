@@ -5,4 +5,5 @@
  */
 module.exports = {
     Command: require("./Command"),
+    Embed: require("./Embed"),
 };

@@ -302,8 +302,16 @@ class Util {
             const bot = await client.users.fetch(botDB.botId);
             const toSearch = [bot.tag, ...Object.values(botDB.descriptions)];
             toSearch.forEach((smth) => {
-                if (smth.toLowerCase().indexOf(search) !== -1 && !results[bot.id]) {
+                if (
+                    smth.toLowerCase().indexOf(search) !== -1 &&
+                    !results[bot.id]
+                ) {
                     results[bot.id] = { bot, botDB };
+                    if (client.debugLevel > 1)
+                        client.logger.debug(
+                            `A bot found! ${bot.tag} (${bot.id})`,
+                            ["findabot"]
+                        );
                 }
             });
         });

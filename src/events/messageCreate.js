@@ -78,7 +78,7 @@ module.exports = {
             message.channel.id === client.config.channels?.findabot &&
             !message.reference
         ) {
-            const results = await client.util.findabot(message.cleanContent());
+            const results = await client.util.findabot(message.cleanContent);
             let text = "";
             if (results) {
                 results.forEach((result) => {

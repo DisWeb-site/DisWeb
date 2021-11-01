@@ -294,22 +294,18 @@ class Util {
     }
 
     async findabot(search) {
+        search = search.toLowerCase();
         const { client } = this;
-        let results = [];
+        let results = {};
         const bots = await client.models.Bot.find({});
         bots.forEach(async (botDB) => {
             const bot = await client.users.fetch(botDB.botId);
-            if (
-                bot.tag.indexOf(search) !== -1 ||
-                botDB.descriptions.long.indexOf(search) !== -1 ||
-                botDB.descriptions.short.indexOf(search) !== -1
-            ) {
-                results.push({ bot, botDB });
-                if (client.debugLevel > 4)
-                    client.logger.debug(`A bot found! ${bot.tag} (${bot.id})`, [
-                        "findabot",
-                    ]);
-            }
+            const toSearch = [bot.tag, ...Object.values(botDB.descriptions)];
+            toSearch.forEach((smth) => {
+                if (smth.toLowerCase().indexOf(search) !== -1 && !results[bot.id]) {
+                    results[bot.id] = { bot, botDB };
+                }
+            });
         });
         await client.wait(1000);
         return !results?.length ? null : results;

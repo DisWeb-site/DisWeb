@@ -54,7 +54,7 @@
                                     <span class="badge bg-danger">Api token: <%= botDB.apiToken %></span><br>
                                     <a class="btn btn-warning m-1" href="/bot/<%= bot.id %>/edit">Edit</a><br>
                                     <a class="btn btn-success m-1" href="/bot/<%= bot.id %>/analytics">Analytics</a><br>
-                                    <a class="btn btn-danger m-1" onclick="deleteReq('/bot/<%= bot.id %>')">Delete</a><br>
+                                    <a class="btn btn-danger m-1" onclick="confirmDeletion('/bot/<%= bot.id %>', '<%= bot.tag %>')">Delete</a><br>
                                 </p>
                             </div>
                         </div>
@@ -78,6 +78,33 @@
       </section><!-- End About Section -->
         </main>
         <script>
+            function confirmDeletion(url, name) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    html: "You are about to delete " + name + " from DisWeb. You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteReq(url);
+                        Swal.fire(
+                            "Deleted!",
+                            "Your bot has been deleted.",
+                            "success"
+                        );
+                        return true;
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire(
+                            "Cancelled!",
+                            "I DID NOT DELETE YOUR BOT :)",
+                            "error"
+                        );
+                    }
+                });
+                return false;
+            }
             function deleteReq(url) {
                 const xhr = new XMLHttpRequest();
                 xhr.open("DELETE", url);

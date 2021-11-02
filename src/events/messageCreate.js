@@ -4,6 +4,7 @@
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
 const { Embed } = require("../structures");
+const { Permissions } = require("discord.js");
 module.exports = {
     name: "messageCreate",
     once: false,
@@ -14,6 +15,7 @@ module.exports = {
         if (message.channel?.partial) await message.channel.fetch();
         if (message?.partial) await message.fetch();
         if (message.author.bot) return;
+        const embed = new Embed();
         const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const prefixes = [escapeRegex(client.config.prefix.toLowerCase())];
         const prefixRegex = new RegExp(
@@ -39,7 +41,7 @@ module.exports = {
                     client.logger.log(`Can't find command: ${commandName}`);
                 return;
             }
-            if (command.disabled) return;
+            if (command.disabled || !command.checkCooldown(message)) return;
             if (
                 command.requirements?.ownerOnly &&
                 !client.config.owners.includes(message.author.id)
@@ -47,8 +49,111 @@ module.exports = {
                 return;
             if (command.requirements?.guildOnly && !message.guild)
                 return message.channel.send(
-                    "Uhhhhhhhhhhh, this command can be used in servers only"
+                    "Uhhhh, this command can be used in servers only"
                 );
+            if (
+                command?.botPerms &&
+                message.channel.type !== "DM" &&
+                message.guild
+            ) {
+                const botPerms = message.guild.me.permissionsIn(
+                    message.channel
+                );
+                if (!botPerms) {
+                    return message.reply("I don't have permission");
+                }
+                for (var i = 0; i < command.botPerms.length; i++) {
+                    if (!botPerms.has(command.botPerms[i])) {
+                        return message.reply(
+                            `I don't have this permission: ${new Permissions(
+                                command.botPerms[i]
+                            )
+                                .toArray()
+                                .join("")
+                                .toUpperCase()}`
+                        );
+                    }
+                }
+            }
+
+            if (
+                command?.memberPerms &&
+                message.channel.type !== "DM" &&
+                message.guild
+            ) {
+                const authorPerms = message.channel.permissionsFor(
+                    message.author
+                );
+                if (!authorPerms) {
+                    message.reply("You don't have permissions");
+                    if (!client.config.ownerIds.includes(message.author.id))
+                        return;
+                }
+                for (let i = 0; i < command.memberPerms.length; i++) {
+                    if (!authorPerms.has(command.memberPerms[i])) {
+                        message.reply(
+                            `You don't have this permission: ${new Permissions(
+                                command.memberPerms[i]
+                            )
+                                .toArray()
+                                .join("")
+                                .toUpperCase()}`
+                        );
+                        if (!client.config.ownerIds.includes(message.author.id))
+                            return;
+                    }
+                }
+            }
+
+            if (command.requirements?.args && !args.length) {
+                let reply = `Arguments are required for this command, use ${client.config.prefix}help ${command.name} for more info`;
+
+                if (command.usage) {
+                    reply += `\nUsage: \`${client.config.prefix}${command.name} ${command.usage}\``;
+                }
+
+                embed.addField(
+                    `You didn't provide any arguments, ${message.author.tag}!`,
+                    reply
+                );
+                return message.reply({ embeds: [embed] });
+            }
+
+            if (command.requirements?.subcommand && !args.length) {
+                let reply = `Subcommands are required for this command.`;
+
+                if (command.subcommands) {
+                    const subcmds = [];
+                    for (let i = 0; i < command.subcommands.length; i++) {
+                        subcmds.push(command.subcommands[i].name);
+                    }
+                    reply += `\nThe subcommand(s) available are: \`${subcmds.join(
+                        ", "
+                    )}\``;
+                }
+
+                embed.setTitle("No subcommands provided");
+                embed.addField(
+                    `You didn't provide any subcommand, ${message.author.tag}!`,
+                    reply
+                );
+                embed.addField(
+                    "Want help?",
+                    `Send \`${client.config.prefix}help ${command.name}\``
+                );
+                return message.reply({ embeds: [embed] });
+            }
+
+            if (command.subcommands && command.requirements?.subcommand) {
+                const subcmds = [];
+                for (let i = 0; i < command.subcommands.length; i++) {
+                    subcmds.push(command.subcommands[i].name);
+                }
+                if (!subcmds.includes(args[0]))
+                    return message.reply(
+                        `Invalid subcommand, use ${client.config.prefix}help ${command.name} for more info`
+                    );
+            }
             if (
                 command.requirements?.reviewerOnly &&
                 client.config.roles.reviewer
@@ -78,38 +183,30 @@ module.exports = {
             message.channel.id === client.config.channels?.findabot &&
             !message.reference
         ) {
-            const results = await client.util.findabot(message.cleanContent.replace(/@/gi, ""));
-            let text = "";
-            if (results) {
-                results.forEach((result) => {
-                    text += `${results.indexOf(result) + 1}. [${result.bot.tag}](${
-                        client.config.site.url
-                    }/bot/${result.bot.id}) - ${
-                        result.botDB.descriptions.short.slice(0, 40) + "..."
-                    }\n`;
-                });
-            }
-            const embed = new Embed()
-                .setTitle("Search Results")
-                .setDescription(!results ? "No results" : text);
-            message.channel.send({ embeds: [embed] });
+            const msgDup = message.channel.messages.cache.get(message.id);
+            msgDup.content = `${client.config.prefix}findabot ${message.content}`;
+            client.emit("messageCreate", msgDup);
         }
         const mentionRegex = new RegExp(
             `^(<@!?${message.client.user.id}>)\\s*`
         );
         if (message.content.split(" ").length > 1) return;
         if (!mentionRegex.test(message.content)) return;
-        const reply = `Hi there, ${message.author}\nI am ${message.client.user.username}\nMy prefix is "${client.config.prefix}"\nSend \`${client.config.prefix}help\` to get help`;
+        const reply = `Hi there, ${message.author}\nI am ${client.user.username}\nMy prefix is "${client.config.prefix}"\nSend \`${client.config.prefix}help\` to get help`;
+        embed
+            .setTitle(`${client.user.tag}`)
+            .setDescription(reply)
+            .setThumbnail(client.user.displayAvatarURL());
         if (!message.reference) {
             message.channel.sendTyping().catch(() => {});
-            message.channel.send(reply);
+            message.channel.send({ embeds: [embed] });
         } else {
             message.channel.messages
                 .fetch(message.reference.messageId)
                 .then((msg) => {
                     if (msg.author.id !== client.user.id) {
                         message.channel.sendTyping();
-                        message.channel.send(reply);
+                        message.channel.send({ embeds: [embed] });
                     }
                 })
                 .catch(console.error);

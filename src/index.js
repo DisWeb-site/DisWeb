@@ -21,8 +21,9 @@ mongoose
 process.on("unhandledRejection", (error) => {
     client.logger.log("Unhandled promise rejection", "error");
     console.error(error);
-    const channel =
-        client.channels.cache.get(client?.config?.channels?.errorLogs) ?? null;
+    const channel = client.channels.cache.get(
+        client.config.channels?.errorLogs
+    );
     if (channel)
         channel
             .send({

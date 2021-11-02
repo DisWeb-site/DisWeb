@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "dev": "npx nodemon src/index.js --watch src",
+    "dev": "npx nodemon src/index.js --watch src -e js,ejs,json,css",
     "format": "npx prettier --write src",
     "lint": "npx eslint src",
     "lint:fix": "npx eslint src --fix"

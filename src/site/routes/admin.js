@@ -22,7 +22,9 @@ router.get("/", CheckAuth, async (req, res) => {
         );
     if (!member.roles.cache.has(req.client.config.roles.staff))
         return res.redirect(
-            `/?error=true&message=${encodeURIComponent("You are not a staff")}`
+            `/?error=true&message=${encodeURIComponent(
+                "You are not a staff!!"
+            )}`
         );
     const stats = new Map();
     await req.client.models.Stats.find({}).then((stats2) => {

@@ -11,7 +11,10 @@ const router = express.Router();
 router.get("/", async (req, res) => {
     const bots = await req.client.models.Bot.find({});
     bots.forEach(async ({ botId }) => {
-        await req.client.users.fetch(botId);
+        try {
+            await req.client.users.fetch(botId);
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
     });
     res.render("bots/index", {
         req,
@@ -59,13 +62,11 @@ router.post("/add", CheckAuth, async (req, res) => {
     const params = new URLSearchParams();
     const data = req.body;
     const { botId } = data;
-    let bot = null;
+    let bot;
     try {
         bot = await client.users.fetch(botId);
     } catch (e) {
-        if (client.debug) console.log(e);
-        params.set("message", "Invalid bot ID");
-        return res.redirect(`/bots/add?${params}`);
+        bot = null;
     }
     if (client.debug) console.log(data);
     const reqFields = ["shortDesc", "longDesc", "prefix"];
@@ -76,8 +77,8 @@ router.post("/add", CheckAuth, async (req, res) => {
         //nothing required to be done, if error ocurres then the bot is not in the db already
     }
     params.set("error", "true");
-    if (isNaN(botId)) {
-        params.set("message", "Bot ID is not a number");
+    if (!bot || isNaN(botId)) {
+        params.set("message", "Invalid Bot ID");
         return res.redirect(`/bots/add?${params}`);
     } else if (check) {
         params.set("message", "Bot already exists in DB");

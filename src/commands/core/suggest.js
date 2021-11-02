@@ -3,9 +3,7 @@
  * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
-const { Command } = require("../../structures");
-const { MessageEmbed } = require("discord.js");
-
+const { Embed, Command } = require("../../structures");
 module.exports = class CMD extends Command {
     constructor(client) {
         super(
@@ -32,7 +30,7 @@ module.exports = class CMD extends Command {
             config.channels.suggestionLog
         );
 
-        const embed = new MessageEmbed()
+        const embed = new Embed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL())
             .setTitle("New suggestion")
             .setDescription(suggestion)

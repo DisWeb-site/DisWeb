@@ -260,37 +260,104 @@ class Util {
             botData["github"] = data["github"];
         }
         if (data["support"]) {
-            let url = null;
-            try {
-                url = new URL(data["support"]);
-            } catch (e) {
-                if (client.debug) console.log(e);
-            }
-            if (!url) {
-                params.set("message", "Invalid support server link");
-                return `/bots/add?${params}`;
-            }
-            const code =
-                url.pathname?.replace?.("/", "")?.replace?.("invite/", "") ??
-                null;
-            try {
-                if (code) {
-                    await axios
-                        .get(`https://discord.com/api/invite/${code}`)
-                        .then((res) => res.data);
-                } else {
-                    throw new Error("code is undefined");
-                }
-            } catch (e) {
-                params.set(
-                    "message",
-                    "Invalid support server invite code or you used a url shortner"
-                );
-                return `/bots/add?${params}`;
+            const check = this.checkInviteLink(data["support"]);
+            switch (check) {
+                case "notalink":
+                    params.set(
+                        "message",
+                        "Support Server invite link is not a real link lol"
+                    );
+                    return `/bots/add?${params}`;
+                    break;
+                case "notvalid":
+                    params.set(
+                        "message",
+                        "Invalid server invite link or You used a url shortner"
+                    );
+                    return `/bots/add?${params}`;
+                    break;
             }
             botData["support"] = data["support"];
         }
         return botData;
+    }
+
+    async handleServerData(data) {
+        const { client } = this;
+        const params = new URLSearchParams();
+        params.set("error", "true");
+        const serverData = {
+            serverId: data.serverId,
+            descriptions: {
+                short: data.shortDesc,
+                long: data.longDesc,
+            },
+            owner: data.owner,
+            addedAt: Date.now(),
+            apiToken: this.genToken(),
+        };
+        if (data["website"]) {
+            let url = null;
+            try {
+                url = new URL(data["website"]);
+            } catch (e) {
+                if (client.debug) console.log(e);
+            }
+            if (!url) {
+                params.set("message", "Invalid website link");
+                return `/servers/add?${params}`;
+            }
+            serverData["website"] = data["website"];
+        }
+        if (data["invite"]) {
+            const check = this.checkInviteLink(data["invite"]);
+            switch (check) {
+                case "notalink":
+                    params.set(
+                        "message",
+                        "Server invite link is not a real link lol"
+                    );
+                    return `/servers/add?${params}`;
+                    break;
+                case "notvalid":
+                    params.set(
+                        "message",
+                        "Invalid server invite link or You used a url shortner"
+                    );
+                    return `/servers/add?${params}`;
+                    break;
+            }
+            serverData["invite"] = data["invite"];
+        }
+        return serverData;
+    }
+
+    async checkInviteLink(link) {
+        const { client } = this;
+        let url = null;
+        try {
+            url = new URL(link);
+        } catch (e) {
+            if (client.debug) console.log(e);
+        }
+        if (!url) {
+            return "notalink";
+        }
+        const code =
+            url.pathname?.replace?.("/", "")?.replace?.("invite/", "") ?? null;
+        try {
+            if (code) {
+                await axios
+                    .get(`https://discord.com/api/invite/${code}`)
+                    .then((res) => res.data)
+                    .catch(() => {});
+            } else {
+                throw new Error("code is undefined");
+            }
+        } catch (e) {
+            return "notvalid";
+        }
+        return "valid";
     }
 
     async findabot(search) {

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <%- include('../includes/head') %>
+    <body>
+        <%- include('../includes/header') %>
+          <!-- ======= Hero Section ======= -->
+          <section id="hero" class="hero d-flex align-items-center">
+              
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up">Add your server in DisWeb</h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400"></h2>
+                    </div>
+                </div>
+            </div>
+  
+        </section><!-- End Hero -->
+        <main id="main">
+            <!-- ======= Forms Section ======= -->
+            <section id="forms" class="forms">
+                <div class="container" data-aos="fade-up">
+                    <header class="section-header">
+                        <h2>Add your bot</h2>
+                        <p>Please put your server's details below</p>
+                    </header>
+                    <div class="col-lg-6">
+                        <form action="/servers/add" method="POST" id="form" class="form">
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <label for="guildId">Server Id</label><br>
+                                    <input class="form-control" type="number" placeholder="ID" name="guildId" id="guildId" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="shortDesc">Short Description</label><br>
+                                    <small>A brief description of what your server is about.</small>
+                                    <input class="form-control" type="text" placeholder="A cool server with bots like Dank memer ..." name="shortDesc" id="shortDesc" required maxlength="300">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="longDesc">Long Description</label><br>
+                                    <small>Tell us what your server is for. We want to hear the whole story!</small>
+                                    <textarea class="form-control" rows="6" placeholder="A long description for your server" name="longDesc" id="longDesc" required maxlength="5000"></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="support">Invite Link (optional)</label><br>
+                                    <small>Invite link to your server!</small>
+                                    <input class="form-control" type="text" placeholder="A permanent invite link to your server" name="invite" id="invite">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="website">WebSite (Optional)</label><br>
+                                    <small>Got a website? Rep it on your page!</small>
+                                    <input class="form-control" type="text" placeholder="https://disweb.xyz" name="website" id="website">
+                                </div>
+
+                                <div class="col-md-12 text-center">
+                                    <p>Make sure you have read the <a href="/servers/rules">Server rules</a>.</p>
+                                    <button type="submit">Add server</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+  
+      </section><!-- End Forms Section -->
+        </main>
+        <%- include('../includes/footer') %>
+    </body>
+</html>

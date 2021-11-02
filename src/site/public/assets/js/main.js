@@ -8,24 +8,42 @@
 (function () {
     "use strict";
     const urlParams = new URLSearchParams(window.location.search);
+    const footer = "Copyright 2021 &copy DisWeb - All rights reserved.";
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        showCloseButton: true,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
     if (urlParams.has("success")) {
         Swal.fire({
             icon: "success",
             title: "Succesfull...",
             closeOnConfirm: false,
-            text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy DisWeb - All rights reserved.",
+            html: urlParams.get("message"),
+            footer,
         });
     }
     if (urlParams.has("error")) {
         Swal.fire({
             icon: "error",
             title: "Ooops...",
-            text: urlParams.get("message"),
-            footer: "Copyright 2021 &copy DisWeb - All rights reserved.",
+            html: urlParams.get("message"),
+            footer,
         });
     }
-
+    if (urlParams.has("signedin")) {
+        Toast.fire({
+            icon: "success",
+            title: "Signed in successfully",
+        });
+    }
     /**
      * Easy selector helper function
      */

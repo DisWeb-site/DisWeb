@@ -3,8 +3,7 @@
  * Copyright (c) 2021 The DisWeb Team and Contributors
  * Licensed under Lesser General Public License v2.1 (LGPl-2.1 - https://opensource.org/licenses/lgpl-2.1.php)
  */
-const { Command } = require("../../structures");
-const { MessageEmbed } = require("discord.js");
+const { Embed, Command } = require("../../structures");
 module.exports = class CMD extends Command {
     constructor(client) {
         super(
@@ -30,7 +29,7 @@ module.exports = class CMD extends Command {
             return message.channel.send(
                 "That bot is not added or is rejected!"
             );
-        const embed = new MessageEmbed()
+        const embed = new Embed()
             .setColor("#7289da")
             .setTitle(`_**${bot.tag}**_`)
             .addField("ID", bot.id, true)

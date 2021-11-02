@@ -47,7 +47,7 @@ module.exports = class CMD extends Command {
         let botMember, botMember2;
         try {
             botMember = await servers.main.members.fetch(bot.id);
-            botMember2 = await servers.main.members.fetch(bot.id);
+            botMember2 = await servers.test.members.fetch(bot.id);
         } catch (e) {
             if (this.client.debug) console.log(e);
         }

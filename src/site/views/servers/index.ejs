@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <%- include('../includes/head') %>
+    <body>
+        <%- include('../includes/header') %>
+          <!-- ======= Hero Section ======= -->
+          <section id="hero" class="hero d-flex align-items-center">
+              
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up">Find the best servers for you to chill</h1>
+                        <h2 data-aos="fade-up" data-aos-delay="400"></h2>
+                        <div data-aos="fade-up" data-aos-delay="600">
+                            <div class="text-center text-lg-start">
+                                <a href="#about" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                                    <span>View servers</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+        </section><!-- End Hero -->
+        <main id="main">
+            <!-- ======= About Section ======= -->
+            <section id="about" class="about">
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                            <div class="content">
+                                <h3>Top voted servers</h3>
+                                <p>
+                                    <div class="card-deck">
+                                    <% guilds.sort((a, b) => b.analytics.votes - a.analytics.votes).slice(0, 6).forEach((guildDB) => { const guild = req.client.guilds.cache.get(guildDB.guildId); if(!guild) {return; } %>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= guild.iconURL({ size: 256, format: 'png' }) %>" alt="Server avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= guild.name %> <span class="badge bg-danger">Members: <%= guild.memberCount < 2 ? "N/A" : guild.memberCount %></span></h5>
+                                            <p class="card-text"><%= guildDB.descriptions.short %></p>
+                                            <a href="/server/<%= guild.id %>" class="btn btn-primary">View Server</a>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" data-aos="fade-up">
+                    <div class="row gx-0">
+                        <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                            <div class="content">
+                                <h3>Newly added servers</h3>
+                                <p>
+                                    <div class="card-deck">
+                                    <% guilds.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt)).slice(0, 6).forEach((guildDB) => { const guild = req.client.guilds.cache.get(guildDB.guildId); if(!guild) {return; } %>
+                                    <div class="card text-center mb-3" style="max-width: 18rem;">
+                                        <img class="card-img-top" src="<%= guild.iconURL({ size: 256, format: 'png' }) %>" alt="Server avatar">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= guild.name %> <span class="badge bg-danger">Members: <%= guild.memberCount < 2 ? "N/A" : guild.memberCount %></span></h5>
+                                            <p class="card-text"><%= guildDB.descriptions.short %></p>
+                                            <a href="/server/<%= guild.id %>" class="btn btn-primary">View Server</a>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- End About Section -->
+        </main>
+        <%- include('../includes/footer') %>
+    </body>
+</html>

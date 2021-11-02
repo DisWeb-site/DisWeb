@@ -15,7 +15,7 @@ module.exports = class CMD extends Command {
                 description: "Get current queue",
                 aliases: ["qu"],
                 disabled: false,
-                category: "Bot reviewer",
+                category: "Core",
             },
             client
         );

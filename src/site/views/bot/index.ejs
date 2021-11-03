@@ -89,11 +89,6 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         deleteReq(url);
-                        Swal.fire(
-                            "Deleted!",
-                            "Your bot has been deleted.",
-                            "success"
-                        );
                         return true;
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         Swal.fire(

@@ -54,17 +54,14 @@ router.post("/add", CheckAuth, async (req, res) => {
     const params = new URLSearchParams();
     const data = req.body;
     const { guildId } = data;
-    let guild, members, member;
+    let guild, member;
     try {
         guild = client.guilds.cache.get(guildId);
-        members = await guild.members.fetch();
-        member = guild.members.cache.get(req.user.id);
+        member = await guild.members.fetch(req.user.id);
     } catch (e) {
-        if (!guild && !members) {
+        if (!guild) {
             guild = null;
-            members = null;
-        } else if (!members) {
-            members = guild.members.cache;
+            member = null;
         }
     }
     const reqFields = ["shortDesc", "longDesc"];
@@ -100,7 +97,7 @@ router.post("/add", CheckAuth, async (req, res) => {
     } else if (check) {
         params.set("message", "Server already exists in DB");
         return res.redirect(`/servers/add?${params}`);
-    } else if (!member || !member.permissions.has("MANAGE_SERVER")) {
+    } else if (!member || !member.permissions.has("MANAGE_GUILD")) {
         params.set(
             "message",
             "You must join that server & you must be having the Manage Server permission in that server to add it"
@@ -121,23 +118,23 @@ router.post("/add", CheckAuth, async (req, res) => {
             return res.redirect(`/servers/add?${params}`);
         }
     }
-    const serverData = await client.util.handleServertData({
+    const guildData = await client.util.handleGuildData({
         ...data,
         owner: req.user.id,
     });
-    if (typeof serverData === "string") {
-        return res.redirect(serverData);
+    if (typeof guildData === "string") {
+        return res.redirect(guildData);
     }
     if (client.debug) client.logger.debug("Adding server to DB");
-    const serverDB = new client.models.Guild(serverData);
-    await serverDB.save();
+    const guildDB = new client.models.Guild(guildData);
+    await guildDB.save();
     const serverLogs = await client.channels.fetch(
         client.config.channels.serverLogs
     );
     const embed = new MessageEmbed()
         .setTitle("New Server Added")
         .setDescription(
-            `${guild.name} (${serverData.id}) is added by <@${serverDB.owner}>`
+            `${guild.name} (${guild.id}) is added by <@${guildDB.owner}>`
         );
     serverLogs.send({
         embeds: [embed],

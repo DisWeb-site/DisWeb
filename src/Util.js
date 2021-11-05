@@ -282,12 +282,12 @@ class Util {
         return botData;
     }
 
-    async handleServerData(data) {
+    async handleGuildData(data) {
         const { client } = this;
         const params = new URLSearchParams();
         params.set("error", "true");
-        const serverData = {
-            serverId: data.serverId,
+        const guildData = {
+            guildId: data.guildId,
             descriptions: {
                 short: data.shortDesc,
                 long: data.longDesc,
@@ -307,7 +307,7 @@ class Util {
                 params.set("message", "Invalid website link");
                 return `/servers/add?${params}`;
             }
-            serverData["website"] = data["website"];
+            guildData["website"] = data["website"];
         }
         if (data["invite"]) {
             const check = this.checkInviteLink(data["invite"]);
@@ -327,9 +327,9 @@ class Util {
                     return `/servers/add?${params}`;
                     break;
             }
-            serverData["invite"] = data["invite"];
+            guildData["invite"] = data["invite"];
         }
-        return serverData;
+        return guildData;
     }
 
     async checkInviteLink(link) {

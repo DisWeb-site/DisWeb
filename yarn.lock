@@ -751,10 +751,10 @@ discord.js@^13.2.0:
     node-fetch "^2.6.1"
     ws "^8.2.3"
 
-djs-pagination-buttons@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/djs-pagination-buttons/-/djs-pagination-buttons-0.2.3.tgz#65cecc907000ef45029285ba34ab75efe790494d"
-  integrity sha512-1kjgtvg1jSwfrArtnp7rBL5hkYeqxIfArlUWPV52aVB6utwYAvnbEQtsgyxqcKy5CgOZRb5bljTVS2fA9HG4Yw==
+djs-pagination-buttons@^0.2.4-dev:
+  version "0.2.4-dev"
+  resolved "https://registry.yarnpkg.com/djs-pagination-buttons/-/djs-pagination-buttons-0.2.4-dev.tgz#db1016f2beb818829ece20aa5dfc10f048612d32"
+  integrity sha512-eQksZikbMZGuX/SE1heS395f9iducdRrgAhQPsp29L3kCsZ86skwXyEiaCbVn0vY44EllsApNZXMcewPRPrN9w==
 
 doctrine@^3.0.0:
   version "3.0.0"
@@ -1832,10 +1832,22 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+  integrity sha512-uPIxXNis1CRbv1DwqAxkgBk5NFV3s7cMN/Gf556jSw6jBvV7ca4F9lRL/8cALcZecRibeqU+5dFYqFFmzv5a0Q==
+
 node-fetch@^2.6.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.2.tgz#986996818b73785e47b1965cc34eb093a1d464d0"
   integrity sha512-aLoxToI6RfZ+0NOjmWAgn9+LEd30YCkJKFSyWacNZdEKTit/ZMcKjGkTRo8uWEsnIb/hfKecNPEbln02PdWbcA==
+
+node@^16.6.0:
+  version "16.13.0"
+  resolved "https://registry.yarnpkg.com/node/-/node-16.13.0.tgz#36fb9c9752f23efe55851de12c253a4084e7148a"
+  integrity sha512-bCUq6u/0rVHBvCpxLFTv5/kPjJGTltcyWQ2EtqlZ6WOqSpkTVBFtNoJ9tSVIGmadb0KoRsWd2CyNs9bU/drxXQ==
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nodemon@^2.0.13:
   version "2.0.13"

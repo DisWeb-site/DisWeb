@@ -1,4 +1,20 @@
 {
+  "name": "disweb",
+  "version": "1.0.0",
+  "description": "A new era of discord bot and server list",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "npx nodemon src/index.js --watch src -e js,ejs,json,css",
+    "format": "npx prettier --write src",
+    "lint": "npx eslint src",
+    "lint:fix": "npx eslint src --fix"
+  },
+  "keywords": [
+    "discord"
+  ],
+  "author": "DisWeb team",
+  "license": "LGPL-2.1",
   "dependencies": {
     "@bots-gg/markup": "^1.0.6",
     "ascii-table": "^0.0.9",
@@ -9,7 +25,7 @@
     "cron": "^1.8.2",
     "date-events": "^1.0.1",
     "discord.js": "^13.2.0",
-    "djs-pagination-buttons": "^0.2.3",
+    "djs-pagination-buttons": "^0.2.4-dev",
     "dompurify": "^2.3.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
@@ -21,10 +37,6 @@
     "moment-duration-format": "^2.3.2",
     "mongoose": "^6.0.11"
   },
-  "name": "disweb",
-  "version": "1.0.0",
-  "description": "Find the best discord bots for your server here",
-  "main": "src/index.js",
   "devDependencies": {
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
@@ -33,17 +45,5 @@
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
     "yarn": "^1.22.17"
-  },
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "npx nodemon src/index.js --watch src -e js,ejs,json,css",
-    "format": "npx prettier --write src",
-    "lint": "npx eslint src",
-    "lint:fix": "npx eslint src --fix"
-  },
-  "keywords": [
-    "discord"
-  ],
-  "author": "DList team",
-  "license": "LGPL-2.1"
+  }
 }

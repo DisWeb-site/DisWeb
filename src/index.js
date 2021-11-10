@@ -60,7 +60,7 @@ const normalize = async () => {
                 ? await client.servers.main.members.fetch(bot.id)
                 : null;
         if (botDB.uptime.rate < 30) {
-            client.models.Bot.findOneAndDelete({ botId: botDB.botId });
+            await client.models.Bot.deleteOne({ botId: botDB.botId });
             if (channel) {
                 channel.send({
                     content: `<@${botDB.owner}>`,
@@ -112,21 +112,19 @@ botsPromise.then((bots) => {
 });
 clock.on("month", async (/*mon, month*/) => {
     //mon = month number (1-12) and month = month name (lowercase)
-    const bots = await client.models.Bot.find({});
+    client.models.Bot.updateMany(
+        {},
+        {
+            $set: {
+                analytics: {
+                    votes: 0,
+                    invites: 0,
+                    views: 0,
+                    countries: [],
+                },
+            },
+        }
+    );
     await client.models.Vote.remove({}); //remove all votes
-    bots.forEach(async (botDB) => {
-        /*const bot = await client.users.fetch(botDB.botId);
-        const member =
-            bot?.id && client.servers.main
-                ? await client.servers.main.members.fetch(bot.id)
-                : null;*/
-        botDB.analytics = {
-            votes: 0,
-            invites: 0,
-            views: 0,
-            countries: [],
-        };
-        await botDB.save();
-    });
 });
 client.login(process.env.DISCORD_TOKEN);

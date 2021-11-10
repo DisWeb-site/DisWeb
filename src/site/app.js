@@ -70,7 +70,7 @@ module.exports.load = (client) => {
                 if (res.data.country) stats.country.push(res.data.country);
                 else if (req.client.debug) console.log(res);
             }
-            stats.views.$inc();
+            stats.views++;
             stats.last.page = req.originalUrl;
             await stats.save();
             next();

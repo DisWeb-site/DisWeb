@@ -1,5 +1,6 @@
 {
   "name": "disweb",
+  "private": "true",
   "version": "1.0.0",
   "description": "A new era of discord bot and server list",
   "main": "src/index.js",
